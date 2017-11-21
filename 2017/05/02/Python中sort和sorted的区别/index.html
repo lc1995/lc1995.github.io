@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Chang Lin">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Python中sort和sorted的区别"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Hexo"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://lc1995.github.io"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Hexo</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.dark.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Python中sort和sorted的区别</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/lc1995">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:lucianolin1995@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Chang Lin</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2017-05-02</span>
+            <span class="time">23:30:59</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Python/">Python</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Python/">#Python</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>最近写Python经常需要使用排序，Python2.7内置了两个排序函数，分别是sort和sorted，那么他们的用法和相互的区别是什么样子的呢。</p>
+<a id="more"></a>
+<p>先说说sort()。</p>
+<blockquote>
+<p><strong>s.sort</strong>(<em>[cmp[, key[, reverse]]]</em>)</p>
+<p><em>cmp</em> specifies a custom comparison function of two arguments (list items) which should return a negative, zero or positive number depending on whether the first argument is considered smaller than, equal to, or larger than the second argument: <code>cmp=lambda x,y:cmp(x.lower(), y.lower())</code>. The default value is <code>None</code>.</p>
+<p><em>key</em> specifies a function of one argument that is used to extract a comparison key from each list element: <code>key=str.lower</code>. The default value is <code>None</code>.</p>
+<p><em>reverse</em> is a boolean value. If set to <code>True</code>, then the list elements are sorted as if each comparison were reversed.</p>
+</blockquote>
+<p>sort()函数能够作用于Python的内置可变序列类型，即除了字符串和元组之外的其他序列，如列表和字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> l.sort(<span class="keyword">lambda</span> x,y: cmp(x, y))</div><div class="line"><span class="keyword">None</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l.sort(reverse=<span class="keyword">True</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">[<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</div></pre></td></tr></table></figure>
+
+<p>再看看sorted()函数。</p>
+<blockquote>
+<p><strong>sorted</strong>(<em>iterable</em>[, <em>cmp</em>[, <em>key</em>[, <em>reverse</em>]]])</p>
+<p>Return a new sorted list from the items in <em>iterable</em>.</p>
+</blockquote>
+<p>sorted函数能够作用于任何可迭代的序列类型，包括字符串，元组，列表，字典等，或者是自定义的可迭代的类（需申明<strong>iter</strong>函数和next函数）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = &#123;<span class="string">‘a’</span>:<span class="number">1</span>, <span class="string">‘b’</span>:<span class="number">4</span>, <span class="string">‘c’</span>:<span class="number">3</span>, <span class="string">‘d’</span>:<span class="number">7</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(l)</div><div class="line">[<span class="string">‘a’</span>, <span class="string">‘b’</span>, <span class="string">‘c’</span>, <span class="string">‘d’</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(l.items(), key=<span class="keyword">lambda</span> d:d[<span class="number">1</span>])</div><div class="line">[(<span class="string">‘a’</span>, <span class="number">1</span>), (<span class="string">‘c’</span>, <span class="number">3</span>), (<span class="string">‘b’</span>, <span class="number">4</span>), (<span class="string">‘d’</span>, <span class="number">7</span>)]</div></pre></td></tr></table></figure>
+
+<p>对比可见。</p>
+<ol>
+<li>sort()会改变原本的序列，返回None，而sorted()并不改变原本的序列，而是返回一个新的已排序列表。</li>
+<li>sorted()的应用范围比sort()更广泛一点。</li>
+<li>sorted()的排序速度要比sort()慢，因为它需要生成一个列表的复制以储存排序结果。</li>
+</ol>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+

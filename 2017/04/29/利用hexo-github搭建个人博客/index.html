@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Chang Lin">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="利用hexo+github搭建个人博客"/>
+  <meta property="og:description" content="" />
+  <meta property="og:site_name" content="Hexo"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://lc1995.github.io"/>
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>Hexo</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.dark.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">利用hexo+github搭建个人博客</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/lc1995">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:lucianolin1995@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Chang Lin</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2017-04-29</span>
+            <span class="time">23:30:59</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/Blog/">Blog</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Blog/">#Blog</a> <a class="tag" href="/tags/Hexo/">#Hexo</a> <a class="tag" href="/tags/Yelee/">#Yelee</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>讲道理，现在搭建个人博客不是一件很难的事情，网上教程一堆。不过实践起来还是发现有许多雷坑要踩。</p>
+<p>这里我利用hexo搭配github搭建自己的个人博客，再使用Yelee作为博客的主题。</p>
+<a id="more"></a>
+<h2 id="安装Node-JS"><a href="#安装Node-JS" class="headerlink" title="安装Node.JS"></a><a href="#安装Node-JS" title="安装Node.JS"></a>安装Node.JS</h2><p><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.JS</a></p>
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a><a href="#安装hexo" title="安装hexo"></a>安装hexo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install hexo-cli -g</div><div class="line">npm install hexo –save</div></pre></td></tr></table></figure>
+
+<h2 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a><a href="#配置hexo" title="配置hexo"></a>配置hexo</h2><p>建立博客目录，并在目录内执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init</div></pre></td></tr></table></figure>
+
+<p>安装相应插件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> git部署</span></div><div class="line">npm install hexo-deployer-git –save</div><div class="line"><span class="meta">#</span><span class="bash"> markdown渲染</span></div><div class="line">npm install hexo-renderer-marked –save</div></pre></td></tr></table></figure>
+
+<h2 id="配置github"><a href="#配置github" class="headerlink" title="配置github"></a><a href="#配置github" title="配置github"></a>配置github</h2><p>在博客根目录下找到_config.yml文件，打开并在文件最后找到deploy并修改（若没有则自行添加）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Deployment</div><div class="line">## Docs: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">https://hexo.io/docs/deployment.html</a></div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: <a href="https://github.com/lc1995/lc1995.github.io.git" target="_blank" rel="noopener">https://github.com/lc1995/lc1995.github.io.git</a>  # Here is your github page</div></pre></td></tr></table></figure>
+
+<h2 id="使用hexo"><a href="#使用hexo" class="headerlink" title="使用hexo"></a><a href="#使用hexo" title="使用hexo"></a>使用hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 新建文章</span></div><div class="line">hexo new article_name</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> 清空，重新生成，并且发布</span></div><div class="line">hexo clean &amp;&amp; hexo generate</div><div class="line">hexo deploy</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> 启用本地服务器</span></div><div class="line"><span class="meta">#</span><span class="bash"> 默认端口：4000</span></div><div class="line">hexo server</div></pre></td></tr></table></figure>
+
+<p>详细的使用方法参考官方文档：<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/</a></p>
+<h2 id="在hexo中使用数学公式"><a href="#在hexo中使用数学公式" class="headerlink" title="在hexo中使用数学公式"></a><a href="#在hexo中使用数学公式" title="在hexo中使用数学公式"></a>在hexo中使用数学公式</h2><p>原生hexo自带的主题并没有提供对数学公式的支持。这里有两个方法来使用数学公式：</p>
+<ol>
+<li><h3 id="使用jacman主题"><a href="#使用jacman主题" class="headerlink" title="使用jacman主题"></a><a href="#使用jacman主题" title="使用jacman主题"></a>使用jacman主题</h3><blockquote>
+<p>Jacman 是为 <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a> 设计的一款清新且具有响应式的主题，拥有更丰富的特性并支持了很多的国内服务。Jacman 始于 <a href="https://github.com/A-limon/pacman" target="_blank" rel="noopener">Pacman</a> 修改而来。</p>
+</blockquote>
+</li>
+</ol>
+<p><a href="https://github.com/wuchong/jacman" target="_blank" rel="noopener">jacman</a></p>
+<p>   <strong>安装方法</strong></p>
+<p>   在根目录下</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone <a href="https://github.com/wuchong/jacman.git" target="_blank" rel="noopener">https://github.com/wuchong/jacman.git</a> themes/jacman</div></pre></td></tr></table></figure>
+
+<p>   然后修改根目录下的_config.yml文件，找到theme，修改为</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: jacman</div></pre></td></tr></table></figure>
+
+<p>   最后配置jacman对mathjax的支持，在..\themes\jacman文件夹中找到_config.yml文件，找到mathjax，修改为</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mathjax: true</div></pre></td></tr></table></figure>
+
+<p>   完成修改后，便能在hexo中使用latex对数学公式进行编辑。</p>
+<p>   PS：若要在新的post中使用数学公式，需要在文章的frontmatter中（即每一篇post的最上方）添加</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mathjax: true</div></pre></td></tr></table></figure>
+
+<ol>
+<li><h3 id="使用hexo-math插件"><a href="#使用hexo-math插件" class="headerlink" title="使用hexo-math插件"></a><a href="#使用hexo-math插件" title="使用hexo-math插件"></a>使用hexo-math插件</h3><blockquote>
+<p>A hexo plugin that uses MathJax/KaTeX to render math equations.</p>
+</blockquote>
+</li>
+</ol>
+<p><a href="https://github.com/akfish/hexo-math" target="_blank" rel="noopener">hexo-math</a></p>
+<p>   <strong>安装方法</strong></p>
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math –save</div></pre></td></tr></table></figure>
+
+<h2 id="Typora下标显示问题："><a href="#Typora下标显示问题：" class="headerlink" title="Typora下标显示问题："></a><a href="#Typora下标显示问题：" title="Typora下标显示问题："></a>Typora下标显示问题：</h2><p>这里我使用typora作为markdown编辑器。其中存在一个问题在于typora的下标转义符~和markdown默认的下标转义符\<sub\>并不兼容。个人没有去修改markdown解析文件的能力=。=</sub\></p>
+<p>最后找到一个插件hexo-filter-sub，完美解决了这个问题。</p>
+<p><a href="https://github.com/bubkoo/hexo-filter-sub" target="_blank" rel="noopener">hexo-filter-sub</a></p>
+<p><strong>安装方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-filter-sub –save</div></pre></td></tr></table></figure>
+
+<h2 id="Yelee主题"><a href="#Yelee主题" class="headerlink" title="Yelee主题"></a><a href="#Yelee主题" title="Yelee主题"></a>Yelee主题</h2><blockquote>
+<p>Theme <strong>Yelee</strong> relies on <a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="noopener">Hexo-Theme-Yilia</a>, thanks for the author <a href="https://github.com/litten" target="_blank" rel="noopener">Litten</a>. Fix some bugs, change lots of styles, add several features. And then I made the theme. Yelee is mainly designed for fluent text reading. I change styles and add functions, meanwhile, try hard to keep this theme simple, stupid and clear. Theme DEMO: <a href="http://moxfive.xyz/" target="_blank" rel="noopener">MOxFIVE’s Blog</a></p>
+</blockquote>
+<p><strong>安装方法</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> <a href="https://github.com/MOxFIVE/hexo-theme-yelee.git" target="_blank" rel="noopener">https://github.com/MOxFIVE/hexo-theme-yelee.git</a> themes/yelee</div></pre></td></tr></table></figure>
+
+<p>然后找到更目录下的_config.yml，找到theme，修改为：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: yelee</div></pre></td></tr></table></figure>
+
+<p>详细的配置方法可参考：<a href="http://moxfive.coding.me/yelee/" target="_blank" rel="noopener">http://moxfive.coding.me/yelee/</a></p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
