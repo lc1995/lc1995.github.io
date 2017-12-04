@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Unity," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Here is a basic understand on finite state machines in Unity after reading &amp;lt; Game Design Patterns &amp;gt; by Bob Nystorm.">
+<meta name="keywords" content="Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Design Model Patterns - Finite State Machines">
+<meta property="og:url" content="http://lc1995.github.io/2017/11/25/Unity-Design-Model-Patterns-Finite-State-Machines/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Here is a basic understand on finite state machines in Unity after reading &amp;lt; Game Design Patterns &amp;gt; by Bob Nystorm.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-04T00:08:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity Design Model Patterns - Finite State Machines">
+<meta name="twitter:description" content="Here is a basic understand on finite state machines in Unity after reading &amp;lt; Game Design Patterns &amp;gt; by Bob Nystorm.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lc1995.github.io/2017/11/25/Unity-Design-Model-Patterns-Finite-State-Machines/"/>
+
+
+
+
+
+  <title>Unity Design Model Patterns - Finite State Machines | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2017/11/25/Unity-Design-Model-Patterns-Finite-State-Machines/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chang Lin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unity Design Model Patterns - Finite State Machines</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-25T23:59:32+01:00">
+                2017-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index">
+                    <span itemprop="name">Unity</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Here is a basic understand on finite state machines in Unity after reading <a href="http://gameprogrammingpatterns.com/state.html" target="_blank" rel="noopener">&lt; Game Design Patterns &gt;</a> by Bob Nystorm.</p>
+<a id="more"></a>
+<h1 id="Why-State-Pattern"><a href="#Why-State-Pattern" class="headerlink" title="Why State Pattern"></a>Why State Pattern</h1><p>Before going into state pattern, we firstly discuss about the following case.<br>Suppose we have a enemy object which will simply search player and attack him.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Enemy</span>: <span class="title">MonoBehaviour</span>&#123;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        Attack(SearchPlayer());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Here comes one problem. In the above code, the enemy will search for player in each flame, and in most of the time the player is the same one. We want that the enemy keeps searching before finding a target, and once the target is found, it will stop searching and try to attack the player.<br>In order to realize this, one possible solution is use a ‘if’ statement.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Enemy</span>: <span class="title">MonoBehaviour</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> GameObject target;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(target)</span><br><span class="line">            Attack(target);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            target = SearchPlayer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Well then suppose the enemy will also search for place to sleep if it doesn’t find a target player.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Enemy</span>: <span class="title">MonoBehaviour</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> GameObject target;</span><br><span class="line">    <span class="keyword">private</span> GameObject place;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(target)</span><br><span class="line">            Attack(target);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            target = SearchPlayer();</span><br><span class="line">            place = SearchPlace();</span><br><span class="line">            <span class="keyword">if</span>(place)</span><br><span class="line">                Sleep(place);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then comes another problem. What if both a target and a place are found. In this case you should also add another if statement to do the stuff if both of them are found.</p>
+<p>And if your enemy has many other behaviours, e.g. talk, patrol and so one. You need to add a lot of if statements and flags to check the state. And it’s not that easy to verify whether your logic is correct or not.</p>
+<p>That’s why we would like to use a state pattern to better model your object.</p>
+<h1 id="State-Pattern"><a href="#State-Pattern" class="headerlink" title="State Pattern"></a>State Pattern</h1><p>General Definition:</p>
+<blockquote>
+<p>Allow an object to alter its behavior when its internal state changes. The object will appear to change its class.</p>
+</blockquote>
+<p>State pattern is also known as Finite State Machines (FSM) in Unity.<br>The gist is:</p>
+<ul>
+<li>State: The object has a state for each time. For each state, specific behaviours are allowed (Enter, Stay, Exit).</li>
+<li>Action: The behaviours to do when the object enters a new state, stays in a state and exits a previous state.</li>
+<li>Condition: Condition decides whether the object should move from one state to another state.</li>
+<li>Transaction: The process when the object moves from one state to another state, which contains a condition and actions.</li>
+</ul>
+<p>The workflow can be simply expressed as following:</p>
+<p>Initial State -&gt; StayAction() -&gt; Condition() == true -&gt; ExitAction() -&gt; TransactionAction() -&gt; EnterAction() -&gt; New State</p>
+<h1 id="General-Benefits-Using-State-Pattern"><a href="#General-Benefits-Using-State-Pattern" class="headerlink" title="General Benefits Using State Pattern"></a>General Benefits Using State Pattern</h1><ol>
+<li>Control your character’s behaviors in a higher level. You design the states and transaction for the FSM, and FSM automatically works on the character. By using FSM, you don’t have to manually do the control.</li>
+<li>By using FSM, codes for each state are implemented in state’s class, which is more readable and maintainable.</li>
+<li>According to your demands, you can easily create subclass from the base state class and extend the functionalities.</li>
+</ol>
+<h1 id="Finite-State-Machines"><a href="#Finite-State-Machines" class="headerlink" title="Finite State Machines"></a>Finite State Machines</h1><h2 id="Delegation-Based"><a href="#Delegation-Based" class="headerlink" title="Delegation Based"></a>Delegation Based</h2><p>There are two ways to realize a finite state machines.</p>
+<p>One is to use delegation to pass all needed variables (Action, Transaction) to the state you create. In this way, you don’t have to use abstract base state class. Instead you instantiate several state instances for your states, and pass your actions and transactions to that instance.</p>
+<p>Implementation in Unity:</p>
+<p><strong>FSM</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Defer function to trigger activation condition</span></span><br><span class="line"><span class="comment">// Returns true when transition can fire</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">bool</span> <span class="title">FSMCondition</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Defer function to perform action</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">FSMAction</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// boolean that start the transition</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FSMTransition</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// The method to evaluate if the transition is ready to fire</span></span><br><span class="line">	<span class="keyword">public</span> FSMCondition Condition;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// A list of actions to perform when this transition fires</span></span><br><span class="line">	<span class="keyword">private</span> FSMAction[] fireActions;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FSMTransition</span>(<span class="params">FSMCondition condition, FSMAction[] actions = <span class="literal">null</span></span>) </span>&#123;</span><br><span class="line">		Condition = condition;</span><br><span class="line">		fireActions = actions;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Call all  actions</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Fire</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(fireActions != <span class="literal">null</span>) <span class="keyword">foreach</span> (FSMAction Action <span class="keyword">in</span> fireActions) Action();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FSMState</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Arrays of actions to perform based on transitions fire (or not)</span></span><br><span class="line">	<span class="keyword">public</span> FSMAction[] enterActions = <span class="keyword">new</span> FSMAction[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">public</span> FSMAction[] stayActions = <span class="keyword">new</span> FSMAction[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">public</span> FSMAction[] exitActions = <span class="keyword">new</span> FSMAction[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// A dictionary of transitions and the states they are leading to</span></span><br><span class="line">	<span class="keyword">private</span> Dictionary&lt;FSMTransition, FSMState&gt; links;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FSMState</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		links = <span class="keyword">new</span> Dictionary&lt;FSMTransition, FSMState&gt;();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddTransition</span>(<span class="params">FSMTransition transition, FSMState target</span>) </span>&#123;</span><br><span class="line">		links [transition] = target;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> FSMTransition <span class="title">VerifyTransitions</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">foreach</span> (FSMTransition t <span class="keyword">in</span> links.Keys) &#123;</span><br><span class="line">			<span class="keyword">if</span> (t.Condition()) <span class="keyword">return</span> t;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> FSMState <span class="title">NextState</span>(<span class="params">FSMTransition t</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> links [t];</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// These methods will perform the actions in each list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Enter</span>(<span class="params"></span>) </span>&#123; <span class="keyword">foreach</span> (FSMAction a <span class="keyword">in</span> enterActions) a(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Stay</span>(<span class="params"></span>) </span>&#123; <span class="keyword">foreach</span> (FSMAction a <span class="keyword">in</span> stayActions) a(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Exit</span>(<span class="params"></span>) </span>&#123; <span class="keyword">foreach</span> (FSMAction a <span class="keyword">in</span> exitActions) a(); &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FSM</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Current state</span></span><br><span class="line">	<span class="keyword">public</span> FSMState current;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FSM</span>(<span class="params">FSMState state</span>) </span>&#123;</span><br><span class="line">		current = state;</span><br><span class="line">		current.Enter();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Examine transitions leading out from the current state</span></span><br><span class="line">	<span class="comment">// If a condition is activated, change the current state and</span></span><br><span class="line">	<span class="comment">// take all the actions linked to:</span></span><br><span class="line">	<span class="comment">// 1. Exit from the current state</span></span><br><span class="line">	<span class="comment">// 2. The activated transition</span></span><br><span class="line">	<span class="comment">// 3. Enter to the new state</span></span><br><span class="line">	<span class="comment">// If no transition is activated, take the actions associated</span></span><br><span class="line">	<span class="comment">// to staying in the current state</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123; <span class="comment">// <span class="doctag">NOTE:</span> this is NOT a MonoBehaviour</span></span><br><span class="line">		FSMTransition transition = current.VerifyTransitions ();</span><br><span class="line">		<span class="keyword">if</span> (transition != <span class="literal">null</span>) &#123;</span><br><span class="line">			current.Exit();</span><br><span class="line">			transition.Fire();</span><br><span class="line">			current = current.NextState(transition);</span><br><span class="line">			current.Enter();</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			current.Stay();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Use Example</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">FSMState chasing = <span class="keyword">new</span> FSMState();</span><br><span class="line">chasing.enterActions = <span class="keyword">new</span> FSMAction[] &#123; Chase &#125;;</span><br><span class="line">chasing.stayActions = <span class="keyword">new</span> FSMAction[] &#123; Chase &#125;;</span><br><span class="line">FSMState killing = <span class="keyword">new</span> FSMState();</span><br><span class="line">killing.enterActions = <span class="keyword">new</span> FSMAction[] &#123; Kill &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Defining transitions</span></span><br><span class="line">FSMTransition t1 = <span class="keyword">new</span> FSMTransition(isInDeathRange);</span><br><span class="line"><span class="comment">//Link states with transitions</span></span><br><span class="line">chasing.AddTransition(t1, killing);</span><br><span class="line"></span><br><span class="line"><span class="comment">//Setup a FSM at initial state</span></span><br><span class="line">fsm = <span class="keyword">new</span> FSM(chasing);</span><br></pre></td></tr></table></figure></p>
+<p>This patrern is more suitable for FSM with several states (Usually less than 5). It’s easy to use, and provides nearly all functionalites of FSM. Howerver, there are several disavantages for this delegation way.</p>
+<ol>
+<li>By using delegation, all your implementation codes are in one script in an adhoc way. It makes your codebase messy and hard to maintain.</li>
+<li>Using only one class for state is not much flexible for inheritance and polymorphism. For example, a hierarchical FSM.</li>
+</ol>
+<p>Therefore, a class-based FSM should be more suitable if you want to implement a large FSM structure.</p>
+<h2 id="Class-Based"><a href="#Class-Based" class="headerlink" title="Class Based"></a>Class Based</h2><p>In this pattern, state and transaction are in an abstract level. You create your state class derived from the abstract base, and implement your actions in that class. For transaction it’s the same. Just implement the transaction’s decision and actions. </p>
+<p>Implementation in Unity:</p>
+<p><strong>FSM</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">State</span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">protected</span> Dictionary&lt;Transaction, State&gt; transaction = <span class="keyword">new</span> Dictionary&lt;Transaction, State&gt; ();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddTransaction</span>(<span class="params">Transaction _transaction, State _state</span>)</span>&#123;</span><br><span class="line">		transaction.Add (_transaction, _state);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RemoveTransaction</span>(<span class="params">Transaction _transaction</span>)</span>&#123;</span><br><span class="line">		transaction.Remove (_transaction);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> KeyValuePair&lt;Transaction, State&gt; <span class="title">CheckTransaction</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">foreach</span> (KeyValuePair&lt;Transaction, State&gt; kv <span class="keyword">in</span> transaction) &#123;</span><br><span class="line">			<span class="keyword">if</span> (kv.Key.Decision ())</span><br><span class="line">				<span class="keyword">return</span> kv;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">default</span>(KeyValuePair&lt;Transaction, State&gt;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Enter</span> (<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Stay</span> (<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Exit</span> (<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">Transaction</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Fire</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">bool</span> <span class="title">Decision</span> (<span class="params"></span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FSMSystem</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> State state;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FSMSystem</span>(<span class="params">State _state</span>)</span>&#123;</span><br><span class="line">		state = _state;</span><br><span class="line"></span><br><span class="line">		state.Enter ();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		KeyValuePair&lt;Transaction, State&gt; kv = state.CheckTransaction ();</span><br><span class="line">		<span class="keyword">if</span> (!kv.Equals(<span class="keyword">default</span>(KeyValuePair&lt;Transaction, State&gt;))) &#123;</span><br><span class="line">			state.Exit ();</span><br><span class="line">			kv.Key.Fire ();</span><br><span class="line">			state = kv.Value;</span><br><span class="line">			state.Enter ();</span><br><span class="line">			state.Stay ();</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			state.Stay ();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Derived State and Transaction</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AState</span> : <span class="title">State</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Enter</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">		AToB tA_B;</span><br><span class="line">		<span class="keyword">foreach</span> (Transaction t <span class="keyword">in</span> transaction.Keys) &#123;</span><br><span class="line">			<span class="keyword">if</span> (t.GetType () == <span class="keyword">typeof</span>(AToB))</span><br><span class="line">				((AToB)t).time = Time.time;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		Debug.Log (<span class="string">"Enter A"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Exit</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		Debug.Log (<span class="string">"Exit A"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BState</span> : <span class="title">State</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Enter</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">		Debug.Log (<span class="string">"Enter B"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Exit</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		Debug.Log (<span class="string">"Exit B"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CState</span> : <span class="title">State</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Enter</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">		Debug.Log (<span class="string">"Enter C"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Exit</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		Debug.Log (<span class="string">"Exit C"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AToB</span> : <span class="title">Transaction</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">float</span> time = Time.time;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">float</span> delay = <span class="number">3.0</span>f;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">Decision</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (Time.time - time &gt; delay)</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BToC</span> : <span class="title">Transaction</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">Decision</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (Input.GetKeyDown (KeyCode.C))</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CToA</span> : <span class="title">Transaction</span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">Decision</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (Input.GetKeyDown (KeyCode.A))</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Use FSM</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UseFSM</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> FSMSystem fsm;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Use this for initialization</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">		AState sA = <span class="keyword">new</span> AState ();</span><br><span class="line">		BState sB = <span class="keyword">new</span> BState ();</span><br><span class="line">		CState sC = <span class="keyword">new</span> CState ();</span><br><span class="line"></span><br><span class="line">		AToB tA_B = <span class="keyword">new</span> AToB ();</span><br><span class="line">		BToC tB_C = <span class="keyword">new</span> BToC ();</span><br><span class="line">		CToA tC_A = <span class="keyword">new</span> CToA ();</span><br><span class="line"></span><br><span class="line">		sA.AddTransaction (tA_B, sB);</span><br><span class="line">		sB.AddTransaction (tB_C, sC);</span><br><span class="line">		sC.AddTransaction (tC_A, sA);</span><br><span class="line"></span><br><span class="line">		fsm = <span class="keyword">new</span> FSMSystem (sA);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Update is called once per frame</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">		fsm.Update ();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>You can see that the codebase is more clear and readable. Also it’s easy for you to extend any functionalites for the FSM.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>FSM is very useful when:</p>
+<ol>
+<li>You have an entity whose behavior changes based on some internal state.</li>
+<li>That state can be rigidly divided into one of a relatively small number of distinct options.</li>
+<li>The entity responds to a series of inputs or events over time.</li>
+</ol>
+<p>FSM is generally used in simple AI or menu architecture (each submenu can be a state). Furthermore, you can also adopt state pattern in everything whose bahaviors differ in different conditions.</p>
+<p>For more complex AI, behavior trees and planning systems should be better choices.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/22/Understand Coroutine in Unity/" rel="next" title="Understand Coroutine in Unity">
+                <i class="fa fa-chevron-left"></i> Understand Coroutine in Unity
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/26/Notes-on-Intermediate-Gameplay-Scripting/" rel="prev" title="Notes on Intermediate Gameplay Scripting">
+                Notes on Intermediate Gameplay Scripting <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chang Lin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/lc1995" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:lucianolin1995@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Why-State-Pattern"><span class="nav-number">1.</span> <span class="nav-text">Why State Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#State-Pattern"><span class="nav-number">2.</span> <span class="nav-text">State Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#General-Benefits-Using-State-Pattern"><span class="nav-number">3.</span> <span class="nav-text">General Benefits Using State Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Finite-State-Machines"><span class="nav-number">4.</span> <span class="nav-text">Finite State Machines</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Delegation-Based"><span class="nav-number">4.1.</span> <span class="nav-text">Delegation Based</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-Based"><span class="nav-number">4.2.</span> <span class="nav-text">Class Based</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">5.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chang Lin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
