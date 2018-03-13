@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Game,Artificial Intelligence," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 3.">
+<meta name="keywords" content="Game,Artificial Intelligence">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Game Ai Chapter 3">
+<meta property="og:url" content="http://lc1995.github.io/2018/03/12/Game Ai Chapter 3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 3.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lc1995.github.io/images/pursuit">
+<meta property="og:image" content="http://lc1995.github.io/images/AvoidObstacles.png">
+<meta property="og:image" content="http://lc1995.github.io/images/AvoidObstacles2.png">
+<meta property="og:image" content="http://lc1995.github.io/images/AvoidObstacles3.png">
+<meta property="og:image" content="http://lc1995.github.io/images/AvoidWall.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Hide.png">
+<meta property="og:image" content="http://lc1995.github.io/images/GroupBehavior.png">
+<meta property="og:image" content="http://lc1995.github.io/2018/03/12/Game%20Ai%20Chapter%203/images/Separation.png">
+<meta property="og:image" content="http://lc1995.github.io/images/SpacialPartitioning.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Smoothing.png">
+<meta property="og:image" content="http://lc1995.github.io/images/LeaderFollowing.png">
+<meta property="og:updated_time" content="2018-03-13T23:12:07.743Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Game Ai Chapter 3">
+<meta name="twitter:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 3.">
+<meta name="twitter:image" content="http://lc1995.github.io/images/pursuit">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lc1995.github.io/2018/03/12/Game Ai Chapter 3/"/>
+
+
+
+
+
+  <title>Game Ai Chapter 3 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/03/12/Game Ai Chapter 3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chang Lin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Game Ai Chapter 3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T23:42:08+01:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index">
+                    <span itemprop="name">AI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/12/Game Ai Chapter 3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/12/Game Ai Chapter 3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This is the reading note after reading <programming game="" ai="" by="" example=""> by Mat Buckland.</programming></p>
+<p>Here is the part of the Chapter 3.</p>
+<a id="more"></a>
+<h2 id="What-is-an-autonomous-agent"><a href="#What-is-an-autonomous-agent" class="headerlink" title="What is an autonomous agent?"></a>What is an autonomous agent?</h2><blockquote>
+<p>An autonomous agent is a system situated within and a part of an environment that senses that environment and acts on it, over time, in pursuit of its own agenda and so as to effect what it senses in the future.</p>
+</blockquote>
+<p>If an autononous agent stumbles upon an enexpected situation, like finding a wall in its way, it will have the ability to respond and adjust its motion accordingly.</p>
+<p>The movement of an autonomous agent can be broken down into three layers:</p>
+<ul>
+<li>Action Selection: This is the part of the agent’s behavior responsible for choosing its goals and deciding what plan to follow.</li>
+<li>Steering: This layer is responsible for calculating the desired trajectories required to satisfy the goals and plans set by the action selection layer.</li>
+<li>Locomotion: The bottom layer, locomotion, represents the more mechanical aspects of an agent’s movement.</li>
+</ul>
+<h2 id="The-Vehicle-Model"><a href="#The-Vehicle-Model" class="headerlink" title="The Vehicle Model"></a>The Vehicle Model</h2><p>I will use Unity to simulate the model. (Do later)</p>
+<h2 id="The-Steering-Behaviors"><a href="#The-Steering-Behaviors" class="headerlink" title="The Steering Behaviors"></a>The Steering Behaviors</h2><h3 id="Seek"><a href="#Seek" class="headerlink" title="Seek"></a>Seek</h3><blockquote>
+<p>The seek steering behavior returns a force that directs an agent toward a target position.</p>
+</blockquote>
+<h3 id="Flee"><a href="#Flee" class="headerlink" title="Flee"></a>Flee</h3><blockquote>
+<p>Flee is the opposite of seek.</p>
+</blockquote>
+<p>Flee can be easily adjusted to generate a fleeing force only when a vehicle comes within a certain range of the target.</p>
+<h3 id="Arrive"><a href="#Arrive" class="headerlink" title="Arrive"></a>Arrive</h3><blockquote>
+<p>Arrive is a behavior that steers the agent in such a way it decelerates onto the target position while almost arriving.</p>
+</blockquote>
+<p>Arrive uses a parameter to calculate how much time the agent desires to take to reach the target.</p>
+<h3 id="Pursuit"><a href="#Pursuit" class="headerlink" title="Pursuit"></a>Pursuit</h3><blockquote>
+<p>Pursuit behavior is useful when an agent is required to intercept a moving target (Keep seeking wouldn’t really help to create illusion of intelligence). The agent will run toward the position the target is going to be in the future.</p>
+</blockquote>
+<p><img src="/images/pursuit" alt=""></p>
+<p>The success of the pursuit function depends on how well the pursuer can predict the evader’s trajectory in limited clock cycles.</p>
+<p>One of the difficulties in creating a good predictor is deciding how far into the future the agent should predict. Clearly, the amount of look-ahead should be proportional to the separation between the pursuer and its evader, and inversely proportional to the pursuer’s and evader’s speeds.</p>
+<h3 id="Evade"><a href="#Evade" class="headerlink" title="Evade"></a>Evade</h3><blockquote>
+<p>Evade is almost the same as pursuit except that this time the evader flees from the estimated future position.</p>
+</blockquote>
+<h3 id="Wander"><a href="#Wander" class="headerlink" title="Wander"></a>Wander</h3><blockquote>
+<p>Wander is designed to produce a steering force that will give the impression of a random walk through the agent’s environment.</p>
+</blockquote>
+<h3 id="Obstacle-Avoidance"><a href="#Obstacle-Avoidance" class="headerlink" title="Obstacle Avoidance"></a>Obstacle Avoidance</h3><blockquote>
+<p>Obstacle avoidance is a behavior that steers a vehicle to avoid obstacles lying in its path (An obstacle can be considered as a circle/sphere).</p>
+</blockquote>
+<p>We use a rectangular area – a detection box help to avoid obstacles. The box’s width is equal to the bounding radius of the vehicle, and it’s length is proportional to the vehicle’s current speed.</p>
+<p><img src="/images/AvoidObstacles.png" alt=""></p>
+<h4 id="Finding-the-Closest-Intersection-Point"><a href="#Finding-the-Closest-Intersection-Point" class="headerlink" title="Finding the Closest Intersection Point"></a>Finding the Closest Intersection Point</h4><ol>
+<li>Iterates through all the obstacles and tags those that are within a range for further consideration.</li>
+<li>Transfroms all the tagged obstacles into the vehicle’s local space.</li>
+<li>Checks to see if any obstacles overlap the detection box by comparing the local y value with the sum of half of the box’s width and the radius of obstacles.</li>
+<li>Finds the intersection point closest to the vehicle by a simple line/circle intersection test.</li>
+</ol>
+<p><img src="/images/AvoidObstacles2.png" alt=""></p>
+<h4 id="Calculating-the-Steering"><a href="#Calculating-the-Steering" class="headerlink" title="Calculating the Steering"></a>Calculating the Steering</h4><p>The steering force can be calculated in two parts: a <em>lateral force</em> and a <em>breaking force</em>.</p>
+<p><img src="/images/AvoidObstacles3.png" alt=""></p>
+<p>Lateral force is proportional to the vehicle’s distance from the obstacle both horizontal and vertical.</p>
+<p>Breaking force is a force acting backward, along the horizontal axis as shown in the figure, and is also scaled in proportion to the vehicle’s distance from the obstacle.</p>
+<h2 id="Wall-Avoidance"><a href="#Wall-Avoidance" class="headerlink" title="Wall Avoidance"></a>Wall Avoidance</h2><blockquote>
+<p>Wall avoidance steers to avoid potential collision with a wall.</p>
+</blockquote>
+<p>It does this by projecting three “feelers” out in front of the vehicle and testing to see if any of them intersect with any walls in the game world.</p>
+<p>When the closest intersecting wall has been found, a steering force is calculated. It’s deduced by calculating how far the feeler tip has penetrated through the wall and then by creating a force of that magnitude in the direction of the wall normal.</p>
+<p><img src="/images/AvoidWall.png" alt=""></p>
+<p>Using three feeler gives a relatively good result. But using more feelers or just use one feeler that continuously scans left and right is also possible, depending on how many processor cycles you have to play with.</p>
+<h3 id="Interpose"><a href="#Interpose" class="headerlink" title="Interpose"></a>Interpose</h3><blockquote>
+<p>Interpose returns a steering force that moves a vehicle to the midpoint of the imaginary line connecting two other agents.</p>
+</blockquote>
+<p>The first step in calculating this force is to determine the midpoint of a line connecting the positions of the agents at the current time step. The distance from this point is computed and the value divided by the vehicle’s maximum speed to give the time required to travel the distance. This is our T value.</p>
+<p>Using T, the agents’ positions are extrapolated into the future. The midpoint of these predicted positions is determined and finally the vehicle uses the arrive behavior to steer toward that point. </p>
+<h3 id="Hide"><a href="#Hide" class="headerlink" title="Hide"></a>Hide</h3><blockquote>
+<p>Hide attemps to position a vehicle so that an obstacle is always between itself and the agent(the hunter).</p>
+</blockquote>
+<p>Step 1: For each of the obstacles, a hiding spot is determined.</p>
+<p><img src="/images/Hide.png" alt=""></p>
+<p>Step 2: The vehicle then uses the arrive behavior to steer toward the closest. If no appropriate obstacles can be found, the vehicle evades the target.</p>
+<p>A few modifications can be made:</p>
+<ol>
+<li>You can allow the vehicle to hide only if the target is within its field of view. This tends to produce unsatisfactory performance though, because the vehicle starts to act like a child hiding from monsters beneath the bed sheets. This can be countered slightly though by adding in a time effect so that the vehicle will hide if the target is visible or if it has seen the target within the last n seconds.</li>
+<li>The vehicle only tries to hide if the vehicle can see the target and the target can see the vehicle.</li>
+<li>It might be desirable to produce a force that steers a vehicle so that it always favors hiding positions that are to the side or rear of the pursuer.</li>
+<li>At the beginning of any of the methods a check can be made to test if the target is within a “threat distance” before proceeding with any fur- ther calculations. If the target is not a threat, then the method can return immediately with a zero vector.</li>
+</ol>
+<h3 id="Path-Following"><a href="#Path-Following" class="headerlink" title="Path Following"></a>Path Following</h3><blockquote>
+<p>Path following creates a steering force that moves a vehicle along a series of waypoints forming a path.</p>
+</blockquote>
+<p>The simplest way of following a path is to set the current waypoint to the first in the list, steer toward that using seek until the vehicle comes within a target distance of it, then grab the next waypoint and seek to that, and so on, until the current waypoint is the last waypoint in the list. When this happens the vehicle should either arrive at the current waypoint, or, if the path is a closed loop, the current waypoint should be set to the first in the list again, and the vehicle just keeps on seeking.</p>
+<h3 id="Offset-Pursuit"><a href="#Offset-Pursuit" class="headerlink" title="Offset Pursuit"></a>Offset Pursuit</h3><blockquote>
+<p>Offset pursuit calculates the steering force required to keep a vehicle posi- tioned at a specified offset from a target vehicle. </p>
+</blockquote>
+<p>The first thing to do when calculating this steering force is to determine the offset’s position in world space. After that the function proceeds similar to pursuit: A future position for the offset is predicted and the vehicle arrives at that position.</p>
+<h3 id="Group-Behaviors"><a href="#Group-Behaviors" class="headerlink" title="Group Behaviors"></a>Group Behaviors</h3><blockquote>
+<p>Group behaviors are steering behaviors that take into consideration some or all of the other vehicles in the game world.</p>
+</blockquote>
+<p>For example, the flocking behavior is a good example of a group behavior. In fact, flocking is a combination of three group behaviors – <strong>cohesion</strong>, <strong>separation</strong>, and <strong>alignment</strong> – all working together.</p>
+<p>To determine the steering force for a group behavior, a vehicle will con- sider all other vehicles within a circular area of predefined size — known as the neighborhood radius — centered on the vehicle.</p>
+<p><img src="/images/GroupBehavior.png" alt=""></p>
+<p><img src="images/Separation.png" alt=""></p>
+<p>Here we can pep up the realism slightly for group behaviors by adding a field-of-view (FOV) to our agent.</p>
+<h3 id="Separation"><a href="#Separation" class="headerlink" title="Separation"></a>Separation</h3><blockquote>
+<p>Separation creates a force that steers a vehicle away from those in its neighborhood region.</p>
+</blockquote>
+<p>Prior to calling separation, all the agents situated within a vehicle’s neighborhood are tagged. Separation then iterates through the tagged vehicles, examining each one. The vector to each vehicle under consideration is normalized, divided by the distance to the neighbor, and added to the steering force.</p>
+<h3 id="Alignment"><a href="#Alignment" class="headerlink" title="Alignment"></a>Alignment</h3><blockquote>
+<p>Alignment attempts to keep a vehicle’s heading aligned with its neighbors.</p>
+</blockquote>
+<p>The force is calculated by first iterating through all the neighbors and averaging their heading vectors. This value is the desired heading, so we just subtract the vehicle’s heading to get the steering force.</p>
+<h3 id="Cohesion"><a href="#Cohesion" class="headerlink" title="Cohesion"></a>Cohesion</h3><blockquote>
+<p>Cohesion produces a steering force that moves a vehicle toward the center of mass of its neighbors.</p>
+</blockquote>
+<p>This method proceeds similarly to the last, except this time we calculate the average of the position vectors of the neighbors. This gives us the cen- ter of mass of the neighbors — the place the vehicle wants to get to — so it seeks to that position.</p>
+<h3 id="Flocking"><a href="#Flocking" class="headerlink" title="Flocking"></a>Flocking</h3><blockquote>
+<p>A combination of separation, cohesion and alignment.</p>
+</blockquote>
+<p>Tweaking the magnitudes of each of the contributing behaviors will give you different effects such as shoals of fish, loose swirling flocks of birds and so on.</p>
+<h2 id="Combining-Steering-Behaviors"><a href="#Combining-Steering-Behaviors" class="headerlink" title="Combining Steering Behaviors"></a>Combining Steering Behaviors</h2><p>Often you will be using a combination of steering behaviors to get the behavior you desire. Very rarely will you only use one behavior in isolation. </p>
+<p>All the steering behaviors described in this chapter are methods of one class: <em>SteeringBehaviors</em>. A Vehicle owns an instance of this class and activates/deactivates the various behaviors by switching them on and off using accessor methods. And finally determines the resultant force from all the active behaviors.</p>
+<h3 id="Weighted-Trucated-Sum"><a href="#Weighted-Trucated-Sum" class="headerlink" title="Weighted Trucated Sum"></a>Weighted Trucated Sum</h3><p>The simplest approach is to multiply each steering behavior with a weight, sum them all together, and then truncate the result to the maximum allow- able steering force.</p>
+<p>This can work fine, but the trade-off is that it comes with a few problems. The first problem is that because every active behavior is calculated every time step, this is a very costly method to process. Additionally, the behavior weights can be very difficult to tweak. For example, we imagine a vehicle is backed up against a wall by several other vehicles.</p>
+<h3 id="Weighted-Truncated-Running-Sum-with-Prioritization"><a href="#Weighted-Truncated-Running-Sum-with-Prioritization" class="headerlink" title="Weighted Truncated Running Sum with Prioritization"></a>Weighted Truncated Running Sum with Prioritization</h3><p>This is the method used to determine the steering forces for all the examples used in this book, chosen mainly because it gives a good compromise between speed and accuracy. This method involves calculating a <em>prioritized</em> weighted running total that is truncated after the addition of each force to make sure the magnitude of the steering force does not exceed the maximum available.</p>
+<p>In addition to the prioritization, this method iterates through every active according to their priorities, summing up the forces (with weighting) as it goes. Immediately after the calculation of each new behavior, the resultant force, together with the running total, is dispatched to a method called <em>AccumulateForce</em>. This function first determines how much of the maximum available steering force is remaining, and then one of the following happens:</p>
+<ul>
+<li>If there is a surplus remaining, the new force is added to the running total.</li>
+<li>If there is no surplus remaining, the method returns false. When this happens, Calculate returns the current value of m_vSteeringForce immediately and without considering any further active behaviors.</li>
+<li>If there is still some steering force available, but the magnitude remaining is less than the magnitude of the new force, the new force is truncated to the remaining magnitude before it is added.</li>
+</ul>
+<h3 id="Prioritized-Dithering"><a href="#Prioritized-Dithering" class="headerlink" title="Prioritized Dithering"></a>Prioritized Dithering</h3><p>This method checks to see if the first priority behavior is going to be evaluated this simulation step, dependent on a preset probability. If it is and the result is non-zero, the method returns the calculated force and no other active behaviors are considered. If the result is zero or if that behavior has been skipped over due to its probability of being evaluated, the next priority behavior is considered and so on, for all the active behaviors.</p>
+<h3 id="Ensuring-Zero-Overlap"><a href="#Ensuring-Zero-Overlap" class="headerlink" title="Ensuring Zero Overlap"></a>Ensuring Zero Overlap</h3><p>Often when combining behaviors, the vehicles will occasionally overlap one another. The separation steering force alone is not enough to prevent this from happening.</p>
+<p>This can be prevented with the use of a non-penetration constraint. This is a function that tests for overlap. If there is any, the vehicles are moved apart in a direction away from the point of contact (and without regard to their mass, velocity, or any other physical constraints).</p>
+<h2 id="Coping-with-Lots-of-Vehicles-Spatial-Partitioning"><a href="#Coping-with-Lots-of-Vehicles-Spatial-Partitioning" class="headerlink" title="Coping with Lots of Vehicles: Spatial Partitioning"></a>Coping with Lots of Vehicles: Spatial Partitioning</h2><p>When you have many interacting vehicles, it becomes increasingly inefficient to tag neighboring entities by comparing each one with every other one.</p>
+<p>Large speed improvements can be made by partitioning the world space. There are many different techniques to choose from. You’ve probably heard of many of them — BSP trees, quad-trees, oct-trees, etc. — and may even have used them, in which case you’ll be familiar with their advan- tages. The method I use here is called cell-space partitioning, sometimes called bin-space partitioning (that’s not short for binary space partitioning by the way; in this case “bin” really means bin). With this method, 2D space is divided up into a number of cells (or bins). Each cell contains a list of pointers to all the entities it contains. This is updated (in an entity’s update method) every time an entity changes position. If an entity moves into a new cell, it is removed from its old cell’s list and added to the current one.<br>This way, instead of having to test every vehicle against every other, we can just determine which cells lie within a vehicle’s neighborhood and test against the vehicles contained in those cells. Here is how it’s done step by step:</p>
+<ol>
+<li>First of all, an entity’s bounding radius is approximated with a box.</li>
+<li>The cells that intersect with this box are tested to see if they contain any entities.</li>
+<li>All the entities contained within the cells from step 2 are examined to see if they are positioned within the neighborhood radius. If they are, they are added to the neighborhood list.</li>
+</ol>
+<p><img src="/images/SpacialPartitioning.png" alt=""></p>
+<h2 id="Smoothing"><a href="#Smoothing" class="headerlink" title="Smoothing"></a>Smoothing</h2><p>Sometimes a vehicle can twitch or jitter slightly when it finds itself in a situation with conflicting responses from different behaviors.</p>
+<p><img src="/images/Smoothing.png" alt=""></p>
+<p>To negotiate the scenario successfully and smoothly, the vehicle needs to be able to foresee the conflict ahead of time and change behavior accordingly. Although this can be done, the solution can require a lot of calculation and additional baggage.</p>
+<p>One simple alternative suggested by Robin Green of Sony is to decouple the heading from the velocity vector and to average its value over several update steps. The averate value is used by the world transfrom function in the render call to transfrom a vehicle’s vertices to the screen.</p>
+<h2 id="Practice-Makes-Perfect"><a href="#Practice-Makes-Perfect" class="headerlink" title="Practice Makes Perfect"></a>Practice Makes Perfect</h2><p>In his paper “Steering Behaviors for Autonomous Characters,” Reynolds describes a behavior called leader following. Leader following is a behav- ior that creates a steering force to keep multiple vehicles moving in single file behind a leader vehicle. If you’ve ever watched goslings follow their mother you’ll know what I mean. To create this sort of behavior the follow- ers must arrive at an offset position behind the vehicle in front while using separation to remain apart from one another.</p>
+<p><img src="/images/LeaderFollowing.png" alt=""></p>
+<p>Leader following can be improved further by creating a behavior that steers a vehicle laterally away from the direction of the leader if it finds itself in the leader’s path.</p>
+<p>Create a group of 20 vehicles that behave like a flock of sheep. Now add a user-controlled vehicle you can steer using the keyboard. Program your sheep so they believe the vehicle is a dog. Can you get the flock’s behavior to look realistic?</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Game/" rel="tag"># Game</a>
+          
+            <a href="/tags/Artificial-Intelligence/" rel="tag"># Artificial Intelligence</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/12/Game Ai Introduction/" rel="next" title="Game Ai Introduction">
+                <i class="fa fa-chevron-left"></i> Game Ai Introduction
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chang Lin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/lc1995" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:lucianolin1995@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-an-autonomous-agent"><span class="nav-number">1.</span> <span class="nav-text">What is an autonomous agent?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Vehicle-Model"><span class="nav-number">2.</span> <span class="nav-text">The Vehicle Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Steering-Behaviors"><span class="nav-number">3.</span> <span class="nav-text">The Steering Behaviors</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Seek"><span class="nav-number">3.1.</span> <span class="nav-text">Seek</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flee"><span class="nav-number">3.2.</span> <span class="nav-text">Flee</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arrive"><span class="nav-number">3.3.</span> <span class="nav-text">Arrive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pursuit"><span class="nav-number">3.4.</span> <span class="nav-text">Pursuit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Evade"><span class="nav-number">3.5.</span> <span class="nav-text">Evade</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wander"><span class="nav-number">3.6.</span> <span class="nav-text">Wander</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Obstacle-Avoidance"><span class="nav-number">3.7.</span> <span class="nav-text">Obstacle Avoidance</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Finding-the-Closest-Intersection-Point"><span class="nav-number">3.7.1.</span> <span class="nav-text">Finding the Closest Intersection Point</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Calculating-the-Steering"><span class="nav-number">3.7.2.</span> <span class="nav-text">Calculating the Steering</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wall-Avoidance"><span class="nav-number">4.</span> <span class="nav-text">Wall Avoidance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Interpose"><span class="nav-number">4.1.</span> <span class="nav-text">Interpose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hide"><span class="nav-number">4.2.</span> <span class="nav-text">Hide</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Path-Following"><span class="nav-number">4.3.</span> <span class="nav-text">Path Following</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Offset-Pursuit"><span class="nav-number">4.4.</span> <span class="nav-text">Offset Pursuit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Group-Behaviors"><span class="nav-number">4.5.</span> <span class="nav-text">Group Behaviors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Separation"><span class="nav-number">4.6.</span> <span class="nav-text">Separation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alignment"><span class="nav-number">4.7.</span> <span class="nav-text">Alignment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cohesion"><span class="nav-number">4.8.</span> <span class="nav-text">Cohesion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flocking"><span class="nav-number">4.9.</span> <span class="nav-text">Flocking</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Combining-Steering-Behaviors"><span class="nav-number">5.</span> <span class="nav-text">Combining Steering Behaviors</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Weighted-Trucated-Sum"><span class="nav-number">5.1.</span> <span class="nav-text">Weighted Trucated Sum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Weighted-Truncated-Running-Sum-with-Prioritization"><span class="nav-number">5.2.</span> <span class="nav-text">Weighted Truncated Running Sum with Prioritization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prioritized-Dithering"><span class="nav-number">5.3.</span> <span class="nav-text">Prioritized Dithering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ensuring-Zero-Overlap"><span class="nav-number">5.4.</span> <span class="nav-text">Ensuring Zero Overlap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Coping-with-Lots-of-Vehicles-Spatial-Partitioning"><span class="nav-number">6.</span> <span class="nav-text">Coping with Lots of Vehicles: Spatial Partitioning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Smoothing"><span class="nav-number">7.</span> <span class="nav-text">Smoothing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Practice-Makes-Perfect"><span class="nav-number">8.</span> <span class="nav-text">Practice Makes Perfect</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chang Lin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'lc1995',
+            repo: 'lc1995.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'f8c2095d8dc16bb768802ae8cbd0e7917eb7cb4a',
+            
+                client_id: 'ce5223552f85fd516b62'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
