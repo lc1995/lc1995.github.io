@@ -87,22 +87,22 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 3.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://lc1995.github.io/images/pursuit">
+<meta property="og:image" content="http://lc1995.github.io/images/pursuit.png">
 <meta property="og:image" content="http://lc1995.github.io/images/AvoidObstacles.png">
 <meta property="og:image" content="http://lc1995.github.io/images/AvoidObstacles2.png">
 <meta property="og:image" content="http://lc1995.github.io/images/AvoidObstacles3.png">
 <meta property="og:image" content="http://lc1995.github.io/images/AvoidWall.png">
 <meta property="og:image" content="http://lc1995.github.io/images/Hide.png">
 <meta property="og:image" content="http://lc1995.github.io/images/GroupBehavior.png">
-<meta property="og:image" content="http://lc1995.github.io/2018/03/12/Game%20Ai%20Chapter%203/images/Separation.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Separation.png">
 <meta property="og:image" content="http://lc1995.github.io/images/SpacialPartitioning.png">
 <meta property="og:image" content="http://lc1995.github.io/images/Smoothing.png">
 <meta property="og:image" content="http://lc1995.github.io/images/LeaderFollowing.png">
-<meta property="og:updated_time" content="2018-03-13T23:12:07.743Z">
+<meta property="og:updated_time" content="2018-03-13T23:16:15.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Game Ai Chapter 3">
 <meta name="twitter:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 3.">
-<meta name="twitter:image" content="http://lc1995.github.io/images/pursuit">
+<meta name="twitter:image" content="http://lc1995.github.io/images/pursuit.png">
 
 
 
@@ -392,7 +392,7 @@
 <h3 id="Pursuit"><a href="#Pursuit" class="headerlink" title="Pursuit"></a>Pursuit</h3><blockquote>
 <p>Pursuit behavior is useful when an agent is required to intercept a moving target (Keep seeking wouldn’t really help to create illusion of intelligence). The agent will run toward the position the target is going to be in the future.</p>
 </blockquote>
-<p><img src="/images/pursuit" alt=""></p>
+<p><img src="/images/pursuit.png" alt=""></p>
 <p>The success of the pursuit function depends on how well the pursuer can predict the evader’s trajectory in limited clock cycles.</p>
 <p>One of the difficulties in creating a good predictor is deciding how far into the future the agent should predict. Clearly, the amount of look-ahead should be proportional to the separation between the pursuer and its evader, and inversely proportional to the pursuer’s and evader’s speeds.</p>
 <h3 id="Evade"><a href="#Evade" class="headerlink" title="Evade"></a>Evade</h3><blockquote>
@@ -456,7 +456,7 @@
 <p>For example, the flocking behavior is a good example of a group behavior. In fact, flocking is a combination of three group behaviors – <strong>cohesion</strong>, <strong>separation</strong>, and <strong>alignment</strong> – all working together.</p>
 <p>To determine the steering force for a group behavior, a vehicle will con- sider all other vehicles within a circular area of predefined size — known as the neighborhood radius — centered on the vehicle.</p>
 <p><img src="/images/GroupBehavior.png" alt=""></p>
-<p><img src="images/Separation.png" alt=""></p>
+<p><img src="/images/Separation.png" alt=""></p>
 <p>Here we can pep up the realism slightly for group behaviors by adding a field-of-view (FOV) to our agent.</p>
 <h3 id="Separation"><a href="#Separation" class="headerlink" title="Separation"></a>Separation</h3><blockquote>
 <p>Separation creates a force that steers a vehicle away from those in its neighborhood region.</p>
