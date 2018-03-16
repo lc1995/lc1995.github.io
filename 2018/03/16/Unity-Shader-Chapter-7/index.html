@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Unity,Shader," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="《Unity Shader 入门精要》Chapter 7 – Reading Note">
+<meta name="keywords" content="Unity,Shader">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader Chapter 7">
+<meta property="og:url" content="http://lc1995.github.io/2018/03/16/Unity-Shader-Chapter-7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="《Unity Shader 入门精要》Chapter 7 – Reading Note">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lc1995.github.io/images/uv%20coordinates.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Filter%20Mode.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Height%20Map.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Tangent%20Space.png">
+<meta property="og:image" content="http://lc1995.github.io/images/BumpScale.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Gradient%20Texture.png">
+<meta property="og:updated_time" content="2018-03-16T23:08:38.462Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity Shader Chapter 7">
+<meta name="twitter:description" content="《Unity Shader 入门精要》Chapter 7 – Reading Note">
+<meta name="twitter:image" content="http://lc1995.github.io/images/uv%20coordinates.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lc1995.github.io/2018/03/16/Unity-Shader-Chapter-7/"/>
+
+
+
+
+
+  <title>Unity Shader Chapter 7 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/03/16/Unity-Shader-Chapter-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chang Lin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unity Shader Chapter 7</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T14:59:20+01:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index">
+                    <span itemprop="name">Unity</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/16/Unity-Shader-Chapter-7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/16/Unity-Shader-Chapter-7/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>《Unity Shader 入门精要》Chapter 7 – Reading Note</p>
+<a id="more"></a>
+<h1 id="Basic-Texture"><a href="#Basic-Texture" class="headerlink" title="Basic Texture"></a>Basic Texture</h1><p><strong>Texture Mapping</strong>: Map a texture to the surface of the model.</p>
+<ul>
+<li><strong>Texel</strong>: Unit of the texture (like pixel of the screen)</li>
+<li><strong>Texture-mapping Coordinates</strong>: Define the corresponding 2d position of the vertex in a texture. Using a 2d variables (u, v) to represent. So it’s also called <strong>uv coordinates</strong>.</li>
+</ul>
+<p><img src="/images/uv coordinates.png" alt=""></p>
+<h2 id="Single-Texture"><a href="#Single-Texture" class="headerlink" title="Single Texture"></a>Single Texture</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">"Unity Shaders Book/Chapter 7/Single Texture"</span>&#123;</span><br><span class="line">	Properties&#123;</span><br><span class="line">		_Color(<span class="string">"Color Tint"</span>, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="comment">// Main Texture</span></span><br><span class="line">		_MainTex(<span class="string">"Main Tex"</span>, <span class="number">2</span>D) = <span class="string">"white"</span> &#123;&#125;</span><br><span class="line">		_Specular(<span class="string">"Specular"</span>, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">		_Gloss(<span class="string">"Gloss"</span>, Range(<span class="number">8.0</span>, <span class="number">256</span>)) = <span class="number">20</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	SubShader&#123;</span><br><span class="line">		Pass&#123;</span><br><span class="line">			Tags &#123;<span class="string">"LightMode"</span> = <span class="string">"ForwardBase"</span>&#125;</span><br><span class="line"></span><br><span class="line">			CGPROGRAM</span><br><span class="line"></span><br><span class="line">			<span class="meta">#include "Lighting.cginc"</span></span><br><span class="line"></span><br><span class="line">			<span class="meta">#<span class="meta-keyword">pragma</span> vertex vert</span></span><br><span class="line">			<span class="meta">#<span class="meta-keyword">pragma</span> fragment frag</span></span><br><span class="line"></span><br><span class="line">			fixed4 _Color;</span><br><span class="line">            <span class="comment">// Variable for the main texture</span></span><br><span class="line">			sampler2D _MainTex;</span><br><span class="line">            <span class="comment">// Variable for scale and translation of the main texture</span></span><br><span class="line">			float4 _MainTex_ST;</span><br><span class="line">			fixed4 _Specular;</span><br><span class="line">			<span class="keyword">float</span> _Gloss;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">struct</span> a2v&#123;</span><br><span class="line">				float4 vertex : POSITION;</span><br><span class="line">				float3 normal : NORMAL;</span><br><span class="line">                <span class="comment">// The first group of texture coordinates</span></span><br><span class="line">				float4 texcoord : TEXCOORD0;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">struct</span> v2f&#123;</span><br><span class="line">				float4 pos : SV_POSITION;</span><br><span class="line">				float3 worldNormal : TEXCOORD0;</span><br><span class="line">				float3 worldPos : TEXCOORD1;</span><br><span class="line">                <span class="comment">// UV coordinates after scale and translation</span></span><br><span class="line">				float2 uv : TEXCOORD2;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="function">v2f <span class="title">vert</span>(<span class="params">a2v v</span>)</span>&#123;</span><br><span class="line">				v2f o;</span><br><span class="line"></span><br><span class="line">				o.pos = UnityObjectToClipPos(v.vertex);</span><br><span class="line">				o.worldNormal = UnityObjectToWorldNormal(v.normal).xyz;</span><br><span class="line">				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Transform vertex texture coordinates to final uv coordinates (Use a macro is more convenient)</span></span><br><span class="line">				<span class="comment">// o.uv = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;</span></span><br><span class="line">				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> o;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="function">fixed4 <span class="title">frag</span>(<span class="params">v2f i</span>) : SV_Target</span>&#123;</span><br><span class="line">				fixed3 worldNormal = normalize(i.worldNormal);</span><br><span class="line">				fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Use the texture to sample the diffuse color</span></span><br><span class="line">				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;</span><br><span class="line"></span><br><span class="line">				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;</span><br><span class="line"></span><br><span class="line">				fixed3 diffuse = _LightColor0.rgb * albedo * saturate(dot(worldNormal, worldLightDir));</span><br><span class="line"></span><br><span class="line">				fixed3 viewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));</span><br><span class="line">				fixed3 halfDir = normalize(worldLightDir + viewDir);</span><br><span class="line">				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(saturate(dot(worldNormal, halfDir)), _Gloss);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> fixed4(ambient + diffuse + specular, <span class="number">1.0</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			ENDCG</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Fallback <span class="string">"Specular"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Some-Texture-Properties"><a href="#Some-Texture-Properties" class="headerlink" title="Some Texture Properties"></a>Some Texture Properties</h2><ul>
+<li>Texture Type: Use this to define what your Texture is to be used for. Unity will pass the right type of texture to Unity Shader, sometimes also do some optimization.</li>
+<li>Alpha Source: How is the alpha generated from the import texture.</li>
+<li>Warp Mode:<ul>
+<li>Repeat: e.g. 1.1 -&gt; 1.1 - 1 = 0.1</li>
+<li>Clamp: e.g. 1.1 -&gt; 1</li>
+</ul>
+</li>
+<li>Filter Mode: Filtering mode of the texture, filtered when texture produces stretch due to transformation.<ul>
+<li>Point: Nearest neighbor filter, or no filter. Sample only one pixel point. Result in pixel style.</li>
+<li>Bilinear: Linear filter. Sample four pixel points for each target point. Result in blur.</li>
+<li>Trilinear: Almost same as bilinear, but blend with mipmapping. Better effect than bilinear.</li>
+</ul>
+</li>
+<li>Max Size: Max texture size. When the size of imported texture exceeds the setting size, Unity will scale the texture to match the setting. If width/height is not power of 2, this will occupy more memory space and therefore cause performance problem. So it’s better to use texture whose width/height is power of 2.</li>
+<li>Format: Format to store the texture. Higher the accuracy is, better effect we will get with higher occupied memory space.</li>
+</ul>
+<p><img src="/images/Filter Mode.png" alt=""></p>
+<h2 id="Bump-Mapping"><a href="#Bump-Mapping" class="headerlink" title="Bump Mapping"></a>Bump Mapping</h2><p>Bump mapping uses a texture to change the normals of model’s surfaces, in order to provide more details for the model. It won’t change the positions of vertex, instead makes the model look eneven(bump).</p>
+<p>There is two approaches.</p>
+<ol>
+<li>Use a <strong>height map</strong> to simulate the displacement, then get a modified normal. This is also called <strong>height mapping</strong>.</li>
+<li>Use a <strong>normal map</strong> to directly store the surface normal. This is called <strong>normal mapping</strong>.</li>
+</ol>
+<h3 id="Height-Map"><a href="#Height-Map" class="headerlink" title="Height Map"></a>Height Map</h3><p>Height map stores the intensity, which represents the height of model’s surface. The lighter the color is, the higher the surface is.</p>
+<p><img src="/images/Height Map.png" alt=""></p>
+<p>The advantage of height map is from it we can clearly know the bump degree of the model’s surface. However, we can’t directly retrieve the normal. We need to calculate the value by grayscale, which consumes more performance. Therefore, usually use normal mapping to modify light, while using height map to provide some other light’s information.</p>
+<h3 id="Normal-Map"><a href="#Normal-Map" class="headerlink" title="Normal Map"></a>Normal Map</h3><p>Normal map stores the normal direction of the surface, whose components are in range [-1, 1]. For a pixel, its components are from 0 to 1. Therefore we need a mapping:</p>
+<p><em>pixel</em> = (<em>normal</em> - 1) / 2</p>
+<p>Direction is relative to coordinate space. For a normal of a vertex, it’s defined in object space, which is called <strong>object-space normal map</strong>.</p>
+<p>However, in practice, we will another space called <strong>tangent space</strong>. Its origin is the vertex itself, z axis is the normal direction(<em>n</em>), x axis is the tangent direction(<em>t</em>), and y axis is obtained by the cross product of <em>n</em> and <em>t</em>. This kind of texture is called <strong>tangent-space normal map</strong>.</p>
+<p><img src="/images/Tangent Space.png" alt=""></p>
+<h3 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h3><ul>
+<li>Object-space<ul>
+<li>Easy and clear.</li>
+<li>Smooth boundary.</li>
+</ul>
+</li>
+<li>Tangent-space<ul>
+<li>High freedom.</li>
+<li>Ability to uv animation.</li>
+<li>Reusable.</li>
+<li>Compressible.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Code-In-Tangent-Space"><a href="#Code-In-Tangent-Space" class="headerlink" title="Code (In Tangent Space)"></a>Code (In Tangent Space)</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">"Unity Shaders Book/Chapter 7/Normal Map In Tangent Space"</span>&#123;</span><br><span class="line">	Properties&#123;</span><br><span class="line">		_Color(<span class="string">"Color Tint"</span>, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">		_MainTex(<span class="string">"Main Tex"</span>, <span class="number">2</span>D) = <span class="string">"white"</span> &#123;&#125;</span><br><span class="line">		_BumpMap(<span class="string">"Normal Map"</span>, <span class="number">2</span>D) = <span class="string">"bump"</span> &#123;&#125;</span><br><span class="line">		_BumpScale(<span class="string">"Bump Scale"</span>, Float) = <span class="number">1.0</span></span><br><span class="line">		_Specular(<span class="string">"Specular"</span>, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">		_Gloss(<span class="string">"Gloss"</span>, Range(<span class="number">8.0</span>, <span class="number">256</span>)) = <span class="number">20</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	SubShader&#123;</span><br><span class="line">		Pass&#123;</span><br><span class="line">			Tags&#123;<span class="string">"LightMode"</span> = <span class="string">"ForwardBase"</span>&#125;</span><br><span class="line"></span><br><span class="line">			CGPROGRAM</span><br><span class="line"></span><br><span class="line">			<span class="meta">#include "Lighting.cginc"</span></span><br><span class="line"></span><br><span class="line">			<span class="meta">#<span class="meta-keyword">pragma</span> vertex vert</span></span><br><span class="line">			<span class="meta">#<span class="meta-keyword">pragma</span> fragment frag</span></span><br><span class="line"></span><br><span class="line">			fixed4 _Color;</span><br><span class="line">			sampler2D _MainTex;</span><br><span class="line">			float4 _MainTex_ST;</span><br><span class="line">			sampler2D _BumpMap;</span><br><span class="line">			float4 _BumpMap_ST;</span><br><span class="line">			<span class="keyword">float</span> _BumpScale;</span><br><span class="line">			fixed4 _Specular;</span><br><span class="line">			<span class="keyword">float</span> _Gloss;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">struct</span> a2v&#123;</span><br><span class="line">				float4 vertex : POSITION;</span><br><span class="line">				float3 normal : NORMAL;</span><br><span class="line">				float4 tangent : TANGENT;</span><br><span class="line">				float4 texcoord : TEXCOORD0;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">struct</span> v2f&#123;</span><br><span class="line">				float4 pos : SV_POSITION;</span><br><span class="line">				float4 uv : TEXCOORD0;</span><br><span class="line">				float3 lightDir : TEXCOORD1;</span><br><span class="line">				float3 viewDir : TEXCOORD2;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="function">v2f <span class="title">vert</span>(<span class="params">a2v v</span>)</span>&#123;</span><br><span class="line">				v2f o;</span><br><span class="line"></span><br><span class="line">				o.pos = UnityObjectToClipPos(v.vertex);</span><br><span class="line"></span><br><span class="line">				<span class="comment">// _MainTex and _BumpTex use the same uv coordinate to reduce the number of register</span></span><br><span class="line">				o.uv.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;</span><br><span class="line">				o.uv.zw = v.texcoord.xy * _BumpMap_ST.xy + _BumpMap_ST.zw;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Compute the binormal</span></span><br><span class="line">				<span class="comment">// float3 binormal = cross(normalize(v.normal), normalize(v.tangent)) * v.tangent.w;</span></span><br><span class="line">				<span class="comment">// Construct tangent rotation matrix (transform from object space to tangent space)</span></span><br><span class="line">				<span class="comment">// float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal.xyz);</span></span><br><span class="line">				<span class="comment">// Or Just use the built-in function</span></span><br><span class="line">				<span class="comment">// We don't need to explicitly define rotation</span></span><br><span class="line">				TANGENT_SPACE_ROTATION;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Calculate light and view direction in tangent space</span></span><br><span class="line">				o.lightDir = mul(rotation, ObjSpaceLightDir(v.vertex)).xyz;</span><br><span class="line">				o.viewDir = mul(rotation, ObjSpaceViewDir(v.vertex)).xyz;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> o;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="function">fixed4 <span class="title">frag</span>(<span class="params">v2f i</span>) : SV_Target</span>&#123;</span><br><span class="line">				fixed3 tangentLightDir = normalize(i.lightDir);</span><br><span class="line">				fixed3 tangentViewDir = normalize(i.viewDir);</span><br><span class="line"></span><br><span class="line">				<span class="comment">// Get the texel in the normal map</span></span><br><span class="line">				fixed4 packedNormal = tex2D(_BumpMap, i.uv.zw);</span><br><span class="line">				<span class="comment">// Texture should be marked as "Normal map", then use the built-in function</span></span><br><span class="line">				fixed3 tangentNormal = UnpackNormal(packedNormal);</span><br><span class="line">				tangentNormal.xy *= _BumpScale;</span><br><span class="line">				tangentNormal.z = sqrt(<span class="number">1.0</span> - saturate(dot(tangentNormal.xy, tangentNormal.xy)));</span><br><span class="line"></span><br><span class="line">				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;</span><br><span class="line"></span><br><span class="line">				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;</span><br><span class="line"></span><br><span class="line">				fixed3 diffuse = _LightColor0.rgb * albedo * max(<span class="number">0</span>, dot(tangentNormal, tangentLightDir));</span><br><span class="line"></span><br><span class="line">				fixed3 halfDir = normalize(tangentLightDir + tangentViewDir);</span><br><span class="line">				fixed3 specular = _LightColor0.rgb * _Specular * pow(saturate(dot(tangentNormal, halfDir)), _Gloss);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> fixed4(ambient + diffuse + specular, <span class="number">1.0</span>);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			ENDCG</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Different Bump Scale</p>
+<p><img src="/images/BumpScale.png" alt=""></p>
+<h3 id="Normal-Map-Type"><a href="#Normal-Map-Type" class="headerlink" title="Normal Map Type"></a>Normal Map Type</h3><p>When we mark the texture as an normal map, we can use the built-in function <strong>UnpackNormal</strong> to retrieve the correct normal. In different platform, Unity will compress the texture in different ways.</p>
+<p>If we import a height map, we can set <em>Create from Grayscale</em> check box to generate a normal map from it. Then we can treat this texture as a normal map.</p>
+<h2 id="Ramp-Texture"><a href="#Ramp-Texture" class="headerlink" title="Ramp Texture"></a>Ramp Texture</h2><p>Except defining the color of an object, we can also use texture to store any surface properties. One common usage is using ramp texture to control the result of diffuse lit.</p>
+<p><img src="/images/Gradient Texture.png" alt=""></p>
+<p>In ramp shading, the idea is to modulate the diffuse coefficient by a 1D lookup texture. Depending on what you put in this texture you can generate different effects. </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Use the texture to sample the diffuse color</span></span><br><span class="line"><span class="keyword">fixed</span> halfLambert = <span class="number">0.5</span> * dot(worldNormal, worldLightDir) + <span class="number">0.5</span>;</span><br><span class="line">fixed3 diffuseColor = tex2D(_RampTex, fixed2(halfLambert, halfLambert)).rgb * _Color.rgb;</span><br><span class="line"></span><br><span class="line">fixed3 diffuse = _LightColor0.rgb * diffuseColor;</span><br></pre></td></tr></table></figure>
+<h2 id="Mask-Texture"><a href="#Mask-Texture" class="headerlink" title="Mask Texture"></a>Mask Texture</h2><p>Mask texture allows us to protect some regions from being modulated.</p>
+<p>The basic idea is to sample the texel from the mask texture, then multiply one of its channel’s value with one of the surface’s property.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get the mask value</span></span><br><span class="line"><span class="keyword">fixed</span> specularMask = tex2D(_SpecularMask, i.uv).r * _SpecularScale;</span><br><span class="line"><span class="comment">// Computer the specular</span></span><br><span class="line">fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(saturate(dot(tangentNormal, halfDir)), _Gloss) * specularMask;</span><br></pre></td></tr></table></figure>
+<p>In practice, we can use mask no only to protect some regions, but also control any proporties we want. For example, we use all the channels (RGBA) of a texture, the intensity of specular in R channel, the intensity of edge lighting in G channel, gloss of specular in B channel and intensity of emissive in A channel.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+            <a href="/tags/Shader/" rel="tag"># Shader</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/15/Unity-Shader-Chapter-6/" rel="next" title="Unity Shader Chapter 6">
+                <i class="fa fa-chevron-left"></i> Unity Shader Chapter 6
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chang Lin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/lc1995" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:lucianolin1995@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-Texture"><span class="nav-number">1.</span> <span class="nav-text">Basic Texture</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Single-Texture"><span class="nav-number">1.1.</span> <span class="nav-text">Single Texture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Some-Texture-Properties"><span class="nav-number">1.2.</span> <span class="nav-text">Some Texture Properties</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bump-Mapping"><span class="nav-number">1.3.</span> <span class="nav-text">Bump Mapping</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Height-Map"><span class="nav-number">1.3.1.</span> <span class="nav-text">Height Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Normal-Map"><span class="nav-number">1.3.2.</span> <span class="nav-text">Normal Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comparison"><span class="nav-number">1.3.3.</span> <span class="nav-text">Comparison</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Code-In-Tangent-Space"><span class="nav-number">1.3.4.</span> <span class="nav-text">Code (In Tangent Space)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Normal-Map-Type"><span class="nav-number">1.3.5.</span> <span class="nav-text">Normal Map Type</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ramp-Texture"><span class="nav-number">1.4.</span> <span class="nav-text">Ramp Texture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mask-Texture"><span class="nav-number">1.5.</span> <span class="nav-text">Mask Texture</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chang Lin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'lc1995',
+            repo: 'lc1995.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'f8c2095d8dc16bb768802ae8cbd0e7917eb7cb4a',
+            
+                client_id: 'ce5223552f85fd516b62'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
