@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Here is a basic understand on how coroutine works in Unity.">
+<meta name="description" content="Note on rotation in Unity.">
 <meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Understand Coroutine in Unity">
-<meta property="og:url" content="http://lc1995.github.io/2017/11/22/Understand Coroutine in Unity/index.html">
+<meta property="og:title" content="Unity Rotation Note">
+<meta property="og:url" content="http://lc1995.github.io/2018/03/20/Unity-Rotation-Note/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Here is a basic understand on how coroutine works in Unity.">
+<meta property="og:description" content="Note on rotation in Unity.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-22T21:43:03.875Z">
+<meta property="og:updated_time" content="2018-03-20T22:43:41.648Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Understand Coroutine in Unity">
-<meta name="twitter:description" content="Here is a basic understand on how coroutine works in Unity.">
+<meta name="twitter:title" content="Unity Rotation Note">
+<meta name="twitter:description" content="Note on rotation in Unity.">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://lc1995.github.io/2017/11/22/Understand Coroutine in Unity/"/>
+  <link rel="canonical" href="http://lc1995.github.io/2018/03/20/Unity-Rotation-Note/"/>
 
 
 
 
 
-  <title>Understand Coroutine in Unity | Hexo</title>
+  <title>Unity Rotation Note | Hexo</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2017/11/22/Understand Coroutine in Unity/">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/03/20/Unity-Rotation-Note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chang Lin">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Understand Coroutine in Unity</h1>
+          <h1 class="post-title" itemprop="name headline">Unity Rotation Note</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T19:54:47+01:00">
-                2017-11-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T22:49:58+01:00">
+                2018-03-20
               </time>
             
 
@@ -323,8 +323,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/11/22/Understand Coroutine in Unity/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2017/11/22/Understand Coroutine in Unity/" itemprop="commentsCount"></span>
+                <a href="/2018/03/20/Unity-Rotation-Note/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/20/Unity-Rotation-Note/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -352,58 +352,38 @@
       
 
       
-        <p>Here is a basic understand on how coroutine works in Unity.</p>
+        <p>Note on rotation in Unity.</p>
 <a id="more"></a>
-<h1 id="IEnumerator"><a href="#IEnumerator" class="headerlink" title="IEnumerator"></a>IEnumerator</h1><p>Before going into coroutine, we should know what is IEnumerator.</p>
-<blockquote>
-<p>Supports a simple iteration over a non-generic collection.</p>
+<p>Quaternion is used to represent rotations in Unity. It’s described by four properties x, y, z and w. However 99% of the time you are not suggested to directly change those values instead of using some useful functions provided by Quaternion.</p>
+<h1 id="Rotation-VS-LocalRotation"><a href="#Rotation-VS-LocalRotation" class="headerlink" title="Rotation VS LocalRotation"></a>Rotation VS LocalRotation</h1><blockquote>
+<p>The rotation of the transform in <strong>world space</strong> stored as a Quaternion.</p>
+<p>The rotation of the transform relative to the <strong>parent transform’s rotation</strong>.</p>
 </blockquote>
-<p>IEnumerator should be used with yield statement. When the return type of a function is IEnumerator, it works in a iteration way and assigned to variable with type IEnumerator. Every time <code>MoveNext()</code> of the variable is called, the function will move to the next yield statement and return.</p>
-<p><strong>Code</strong>:<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> IEnumerator ien;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Use this for initialization</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    ien = ExampleIEN ();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (ien.MoveNext ()) &#123;</span><br><span class="line">        Debug.Log (ien.Current);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">IEnumerator <span class="title">ExampleIEN</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>Output</strong>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td></tr></table></figure></p>
-<h1 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h1><p>Then we start talk about Coroutine.<br>Coroutine is a powerful mechanic to control the pause and resume of a function. Usually for example when you have to call a function every three frames or every three frames, it’s really stupid and computational expensive to do the stuff in the <code>Update()</code> function. That’s why we use instead the Coroutine.</p>
-<blockquote>
-<p>The execution of a coroutine can be paused at any point using the yield statement. The yield return value specifies when the coroutine is resumed. Coroutines are excellent when modelling behaviour over several frames. Coroutines have virtually no performance overhead. StartCoroutine function always returns immediately, however you can yield the result. This will wait until the coroutine has finished execution. There is no guarantee that coroutines end in the same order that they were started, even if they finish in the same frame.</p>
+<p>It means that if the object has no parent(or let’s say parent is the world root), rotation and localRotation is same. However, if the object has a real parent, then the rotation is the combination of its localRotation and the parent’s rotation(not linear addition).</p>
+<h1 id="Transform-RotateAround"><a href="#Transform-RotateAround" class="headerlink" title="Transform.RotateAround"></a>Transform.RotateAround</h1><blockquote>
+<p>public void RotateAround(Vector3 point, Vector3 axis, float angle);</p>
+<p>Rotates the transform about <em>axis</em> passing through <em>point</em> in world coordinates by <em>angle</em> degrees.<br>This modifies both the position and the rotation of the transform.</p>
 </blockquote>
-<p>Coroutine is like an integration of <code>while(ien.MoveNext())</code>. It pauses when reaches the yield statement (yield instruction), and resumes after the execution of the yield instruction.</p>
-<p>We use <code>StartCoroutine()</code> to start a new coroutine. The main function will continues after the first yield return from the coroutine.</p>
-<p>Here we show a example code.<br><strong>Code</strong>:<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    StartCoroutine (ExampleFunc ());</span><br><span class="line">    Debug.Log (<span class="string">"2"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">IEnumerator <span class="title">ExampleFunc</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    Debug.Log (<span class="string">"1"</span>);</span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return new <span class="title">WaitForSeconds</span>(<span class="params"><span class="number">1</span></span>)</span>;</span><br><span class="line">    Debug.Log (<span class="string">"3"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>Output</strong>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td></tr></table></figure></p>
-<p>The logic can be described as following:</p>
-<ol>
-<li>Start a coroutine <code>ExampleFunc()</code></li>
-<li>ExampleFunc shows 1</li>
-<li>ExampleFunc pauses and returns</li>
-<li>Main function (Start) shows 2</li>
-<li>After 1 second, ExampleFunc resumes and show 3</li>
-<li>ExampleFunc reaches end and finish</li>
-</ol>
-<p>Here we show a more complex example (Nested Coroutine)<br><strong>Code</strong>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">void Start () &#123;</span><br><span class="line">    Debug.Log (&quot;1&quot;);</span><br><span class="line">    StartCoroutine (ExampleFunc1 ());</span><br><span class="line">    Debug.Log (&quot;4&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IEnumerator ExampleFunc1()&#123;</span><br><span class="line">    Debug.Log (&quot;2&quot;);</span><br><span class="line">    yield return StartCoroutine (ExampleFunc2 ());</span><br><span class="line">    Debug.Log (&quot;6&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IEnumerator ExampleFunc2()&#123;</span><br><span class="line">    Debug.Log (&quot;3&quot;);</span><br><span class="line">    yield return new WaitForSeconds (2);</span><br><span class="line">    Debug.Log (&quot;5&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>Output</strong>:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td></tr></table></figure></p>
-<p>The logic can be described as following:</p>
-<ol>
-<li>Main function (Start) shows 1</li>
-<li>Main function starts a coroutine <code>ExampleFunc1()</code></li>
-<li>ExampleFunc1 shows 2</li>
-<li>ExampleFunc1 starts a coroutine <code>ExampleFunc2()</code></li>
-<li>ExampleFunc2 shows 3</li>
-<li>ExampleFunc2 pauses and returns</li>
-<li>ExampleFunc1 pauses and returns</li>
-<li>Main function shows 4</li>
-<li>ExampleFunc2 resumes and showes 5 (after the execution of <code>WaitForSeconds()</code></li>
-<li>ExampleFunc1 resumes and showes 6 (after the execution of <code>ExampleFunc2()</code></li>
-</ol>
-<h1 id="Yield-Instruction"><a href="#Yield-Instruction" class="headerlink" title="Yield Instruction"></a>Yield Instruction</h1><p>Usually we have 5 types of yield instructions in coroutine.</p>
-<ul>
-<li><code>null</code>: nothing</li>
-<li><code>WaitForSecond()</code>: wait for specific seconds</li>
-<li><code>WaitForFixUpdate()</code>: wait until next fixed frame rate update function</li>
-<li><code>WWW</code>: wait until a download finishes</li>
-<li><code>StartCoroutine()</code>: nested coroutine</li>
-</ul>
-<h1 id="Coroutine-and-Thread"><a href="#Coroutine-and-Thread" class="headerlink" title="Coroutine and Thread"></a>Coroutine and Thread</h1><p>Coroutine doesn’t create a new thread, but instead use a concurrent mechanic.</p>
-<p>All coroutine can do can also be done by multi-threads. However, as we know, Unity is not thread-safe, which means you have to spend a lot of time on the synchronization of data.</p>
-<p>Therefore, for some simple tasks to control, coroutine should be best way. For some computational expensive tasks, multi-threads is better. (When task is out of computation, coroutine will stop but thread won’t.)</p>
+<p>This is useful when we know the rotation point, axis and angle in world space.<br>And it’s more powerful than <strong>Transform.Rotate</strong>.<br>If we want to rotate around the parent, just put the parent’s position in <em>point</em>. (We don’t need to use localRotation)</p>
+<h2 id="Example-Rotate-around-a-point-in-a-constant-rotation-rate"><a href="#Example-Rotate-around-a-point-in-a-constant-rotation-rate" class="headerlink" title="Example: Rotate around a point in a constant rotation rate"></a>Example: Rotate around a point in a constant rotation rate</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    transform.RotateAround(Vector3.zero, Vector3.up, <span class="number">20</span>f * Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Transform-Rotate"><a href="#Transform-Rotate" class="headerlink" title="Transform.Rotate"></a>Transform.Rotate</h1><blockquote>
+<p>public void Rotate(Vector3 eulerAngles, Space relativeTo = Space.Self);</p>
+<p>Applies a rotation of eulerAngles.z degrees around the z axis, eulerAngles.x degrees around the x axis, and eulerAngles.y degrees around the y axis (in that order).</p>
+<p>If relativeTo is not specified or set to Space.Self the rotation is applied around the transform’s local axes. If relativeTo is set to Space.World the rotation is applied around the world x, y, z axes.</p>
+</blockquote>
+<p>This is useful when we know the eulerAngles to rotate.</p>
+<h2 id="Example-Self-Rotation"><a href="#Example-Self-Rotation" class="headerlink" title="Example: Self Rotation"></a>Example: Self Rotation</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    transform.Rotate(Vector3.up * Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Transform-LookAt"><a href="#Transform-LookAt" class="headerlink" title="Transform.LookAt"></a>Transform.LookAt</h1><blockquote>
+<p>public void LookAt(Transform target, Vector3 worldUp = Vector3.up);</p>
+<p>Rotates the transform so the forward vector points at /target/‘s current position.</p>
+<p>Then it rotates the transform to point its up direction vector in the direction hinted at by the worldUp vector. If you leave out the worldUp parameter, the function will use the world y axis. worldUp is only a hint vector. The up vector of the rotation will only match the worldUp vector if the forward direction is perpendicular to worldUp.</p>
+</blockquote>
+<p>This is useful to face the object towards a given direction.</p>
+<h1 id="Use-Quaternion"><a href="#Use-Quaternion" class="headerlink" title="Use Quaternion"></a>Use Quaternion</h1><p>Another way to rotate an object is directly setting the rotation/localRotation to a quaternion.</p>
+<p>We don’t initianlize a quaternion by its constructor, instead we use the public static function of Quaternion.</p>
+<h2 id="Example-Rotate-towards-a-quaternion-Linear"><a href="#Example-Rotate-towards-a-quaternion-Linear" class="headerlink" title="Example: Rotate towards a quaternion (Linear)"></a>Example: Rotate towards a quaternion (Linear)</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">float</span> step = speed * Time.deltaTime;</span><br><span class="line">    transform.rotation = Quaternion.RotateTowards(transform.rotation, target.rotation, step);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We need to know the target’s rotation.</p>
+<h2 id="Example-Rotate-towards-a-quaternion-Non-linear"><a href="#Example-Rotate-towards-a-quaternion-Non-linear" class="headerlink" title="Example: Rotate towards a quaternion (Non-linear)"></a>Example: Rotate towards a quaternion (Non-linear)</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3 relativePos = (target.position + <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1.5</span>f, <span class="number">0</span>)) - transform.position;</span><br><span class="line">    Quaternion rotation = Quaternion.LookRotation(relativePos);</span><br><span class="line">    </span><br><span class="line">    Quaternion current = transform.localRotation;</span><br><span class="line">    </span><br><span class="line">    transform.localRotation = Quaternion.Slerp(current, rotation, Time.deltaTime);</span><br><span class="line">    transform.Translate(<span class="number">0</span>, <span class="number">0</span>, <span class="number">3</span> * Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -434,8 +414,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/02/Python中sort和sorted的区别/" rel="next" title="Python中sort和sorted的区别">
-                <i class="fa fa-chevron-left"></i> Python中sort和sorted的区别
+              <a href="/2018/03/16/Unity-Shader-Chapter-7/" rel="next" title="Unity Shader Chapter 7">
+                <i class="fa fa-chevron-left"></i> Unity Shader Chapter 7
               </a>
             
           </div>
@@ -443,10 +423,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/25/Unity-Design-Model-Patterns-Finite-State-Machines/" rel="prev" title="Unity Design Patterns - Finite State Machines">
-                Unity Design Patterns - Finite State Machines <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -601,7 +577,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IEnumerator"><span class="nav-number">1.</span> <span class="nav-text">IEnumerator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Coroutine"><span class="nav-number">2.</span> <span class="nav-text">Coroutine</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Yield-Instruction"><span class="nav-number">3.</span> <span class="nav-text">Yield Instruction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Coroutine-and-Thread"><span class="nav-number">4.</span> <span class="nav-text">Coroutine and Thread</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rotation-VS-LocalRotation"><span class="nav-number">1.</span> <span class="nav-text">Rotation VS LocalRotation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform-RotateAround"><span class="nav-number">2.</span> <span class="nav-text">Transform.RotateAround</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Rotate-around-a-point-in-a-constant-rotation-rate"><span class="nav-number">2.1.</span> <span class="nav-text">Example: Rotate around a point in a constant rotation rate</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform-Rotate"><span class="nav-number">3.</span> <span class="nav-text">Transform.Rotate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Self-Rotation"><span class="nav-number">3.1.</span> <span class="nav-text">Example: Self Rotation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform-LookAt"><span class="nav-number">4.</span> <span class="nav-text">Transform.LookAt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Use-Quaternion"><span class="nav-number">5.</span> <span class="nav-text">Use Quaternion</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Rotate-towards-a-quaternion-Linear"><span class="nav-number">5.1.</span> <span class="nav-text">Example: Rotate towards a quaternion (Linear)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Rotate-towards-a-quaternion-Non-linear"><span class="nav-number">5.2.</span> <span class="nav-text">Example: Rotate towards a quaternion (Non-linear)</span></a></li></ol></li></ol></div>
             
 
           </div>
