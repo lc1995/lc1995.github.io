@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Unity,Shader," />
+  <meta name="keywords" content="Game,Algorithm," />
 
 
 
@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="《Unity Shader 入门精要》Chapter 9 – Reading Note Before, we have only one light source in our scene, and it’s always directional light. However, in practice, we will">
-<meta name="keywords" content="Unity,Shader">
+<meta name="description" content="Maze generation algorithms are automated methods for the creation of mazes.">
+<meta name="keywords" content="Game,Algorithm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity Shader Chapter 9">
-<meta property="og:url" content="http://lc1995.github.io/2018/03/23/Unity-Shader-Chapter-9/index.html">
+<meta property="og:title" content="Maze Generating Algorithm">
+<meta property="og:url" content="http://lc1995.github.io/2018/04/07/Maze-Generating-Algorithm/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="《Unity Shader 入门精要》Chapter 9 – Reading Note Before, we have only one light source in our scene, and it’s always directional light. However, in practice, we will deal with more light sources, which are">
+<meta property="og:description" content="Maze generation algorithms are automated methods for the creation of mazes.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://lc1995.github.io/images/ForwardRendering.png">
-<meta property="og:updated_time" content="2018-03-24T00:22:14.961Z">
+<meta property="og:image" content="http://lc1995.github.io/images/RecursiveDivision.png">
+<meta property="og:updated_time" content="2018-04-07T13:37:50.587Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unity Shader Chapter 9">
-<meta name="twitter:description" content="《Unity Shader 入门精要》Chapter 9 – Reading Note Before, we have only one light source in our scene, and it’s always directional light. However, in practice, we will deal with more light sources, which are">
-<meta name="twitter:image" content="http://lc1995.github.io/images/ForwardRendering.png">
+<meta name="twitter:title" content="Maze Generating Algorithm">
+<meta name="twitter:description" content="Maze generation algorithms are automated methods for the creation of mazes.">
+<meta name="twitter:image" content="http://lc1995.github.io/images/RecursiveDivision.png">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://lc1995.github.io/2018/03/23/Unity-Shader-Chapter-9/"/>
+  <link rel="canonical" href="http://lc1995.github.io/2018/04/07/Maze-Generating-Algorithm/"/>
 
 
 
 
 
-  <title>Unity Shader Chapter 9 | Hexo</title>
+  <title>Maze Generating Algorithm | Hexo</title>
   
 
 
@@ -255,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/03/23/Unity-Shader-Chapter-9/">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/04/07/Maze-Generating-Algorithm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chang Lin">
@@ -272,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Unity Shader Chapter 9</h1>
+          <h1 class="post-title" itemprop="name headline">Maze Generating Algorithm</h1>
         
 
         <div class="post-meta">
@@ -284,8 +284,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T15:37:09+01:00">
-                2018-03-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T14:25:09+02:00">
+                2018-04-07
               </time>
             
 
@@ -307,8 +307,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity/" itemprop="url" rel="index">
-                    <span itemprop="name">Unity</span>
+                  <a href="/categories/Game/" itemprop="url" rel="index">
+                    <span itemprop="name">Game</span>
                   </a>
                 </span>
 
@@ -325,8 +325,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/23/Unity-Shader-Chapter-9/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/23/Unity-Shader-Chapter-9/" itemprop="commentsCount"></span>
+                <a href="/2018/04/07/Maze-Generating-Algorithm/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/07/Maze-Generating-Algorithm/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -354,62 +354,57 @@
       
 
       
-        <p>《Unity Shader 入门精要》Chapter 9 – Reading Note</p>
-<p>Before, we have only one light source in our scene, and it’s always directional light. However, in practice, we will deal with more light sources, which are also more complex. Also, we would like to obtain the shadow.</p>
+        <p>Maze generation algorithms are automated methods for the creation of mazes.</p>
 <a id="more"></a>
-<h1 id="Rendering-Path"><a href="#Rendering-Path" class="headerlink" title="Rendering Path"></a>Rendering Path</h1><p><strong>Rendering path</strong> defines how lighting is applied into Unity Shader. Or let’s say, Unity Shader will prepare many data about Lights and Shadows for you after you set the correct rendering path.</p>
-<blockquote>
-<p>Unity supports different Rendering Paths. You should choose which one you use depending on your game content and target platform / hardware. Different rendering paths have different performance characteristics that mostly affect Lights and Shadows.</p>
-</blockquote>
-<p><a href="https://docs.unity3d.com/Manual/RenderingPaths.html" target="_blank" rel="noopener">Rendering Path</a></p>
-<p>Most of the cases, one project only uses one rendering path. This can be set in Edit -&gt; Project Settings -&gt; Player -&gt; Other Settings -&gt; Rendering Path.</p>
-<p>Sometimes we will use multiple rendering path. We can set the rendering path for different camera, and this will overwrite the global setting. We can also set different rendering path for different Pass by <strong>LightMode</strong>.</p>
-<p>The following is the supported tags of LightMode:</p>
-<ul>
-<li>Always: Pass will always be rendered, but without calculating any lighting.</li>
-<li>ForwardBase: Used in <strong>Forward Rendering</strong>, this Pass will calculate ambient light, the most important directional light, per-vertex/SH light and Lightmaps.</li>
-<li>ForwardAdd: Used in <strong>Forward Rendering</strong>, this Pass will calculate other per-pixel light. Each Pass corresponds to a light source.</li>
-<li>Deferred: Used in <strong>Deferred Shading</strong>. This Pass will render G-buffer.</li>
-<li>ShadowCaster: Render the depth infomation of objects into a shadowmap or a depth map.</li>
-<li>PrepassBase: Used in <strong>Legacy Deferred</strong>, this Pass will render normal and pow of specular.</li>
-<li>PrepassFinal: Used in <strong>Legacy Deferred</strong>, this Pass will render the final color by combining texture, light and emissive.</li>
-<li>Vertex, VectexLMRGBM and VertexLM: Used in <strong>Legacy Vertex Lit Rendering</strong>.</li>
+<h1 id="Graph-Theory-Based-Methods"><a href="#Graph-Theory-Based-Methods" class="headerlink" title="Graph Theory Based Methods"></a>Graph Theory Based Methods</h1><p>A maze can be generated by starting with a predeterminied arrangement of cells with wall sites between them. Then we apply specific algorithm to find a route between two particular nodes (making a subgraph).</p>
+<p>If the subgraph is not connected, it means some regions are wasted.</p>
+<p>If the subgraph contains loops, there can be multiple paths between the chosen space.</p>
+<p>Because of the above two reasons, we usually generate mazes by generating a random spanning tree.</p>
+<h1 id="Depth-First-Search"><a href="#Depth-First-Search" class="headerlink" title="Depth First Search"></a>Depth First Search</h1><p>This algorithm is a randomized version of the <a href="https://en.wikipedia.org/wiki/Depth-first_search" target="_blank" rel="noopener">depth first search</a> algorithm.</p>
+<ol>
+<li>Start with a large grid of cells, each with four walls.</li>
+<li>Select a random neighbouring cell that has not yet been visited.</li>
+<li>Remove the wall between the two cells and marks the new cell as visited, and adds it to the stack to facilitate backtracking.</li>
+<li>If a cell has no unvisited beighbors, it’s considered as a dead-end.</li>
+<li>When at a dead-end it backtracks through the path until it reaches a cell with an unvisited neighbor, continuing the path generation by visiting new unvisited cell.</li>
+</ol>
+<p>As given above this algorithm involves deep recursion which may cause stack overflow issues on some computer architectures. The algorithm can be rearranged into a loop by storing backtracking information in the maze itself. </p>
+<p>Mazes generated with a depth-first search have a low branching factor and contain many long corridors, because the algorithm explores as far as possible along each branch before backtracking.</p>
+<h1 id="Randomized-Kruskal’s-Algorithm"><a href="#Randomized-Kruskal’s-Algorithm" class="headerlink" title="Randomized Kruskal’s Algorithm"></a>Randomized Kruskal’s Algorithm</h1><p>This algorithm is a randomized version of <a href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm" target="_blank" rel="noopener">Kruskal’s algorithm</a>.</p>
+<ol>
+<li>Create a list of all walls, and create a set for each cell, each containing just that one cell.</li>
+<li>For each wall, in some random order. If the cells divided by this wall belong to distinct sets:<ol>
+<li>Remove the current wall.</li>
+<li>Join the sets of the formerly divided cells.</li>
+</ol>
+</li>
+</ol>
+<p>Because the effect of this algorithm is to produce a minimal spanning tree from a graph with equally weighted edges, it tends to produce regular patterns which are fairly easy to solve.</p>
+<h1 id="Randomized-Prim’s-Algorithm"><a href="#Randomized-Prim’s-Algorithm" class="headerlink" title="Randomized Prim’s Algorithm"></a>Randomized Prim’s Algorithm</h1><p>This algorithm is a randomized version of <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm" target="_blank" rel="noopener">Prim’s algorithm</a>.</p>
+<ol>
+<li>Start with a grid full of walls.</li>
+<li>Pick a cell, mark it as part of the maze. Add the walls of the cell to the wall list.</li>
+<li>While there are walls in the list:<ol>
+<li>Pick a random wall from the list. If only one of the two cells that the wall divides is visited, then:<ol>
+<li>Make the wall a passage and mark the unvisited cell as part of the maze.</li>
+<li>Add the neighboring walls of the cell to the wall list.</li>
+</ol>
+</li>
+<li>Remove the wall from the list.</li>
+</ol>
+</li>
+</ol>
+<p>Note that simply running classical Prim’s on a graph with random edge weights would create mazes stylistically identical to Kruskal’s, because they are both minimal spanning tree algorithms. Instead, this algorithm introduces stylistic variation because the edges closer to the starting point have a lower effective weight.</p>
+<h1 id="Recursive-Division-Method"><a href="#Recursive-Division-Method" class="headerlink" title="Recursive Division Method"></a>Recursive Division Method</h1><p>Mazes can be created with recursive division, an algorithm which works as follows: Begin with the maze’s space with no walls. Call this a chamber. Divide the chamber with a randomly positioned wall (or multiple walls) where each wall contains a randomly positioned passage opening within it. Then recursively repeat the process on the subchambers until all chambers are minimum sized. This method results in mazes with long straight walls crossing their space, making it easier to see which areas to avoid.</p>
+<p><img src="/images/RecursiveDivision.png" alt=""></p>
+<h1 id="Other-Algorithms"><a href="#Other-Algorithms" class="headerlink" title="Other Algorithms"></a>Other Algorithms</h1><p>Other algorithms exist that require only enough memory to store one line of a 2D maze or one plane of a 3D maze. They prevent loops by storing which cells in the current line are connected through cells in the previous lines, and never remove walls between any two cells already connected.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><ul>
+<li>DFS: Long corridors.</li>
+<li>Kruskal: Regular patterns.</li>
+<li>Prim: Stylistically like Kruskal.</li>
+<li>Recursion Division: Less corners to turn.</li>
 </ul>
-<h1 id="Forward-Rendering-Path"><a href="#Forward-Rendering-Path" class="headerlink" title="Forward Rendering Path"></a>Forward Rendering Path</h1><p>Forward rendering is the most traditional and common path. </p>
-<h2 id="Principle"><a href="#Principle" class="headerlink" title="Principle"></a>Principle</h2><p>It renders primitives by calculating two buffers’ information. One is color buffer, the other one is depth buffer. We can use the following pseudocode to show the general process:</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Pass&#123;</span><br><span class="line">    <span class="keyword">foreach</span>(primitive <span class="keyword">in</span> <span class="keyword">this</span> model)&#123;</span><br><span class="line">        <span class="keyword">foreach</span>(fragment covered <span class="keyword">by</span> <span class="keyword">this</span> primitive)&#123;</span><br><span class="line">            <span class="keyword">if</span>(failed <span class="keyword">in</span> depth test)&#123;</span><br><span class="line">                discard;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                float4 color = Shading(materialInfo, pos, normal, lightDir, viewDir);</span><br><span class="line"></span><br><span class="line">                writeFrameBuffer(fragment, color);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>For each per-pixel light, we need to run the above process. Supposed we have N objects, each affected by M source lights, then we need totally N*M Pass. We can see if we have many per-pixel lights, we also need to run nunbers of Pass. Therefore, usually the rendering engine will limit the number of per-pixel lights.</p>
-<h2 id="Forward-Rendering-in-Unity"><a href="#Forward-Rendering-in-Unity" class="headerlink" title="Forward Rendering in Unity"></a>Forward Rendering in Unity</h2><p>In Unity, we have 3 ways to deal with lighting: <strong>per-vertex</strong>, <strong>per-pixel</strong> and <strong>spherical harmonics</strong>. The <strong>Render Mode</strong> tells whether a light source is important or not. If it’s set to important, the light will be regarded as a per-pixel light.</p>
-<p>In forward rendering, when we render one object, Unity will sort all lights according to their importances. Their importances depend on their setting(important/not important), and how much they will affect the object(e.g distance, light itensity). Then some of the light sources will be processed per pixel, then up to 4 sources will be processed per vertex, the remaining sources will be processed in SH.</p>
-<p>The judgment rule can be shown as following:</p>
-<ul>
-<li>Lights that have their Render Mode set to Not Important are always per-vertex or SH.</li>
-<li>Brightest directional light is always per-pixel.</li>
-<li>Lights that have their Render Mode set to Important are always per-pixel.</li>
-<li>If the above results in less lights than current Pixel Light Count Quality Setting, then more lights are rendered per-pixel, in order of decreasing brightness.</li>
-</ul>
-<p>In Unity, we have two different types of forward rendering: <strong>Base Pass</strong> and <strong>Additional Pass</strong>.</p>
-<p>Usually the common tags and render settings can be shown as following:</p>
-<p><img src="/images/ForwardRendering.png" alt=""></p>
-<ul>
-<li>#pragma multi_compile_fwdbase(/fwdadd) guarantees that Unity will build all Shader versions for different platforms. It will process different rendering logic and pass necessary built-in variables to Shader.</li>
-<li>Base Pass supports some lit characteristics like lightmap.</li>
-<li>By default, Base Pass supports shadow(only directional light), Additional Pass doesn’t support. We can use #pragma multi_compile_fwdadd_fullshadows manually in Addtional Pass to turn on shadow.</li>
-<li>Ambient and emissive is calculated in Base Pass.</li>
-<li>We will turn on Blend in Additional Pass. By default, we use <strong>Blend One One</strong>.</li>
-<li>In forward rendering, a Unity Shader usually defines a Base Pass and an Additional Pass. Each Base Pass will run one time, and each Additional Pass will run multiple times dependent on how many lights are affecting the object.</li>
-</ul>
-<h2 id="Built-in-Variables-and-Functions"><a href="#Built-in-Variables-and-Functions" class="headerlink" title="Built-in Variables and Functions"></a>Built-in Variables and Functions</h2><p>Here we only show the most common variables and functions.</p>
-<ul>
-<li>_LightColor0: float4 | The color of per-pixel light.</li>
-<li>_WorldSpaceLightPos0: float4 | The position of per-pixel light. If it’s a directional light, the w component is 0. Otherwise it’s 1.</li>
-<li>unity_WorldToLight: float4x4 | Transform matrix from world space to light space. This can be used to sample cookie and lit attenuation texture.</li>
-<li>float3 UnityWorldSpaceLightDir(float4 v): Return the light direction in world space.</li>
-<li>float3 UnityWorldSpaceViewDir(float4 v): Return the view direction in world space.</li>
-</ul>
-<p>The others can be checked from Official Document.<br><a href="https://docs.unity3d.com/Manual/SL-UnityShaderVariables.html" target="_blank" rel="noopener">Built-in Variables</a><br><a href="https://docs.unity3d.com/Manual/SL-BuiltinFunctions.html" target="_blank" rel="noopener">Built-in Functions</a></p>
-<h1 id="Vertex-Lit-Rendering-Path"><a href="#Vertex-Lit-Rendering-Path" class="headerlink" title="Vertex Lit Rendering Path"></a>Vertex Lit Rendering Path</h1><p>Vertex lit rendering path is the one with highest performance and lowest requirement on hardware. However, it’s also the one with the worst effect. It doesn’t support those per-pixel effect like shadow, normal texture, specular with high precision(per-pixel) and so on. Now it’s legacy.</p>
-<h1 id="Deffered-Lit-Rendering-Path"><a href="#Deffered-Lit-Rendering-Path" class="headerlink" title="Deffered Lit Rendering Path"></a>Deffered Lit Rendering Path</h1><h1 id="De"><a href="#De" class="headerlink" title="De"></a>De</h1>
+
       
     </div>
     
@@ -426,9 +421,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Unity/" rel="tag"># Unity</a>
+            <a href="/tags/Game/" rel="tag"># Game</a>
           
-            <a href="/tags/Shader/" rel="tag"># Shader</a>
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
           
         </div>
       
@@ -441,8 +436,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/22/Unity-Shader-Chapter-8/" rel="next" title="Unity Shader Chapter 8">
-                <i class="fa fa-chevron-left"></i> Unity Shader Chapter 8
+              <a href="/2018/04/04/Game-Ai-Chapter-5/" rel="next" title="Game Ai Chapter 5">
+                <i class="fa fa-chevron-left"></i> Game Ai Chapter 5
               </a>
             
           </div>
@@ -450,10 +445,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/04/Game-Ai-Chapter-5/" rel="prev" title="Game Ai Chapter 5">
-                Game Ai Chapter 5 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -608,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rendering-Path"><span class="nav-number">1.</span> <span class="nav-text">Rendering Path</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Forward-Rendering-Path"><span class="nav-number">2.</span> <span class="nav-text">Forward Rendering Path</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Principle"><span class="nav-number">2.1.</span> <span class="nav-text">Principle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Forward-Rendering-in-Unity"><span class="nav-number">2.2.</span> <span class="nav-text">Forward Rendering in Unity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Built-in-Variables-and-Functions"><span class="nav-number">2.3.</span> <span class="nav-text">Built-in Variables and Functions</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vertex-Lit-Rendering-Path"><span class="nav-number">3.</span> <span class="nav-text">Vertex Lit Rendering Path</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Deffered-Lit-Rendering-Path"><span class="nav-number">4.</span> <span class="nav-text">Deffered Lit Rendering Path</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#De"><span class="nav-number">5.</span> <span class="nav-text">De</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Graph-Theory-Based-Methods"><span class="nav-number">1.</span> <span class="nav-text">Graph Theory Based Methods</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Depth-First-Search"><span class="nav-number">2.</span> <span class="nav-text">Depth First Search</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Kruskal’s-Algorithm"><span class="nav-number">3.</span> <span class="nav-text">Randomized Kruskal’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Prim’s-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Randomized Prim’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recursive-Division-Method"><span class="nav-number">5.</span> <span class="nav-text">Recursive Division Method</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-Algorithms"><span class="nav-number">6.</span> <span class="nav-text">Other Algorithms</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">7.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
             
 
           </div>
