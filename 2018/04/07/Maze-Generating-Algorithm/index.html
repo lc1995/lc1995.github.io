@@ -88,7 +88,7 @@
 <meta property="og:description" content="Maze generation algorithms are automated methods for the creation of mazes.">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://lc1995.github.io/images/RecursiveDivision.png">
-<meta property="og:updated_time" content="2018-04-07T13:37:50.587Z">
+<meta property="og:updated_time" content="2018-04-08T13:40:17.715Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Maze Generating Algorithm">
 <meta name="twitter:description" content="Maze generation algorithms are automated methods for the creation of mazes.">
@@ -398,6 +398,7 @@
 <h1 id="Recursive-Division-Method"><a href="#Recursive-Division-Method" class="headerlink" title="Recursive Division Method"></a>Recursive Division Method</h1><p>Mazes can be created with recursive division, an algorithm which works as follows: Begin with the maze’s space with no walls. Call this a chamber. Divide the chamber with a randomly positioned wall (or multiple walls) where each wall contains a randomly positioned passage opening within it. Then recursively repeat the process on the subchambers until all chambers are minimum sized. This method results in mazes with long straight walls crossing their space, making it easier to see which areas to avoid.</p>
 <p><img src="/images/RecursiveDivision.png" alt=""></p>
 <h1 id="Other-Algorithms"><a href="#Other-Algorithms" class="headerlink" title="Other Algorithms"></a>Other Algorithms</h1><p>Other algorithms exist that require only enough memory to store one line of a 2D maze or one plane of a 3D maze. They prevent loops by storing which cells in the current line are connected through cells in the previous lines, and never remove walls between any two cells already connected.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Realization in Unity can be found in my <a href="https://github.com/lc1995/GraphSearch" target="_blank" rel="noopener">github</a>, including DFS and Prim’s Algorithm.</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><ul>
 <li>DFS: Long corridors.</li>
 <li>Kruskal: Regular patterns.</li>
@@ -599,7 +600,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Graph-Theory-Based-Methods"><span class="nav-number">1.</span> <span class="nav-text">Graph Theory Based Methods</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Depth-First-Search"><span class="nav-number">2.</span> <span class="nav-text">Depth First Search</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Kruskal’s-Algorithm"><span class="nav-number">3.</span> <span class="nav-text">Randomized Kruskal’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Prim’s-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Randomized Prim’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recursive-Division-Method"><span class="nav-number">5.</span> <span class="nav-text">Recursive Division Method</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-Algorithms"><span class="nav-number">6.</span> <span class="nav-text">Other Algorithms</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">7.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Graph-Theory-Based-Methods"><span class="nav-number">1.</span> <span class="nav-text">Graph Theory Based Methods</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Depth-First-Search"><span class="nav-number">2.</span> <span class="nav-text">Depth First Search</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Kruskal’s-Algorithm"><span class="nav-number">3.</span> <span class="nav-text">Randomized Kruskal’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Prim’s-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Randomized Prim’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recursive-Division-Method"><span class="nav-number">5.</span> <span class="nav-text">Recursive Division Method</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-Algorithms"><span class="nav-number">6.</span> <span class="nav-text">Other Algorithms</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Code"><span class="nav-number">7.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
             
 
           </div>
