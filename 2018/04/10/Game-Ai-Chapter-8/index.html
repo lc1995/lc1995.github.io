@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Game,Artificial Intelligence," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 5.">
+<meta name="keywords" content="Game,Artificial Intelligence">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Game Ai Chapter 8">
+<meta property="og:url" content="http://lc1995.github.io/2018/04/10/Game-Ai-Chapter-8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 5.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lc1995.github.io/images/SimplePov.png">
+<meta property="og:image" content="http://lc1995.github.io/images/ExpandedGeometry.png">
+<meta property="og:image" content="http://lc1995.github.io/images/NavMesh.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Pacman.png">
+<meta property="og:image" content="http://lc1995.github.io/images/Zigzag.png">
+<meta property="og:image" content="http://lc1995.github.io/images/InvisibleArea.png">
+<meta property="og:image" content="http://lc1995.github.io/images/FinelyGranulatedGraph.png">
+<meta property="og:image" content="http://lc1995.github.io/images/FloodFill.png">
+<meta property="og:image" content="http://lc1995.github.io/images/KinksInPathFinding.png">
+<meta property="og:image" content="http://lc1995.github.io/images/PassabilityBetweenEdges.png">
+<meta property="og:image" content="http://lc1995.github.io/images/ASimpleGraph.png">
+<meta property="og:image" content="http://lc1995.github.io/images/LookupTable.png">
+<meta property="og:image" content="http://lc1995.github.io/images/LookupTable2.png">
+<meta property="og:image" content="http://lc1995.github.io/images/TwiddlingOfThumbs.png">
+<meta property="og:image" content="http://lc1995.github.io/images/ResultAfterSmoothing.png">
+<meta property="og:image" content="http://lc1995.github.io/images/HierarchicalPathFinding.png">
+<meta property="og:updated_time" content="2018-04-10T14:52:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Game Ai Chapter 8">
+<meta name="twitter:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the Chapter 5.">
+<meta name="twitter:image" content="http://lc1995.github.io/images/SimplePov.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lc1995.github.io/2018/04/10/Game-Ai-Chapter-8/"/>
+
+
+
+
+
+  <title>Game Ai Chapter 8 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/04/10/Game-Ai-Chapter-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chang Lin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Game Ai Chapter 8</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T00:06:16+02:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index">
+                    <span itemprop="name">AI</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/10/Game-Ai-Chapter-8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/10/Game-Ai-Chapter-8/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This is the reading note after reading <programming game="" ai="" by="" example=""> by Mat Buckland.</programming></p>
+<p>Here is the part of the Chapter 5.</p>
+<a id="more"></a>
+<h1 id="Navigation-Graph-Construction"><a href="#Navigation-Graph-Construction" class="headerlink" title="Navigation Graph Construction"></a>Navigation Graph Construction</h1><p>When we want to apply a search algorithm in our game, we should first convert the pertinent spatial information into a graph-like data structure. There are different pupular methods utilized in modern games.</p>
+<h2 id="Tile-Based"><a href="#Tile-Based" class="headerlink" title="Tile Based"></a>Tile Based</h2><p>Each graph node represents the center of a cell, with the graph edges denoting the connections between adjacent cells. We will also use information of terrain type to weight the edges of the navigation graph accordingly.</p>
+<p>The downside to using cells as the skeleton for a navgraph is that the search spaces can quickly become extremely large. </p>
+<h2 id="Points-of-Visibility"><a href="#Points-of-Visibility" class="headerlink" title="Points of Visibility"></a>Points of Visibility</h2><p>A points of visibility (POV) navigation graph is created by placing graph nodes, usually by hand, at important points in the environment such that each graph node has line of sight to at least one other.</p>
+<p><img src="/images/SimplePov.png" alt=""></p>
+<p>One feature of POV graphs is that they may be easily expanded to include nodes that proffer information over and above the connectivity data. For example, nodes can easily be added to a POV graph to represent good sniping, cover, or ambush positions. </p>
+<p>The downside is that if a game map is large and complex the map designer can spend an awful lot of precious development time positioning and tweaking the graph.</p>
+<p>A POV graph can also be problematic if you plan to include any type of map generation feature, since you must then develop some automated method to generate the POV graph structure as well for the new maps to be of any use. One solution for this problem, however, is to use expanded geometry techniques.</p>
+<h2 id="Expanded-Geometry"><a href="#Expanded-Geometry" class="headerlink" title="Expanded Geometry"></a>Expanded Geometry</h2><p>If a game environment is constructed from polygons it’s possible to use the information present in those shapes to automatically create a POV graph, which, for large maps can be a real time-saver. This is achieved by first expanding the polygons by an amount proportional to the bounding radius of the game agents. See Figures 8.2 A and B. The vertices defining this expanded geometry are then added as nodes to a navigation graph. Finally, an algorithm is run to test for line of sight between the vertices, and edges are added to the graph appropriately. Figure 8.2 C shows the finished navigation graph.</p>
+<p><img src="/images/ExpandedGeometry.png" alt=""></p>
+<h2 id="NavMesh"><a href="#NavMesh" class="headerlink" title="NavMesh"></a>NavMesh</h2><p>One approach growing in popularity with game developers is to use a network of convex polygons, called a navmesh, to describe the walkable areas of a game environment.</p>
+<p>A convex polygon has the valuable property that it allows unobstructed travel from any point in the polygon to any other. This is useful because it enables an environment to be represented using a graph where each node represents a convex space (instead of a point).</p>
+<p><img src="/images/NavMesh.png" alt=""></p>
+<p>The advantage of navmesh:</p>
+<ol>
+<li>The data structure required to store one is compact and can be searched very quickly.</li>
+<li>It’s possible to use algorithms to partition the walkable areas of the maps automatically.</li>
+</ol>
+<h1 id="Granularity"><a href="#Granularity" class="headerlink" title="Granularity"></a>Granularity</h1><h2 id="Coarsely-Granulated-Graph"><a href="#Coarsely-Granulated-Graph" class="headerlink" title="Coarsely Granulated Graph"></a>Coarsely Granulated Graph</h2><p>If a game restricts its agents to movement along the edges of a navigation graph only, such as the movement of the characters in the Pac-Man range of games , then a coarsely granulated navgraph is the perfect choice. </p>
+<p><img src="/images/Pacman.png" alt=""></p>
+<p>Notice that the agent may not be in the exact position of the node. So when we move the agent into position, the AI must do the following steps:</p>
+<ol>
+<li>Find the closest visible graph node to the NPC’s current location, say, node A.</li>
+<li>Find the closest visible graph node to the target location, say, node B.</li>
+<li>Use a search algorithm to find the least cost path from A to B.</li>
+<li>Move the NPC to node A.</li>
+<li>Move the NPC along the path calculated in step 3.</li>
+<li>Move the NPC from B to the target location.</li>
+</ol>
+<p>However, the above steps have two drawbacks.</p>
+<p>One is that due to the coarseness of the navigation graph there will still be many occasions where an agent will zigzag unnaturally at the start and end points of a path.</p>
+<p><img src="/images/Zigzag.png" alt=""></p>
+<p>The other one is when using coarse graphs there are almost always a few positions on the map to which there is no line of sight from any of the graph nodes, effectively rendering those areas invisible to any path planner.</p>
+<p><img src="/images/InvisibleArea.png" alt=""></p>
+<h2 id="Finely-Granulated-Graph"><a href="#Finely-Granulated-Graph" class="headerlink" title="Finely Granulated Graph"></a>Finely Granulated Graph</h2><p>Poor paths and inaccessible positions can be improved by increasing the granularity of the navigation graph.</p>
+<p><img src="/images/FinelyGranulatedGraph.png" alt=""></p>
+<p>Creating a graph like this by hand is extremely tedious, so a flood fill algorithm is utilized by the map editor to do the majority of the work.</p>
+<p>The detail of flood fill algorithm can be found in <a href="https://en.wikipedia.org/wiki/Flood_fill" target="_blank" rel="noopener">wiki</a>.</p>
+<p><img src="/images/FloodFill.png" alt=""></p>
+<h2 id="Spatial-Partitioning"><a href="#Spatial-Partitioning" class="headerlink" title="Spatial Partitioning"></a>Spatial Partitioning</h2><p>Remember when we apply the pathfinding algorithm, we should firstly determine the closest visible node to a given position. If this search is undertaken by iterating through all the nodes in order to find the closest, the performance will be in O(n) time.</p>
+<p>Instead, we can use spatial partitioning to speed up proximity queries. For navigation graphs of over a couple hundred nodes, spatial partitioning gives dramatic speed increases as the search time becomes a function of the node density, O(d), rather than the number of nodes; and since the density of nodes throughout navgraphs tends to be fairly consistent, the time taken to do a node proximity query will be constant.</p>
+<h1 id="Dijkstra-in-Item-Searching"><a href="#Dijkstra-in-Item-Searching" class="headerlink" title="Dijkstra in Item Searching"></a>Dijkstra in Item Searching</h1><p>Usually the best way to search for the shortest path is AStar algorithm. However, supposed there are many instances of item in our game environment of the particular type. Consequently, when using A* to search for the closest instance of an item type, a search must be completed for each instance present in the game world before the one with the least cost path can be chosen as the best item to move toward. (e.g. it’s not uncommon for RTS game environments to include dozens or even hundreds of instances of resources like trees or gold.)</p>
+<p>When many similar item types are present, Dijkstra’s algorithm is the better choice. As you’ve learned, Dijkstra’s algorithm “grows” a shortest path tree outward from the root node until either the target has been reached or the entire graph has been explored. As soon as the item searched for is located, the algorithm will terminate and the SPT will contain the path from the root to the closest item of the desired type. In other words, no matter how many instances of an item type are present in the game world, Dijkstra’s algorithm only needs to be run once to find the least cost path to one of them.</p>
+<h1 id="Path-Smoothing"><a href="#Path-Smoothing" class="headerlink" title="Path Smoothing"></a>Path Smoothing</h1><p>Quite often, and especially if a game’s navigation graph is in the shape of a grid, the paths created by the path planner tend to contain unnecessary edges, producing kinks like those shown in the following figure.</p>
+<p><img src="/images/KinksInPathFinding.png" alt=""></p>
+<h2 id="Path-Smoothing-Rough-but-Quick"><a href="#Path-Smoothing-Rough-but-Quick" class="headerlink" title="Path Smoothing Rough but Quick"></a>Path Smoothing Rough but Quick</h2><p>A reasonably quick method for smoothing a path works by checking the “passability” between adjacent edges. If one of the edges is superfluous, the two edges are replaced with one. </p>
+<p><img src="/images/PassabilityBetweenEdges.png" alt=""></p>
+<p>The algorithm proceeds as follows: First, two iterators, E1 and E2, are positioned at the first and second path edges respectively. Then these steps are followed:</p>
+<ol>
+<li>Grab the source position of E1.</li>
+<li>Grab the destination position of E2.</li>
+<li>If the agent can move between these two positions unobstructed by<br>the world geometry, assign the destination of E1 to that of E2 and remove E2 from the path. Reassign E2 to the new edge following E1. (Note that this is not a simple line-of-sight test as an entity’s size must be taken into consideration — it must be able to move between the two positions without bumping into any walls.)</li>
+<li>If the agent cannot move unobstructed between the two positions, assign E2 to E1 and advance E2.</li>
+<li>Repeat steps until the destination of E2 is equal to the destination of the path.</li>
+</ol>
+<h2 id="Path-Smoothing-Precise-but-Slow"><a href="#Path-Smoothing-Precise-but-Slow" class="headerlink" title="Path Smoothing Precise but Slow"></a>Path Smoothing Precise but Slow</h2><p>The previous algorithm is not perfect. The algorithm only checks the passability between adjacent edges, but not all pairs of edges. A more precise smoothing algorithm must iterate through all the edges from E1 to the final edge each time E1 is advanced. However, although precise, this method is much slower because many additional intersection tests have to be made. </p>
+<p>Pay attention that some of the important edges cannot be deleted, like the bridge over a river.</p>
+<h1 id="Methods-for-Reducing-CPU-Overhead"><a href="#Methods-for-Reducing-CPU-Overhead" class="headerlink" title="Methods for Reducing CPU Overhead"></a>Methods for Reducing CPU Overhead</h1><p>If a game has oodles of AI controlled agents running around, all able to request paths at any time, then load spikes can occur when too many of them simulta- neously request searches. When this happens, the fluid flow of the game will be interrupted as the CPU attempts to keep up with the demands put on it, thus creating a jerky, stuttering motion. Therefore, we need to lessen the likelihood of load spikes by reducing the per-update overhead of path planning requests.</p>
+<h2 id="Precalculated-Paths"><a href="#Precalculated-Paths" class="headerlink" title="Precalculated Paths"></a>Precalculated Paths</h2><p>If your game environment is static and you have memory to spare, a good option for lessening the CPU load is to use precalculated lookup tables, enabling paths to be determined extremely quickly.<br>This can be calculated using Dijkstra’s algorithm to create the shortest paths tree (SPT) for every node in the graph.</p>
+<p><img src="/images/ASimpleGraph.png" alt=""></p>
+<p><img src="/images/LookupTable.png" alt=""></p>
+<h2 id="Precalculated-Costs"><a href="#Precalculated-Costs" class="headerlink" title="Precalculated Costs"></a>Precalculated Costs</h2><p>Sometimes it’s necessary for a game agent to calculate the cost of traveling from one place to another. For example, together with other features, an agent may factor in the cost of a game object when deciding if it wants to pick up that item. </p>
+<p>This is constructed in a similar way to the all-pairs route table discussed in the last section, except this time the elements of the table represent the total cost to follow the shortest path from one node to any other.</p>
+<p><img src="/images/LookupTable2.png" alt=""></p>
+<h2 id="Time-Sliced-Path-Planning"><a href="#Time-Sliced-Path-Planning" class="headerlink" title="Time-Sliced Path Planning"></a>Time-Sliced Path Planning</h2><p>An alternative to precalculating lookup tables to lighten the CPU load is to allocate a fixed amount of CPU resources per update step for all the search requests and to distribute these resources evenly between the searches. This is achieved by dividing up the searches over multiple time steps, a tech- nique known as time slicing.</p>
+<p>First of all, the Dijkstra and A<em> searches must be modified in such a way that they can search a graph over multiple update steps. Then, as agents request searches, their path planners create instances of the relevant searches (A</em> or Dijkstra) and register themselves with a path manager class. The path manager keeps a list of pointers to all active path planners, which it iterates through each time step, evenly sharing the available CPU resources between them. When a search is either completed successfully or a path is not located, the path planner notifies its owner by sending it a message.</p>
+<h3 id="Preventing-the-Twiddling-of-Thumbs"><a href="#Preventing-the-Twiddling-of-Thumbs" class="headerlink" title="Preventing the Twiddling of Thumbs"></a>Preventing the Twiddling of Thumbs</h3><p>One consequence of time-sliced path planning is that there will be a delay from the time an agent requests a path to the time it receives notification that the search has been successful or unsuccessful.</p>
+<p>A simple option is for the agent to seek toward its goal until it receives notification from the search manager that a path is ready, at which time it follows the path. Or in the situation the bot requests a search to an item type, it simply wanders until it receives notification.</p>
+<p>This works fine in most cases but it does present another problem: By the time a path is formulated, an agent may have moved quite a distance from the position where the search was initially requested. Consequently, the first few nodes of the path returned from the planner will be located in such a way that the agent will need to backtrack to follow them.</p>
+<p><img src="/images/TwiddlingOfThumbs.png" alt=""></p>
+<p>The above problem can be solved by combining time-sliced path planning with some sort of path smoothing.</p>
+<p><img src="/images/ResultAfterSmoothing.png" alt=""></p>
+<h3 id="Always-the-Same-Path"><a href="#Always-the-Same-Path" class="headerlink" title="Always the Same Path"></a>Always the Same Path</h3><p>If you see that your agents are often following each other in single file to reach a location or item, and you are utilizing A* to generate the paths, you can vary the path produced by the search algorithm by adding some noise to the heuristic. This will result in slightly different paths for the same search.</p>
+<h2 id="Hierarchical-Pathfinding"><a href="#Hierarchical-Pathfinding" class="headerlink" title="Hierarchical Pathfinding"></a>Hierarchical Pathfinding</h2><p>Another technique available to cut down the CPU overhead of graph searches is named hierarchical pathfinding.</p>
+<p>This concept can be replicated in a computer by designing a path planner that utilizes two superimposed navgraphs of different granularities — one coarse, one fine. The coarsely granulated graph deals with the high level, while the finely granulated graph deals with the low level. For example, in the game American Civil War, a hierarchical path planner for this game could utilize a coarsely granulated graph to represent connectivity information at the state level and a finely granulated one at the level of towns and roads. The planner then uses the finely grained navgraph to calculate paths between the states as and when the unit requires them. In this way searches of the finely grained graph are kept shallow, and therefore quick.</p>
+<p><img src="/images/HierarchicalPathFinding.png" alt=""></p>
+<h1 id="Getting-Out-of-Sticky-Situations"><a href="#Getting-Out-of-Sticky-Situations" class="headerlink" title="Getting Out of Sticky Situations"></a>Getting Out of Sticky Situations</h1><p>A problem players of computer games witness far too regularly is that of NPCs getting stuck. Given a simplest example, consider your agent is following a calculated path, and someone puts an obstacle in front of the agent. Then your agent will get stuck at that time, unless it recalculates the path again.</p>
+<p>Therefore, to avoid this, one way is to calculate the distance to its current waypoint each update step. If this value remains about the same or consistently increases, then it’s a fair bet the agent is either stuck or being pushed backward by the separation force from neighboring agents.</p>
+<p>Another way is to calculate an expected arrival time for each waypoint and replan if the current time exceeds the expected.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Game/" rel="tag"># Game</a>
+          
+            <a href="/tags/Artificial-Intelligence/" rel="tag"># Artificial Intelligence</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/07/Maze-Generating-Algorithm/" rel="next" title="Maze Generating Algorithm">
+                <i class="fa fa-chevron-left"></i> Maze Generating Algorithm
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chang Lin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/lc1995" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:lucianolin1995@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Navigation-Graph-Construction"><span class="nav-number">1.</span> <span class="nav-text">Navigation Graph Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tile-Based"><span class="nav-number">1.1.</span> <span class="nav-text">Tile Based</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Points-of-Visibility"><span class="nav-number">1.2.</span> <span class="nav-text">Points of Visibility</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Expanded-Geometry"><span class="nav-number">1.3.</span> <span class="nav-text">Expanded Geometry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NavMesh"><span class="nav-number">1.4.</span> <span class="nav-text">NavMesh</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Granularity"><span class="nav-number">2.</span> <span class="nav-text">Granularity</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Coarsely-Granulated-Graph"><span class="nav-number">2.1.</span> <span class="nav-text">Coarsely Granulated Graph</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Finely-Granulated-Graph"><span class="nav-number">2.2.</span> <span class="nav-text">Finely Granulated Graph</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spatial-Partitioning"><span class="nav-number">2.3.</span> <span class="nav-text">Spatial Partitioning</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dijkstra-in-Item-Searching"><span class="nav-number">3.</span> <span class="nav-text">Dijkstra in Item Searching</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Path-Smoothing"><span class="nav-number">4.</span> <span class="nav-text">Path Smoothing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Path-Smoothing-Rough-but-Quick"><span class="nav-number">4.1.</span> <span class="nav-text">Path Smoothing Rough but Quick</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Path-Smoothing-Precise-but-Slow"><span class="nav-number">4.2.</span> <span class="nav-text">Path Smoothing Precise but Slow</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Methods-for-Reducing-CPU-Overhead"><span class="nav-number">5.</span> <span class="nav-text">Methods for Reducing CPU Overhead</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Precalculated-Paths"><span class="nav-number">5.1.</span> <span class="nav-text">Precalculated Paths</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Precalculated-Costs"><span class="nav-number">5.2.</span> <span class="nav-text">Precalculated Costs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Time-Sliced-Path-Planning"><span class="nav-number">5.3.</span> <span class="nav-text">Time-Sliced Path Planning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Preventing-the-Twiddling-of-Thumbs"><span class="nav-number">5.3.1.</span> <span class="nav-text">Preventing the Twiddling of Thumbs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Always-the-Same-Path"><span class="nav-number">5.3.2.</span> <span class="nav-text">Always the Same Path</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hierarchical-Pathfinding"><span class="nav-number">5.4.</span> <span class="nav-text">Hierarchical Pathfinding</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Getting-Out-of-Sticky-Situations"><span class="nav-number">6.</span> <span class="nav-text">Getting Out of Sticky Situations</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chang Lin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'lc1995',
+            repo: 'lc1995.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'f8c2095d8dc16bb768802ae8cbd0e7917eb7cb4a',
+            
+                client_id: 'ce5223552f85fd516b62'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
