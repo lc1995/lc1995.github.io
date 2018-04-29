@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Reinforcement Learning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Before we go into fully reinforcement learning, we first introduce a simpler model — K-armed Bandit Problem.">
+<meta name="keywords" content="Reinforcement Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reinforcement Learning Chapter 2">
+<meta property="og:url" content="http://lc1995.github.io/2018/04/28/Reinforcement-Learning-Chapter-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Before we go into fully reinforcement learning, we first introduce a simpler model — K-armed Bandit Problem.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lc1995.github.io/images/GreedyAndEpsilonGreedy.png">
+<meta property="og:image" content="http://lc1995.github.io/images/OptimisticInitial.png">
+<meta property="og:image" content="http://lc1995.github.io/images/UCB.png">
+<meta property="og:image" content="http://lc1995.github.io/images/GradientBandit.png">
+<meta property="og:image" content="http://lc1995.github.io/images/BanditComparison.png">
+<meta property="og:updated_time" content="2018-04-29T13:44:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Reinforcement Learning Chapter 2">
+<meta name="twitter:description" content="Before we go into fully reinforcement learning, we first introduce a simpler model — K-armed Bandit Problem.">
+<meta name="twitter:image" content="http://lc1995.github.io/images/GreedyAndEpsilonGreedy.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lc1995.github.io/2018/04/28/Reinforcement-Learning-Chapter-2/"/>
+
+
+
+
+
+  <title>Reinforcement Learning Chapter 2 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/04/28/Reinforcement-Learning-Chapter-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chang Lin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Reinforcement Learning Chapter 2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T18:18:36+02:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Reinforcement-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Reinforcement Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/28/Reinforcement-Learning-Chapter-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/28/Reinforcement-Learning-Chapter-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Before we go into fully reinforcement learning, we first introduce a simpler model — <strong>K-armed Bandit Problem</strong>. </p>
+<a id="more"></a>
+<h1 id="A-K-armed-Bandit-Problem"><a href="#A-K-armed-Bandit-Problem" class="headerlink" title="A K-armed Bandit Problem"></a>A K-armed Bandit Problem</h1><blockquote>
+<p>You are faced repeatedly with a choice among k different options, or actions. After each choice you receive a numerical reward chosen from a stationary probability distribution that depends on the action you selected. Your objective is to maximize the expected total reward over some time period, for example, over 1000 action selections, or time steps.</p>
+</blockquote>
+<p>Here you can imagine that you walk into a gambling house and see k bandit machines in front of you. They looks totally the same, but the amount of coins they are expected to spit is different, and you don’t know that expected values. Then you need to develop strategies to obtain the maximized reward. That’s the most tranditional bandit problem.</p>
+<p>Here we give some notations:</p>
+<ul>
+<li>$A_{t}$ : The action we select at time step t</li>
+<li>$R_{t}$ : The reward of the action we select at time step t</li>
+<li>$q_{*}(a)$ : The expected reward of action a</li>
+<li>$Q_{t}(a)$ : The estimate reward of action a at time step t</li>
+</ul>
+<p>$q_{*}(a) = \mathbb{E}[R_{t} | A_{t} = a]$</p>
+<p>We would like $Q_{t}(a)$ to be close to $q_{*}(a)$.</p>
+<p>Here we need to mention the most common problem in solving the problem — the trade off between <strong>exploration</strong> and <strong>exploitation</strong>. Why this? Supposed that you try multiple machines and find the one with the highest reward. One possible approach is that from now on you always select the optimal one. But there exist a problem that the bandit you choose is not the best, but only currently optimal. It means that there may exist some other bandits which have a higher expectation(mean value), but unfortunately behave bad in the first few trials(because the propability satisfies some distribution and has error). That’s why we need to explore more and try some other bandit.</p>
+<p>Exploration here means the selection of nongreedy actions, while exploitation means the selection of that optimal actions. Exploitation is the right thing to do to maximize the expected reward on the one step, but exploration may produce the greater total reward in the long run.</p>
+<p>In all, whether it is better to explore or exploit depends in a complex way on the precise values of the estimates, uncertainties, and the number of remaining steps. And we will also learn some simple algorithms and methods to balance between exploration and exploitation.</p>
+<h1 id="Sample-Average"><a href="#Sample-Average" class="headerlink" title="Sample Average"></a>Sample Average</h1><p>There are several ways to estimate the reward of a given action. One common method is <strong>sample average</strong>.</p>
+<p>$Q_{t}(a) = \dfrac{sum~of~rewards~when~a~taken~prior~to~t}{number~of~times~a~taken~prior~to~t} =<br>\dfrac{\Sigma_{i=1}^{t-1}R_i\cdot\mathbb{1}_{A_i=a}}{\Sigma_{i=1}^{t-1}\mathbb{1}_{A_i=a}}$</p>
+<p>And the simplest action selection rule is to select one of the actions with the highest estimated value(Greedy algorithm).</p>
+<p>$A_t = arg_a maxQ_t(a)$</p>
+<h1 id="varepsilon-greedy"><a href="#varepsilon-greedy" class="headerlink" title="$\varepsilon$-greedy"></a>$\varepsilon$-greedy</h1><p>As we mention above, we need to balance the exploration and exploitation. One simple approach is that we exploit greedily most of the time,  but every once in a while, say with small probability $\varepsilon$, instead select randomly from among all the actions with equal probability, independently of the action-value estimates. </p>
+<p>An advantage of these methods is that, in the limit as the number of steps increases, every action will be sampled an infinite number of times, thus ensuring that all the $Q_t(a)$ converge to $q_*(a)$.</p>
+<p>Here we can compare the performance between these two algorithms.</p>
+<p><img src="/images/GreedyAndEpsilonGreedy.png" alt=""></p>
+<p>It is obvious that $\varepsilon$-greedy behaves better than greedy due to the simple balance between exploration and exploitation.</p>
+<h1 id="Nonstationary-Problem"><a href="#Nonstationary-Problem" class="headerlink" title="Nonstationary Problem"></a>Nonstationary Problem</h1><p>The averaging methods discussed so far are appropriate for stationary bandit problems, that is, for bandit problems in which the reward probabilities do not change over time. However, we will often encounter nonstationary problems. For example, the expected reward of bandits changes over time. In this case, the above algorithms will not suit anymore.</p>
+<p>In nonstationary problem, we would like to focus more on recent rewards, instead of the total average rewards, as done in sample average. One of the most popular ways of doing this is to use a constant step-size parameter.</p>
+<p>$Q_{n+1} = Q_n + \alpha[R_n - Q_n]$</p>
+<p>By using a constant step-size $\alpha$ which is less than 1, each time an action is selected, the original reward(before update) is reduced by a fraction. It means that the weight given to $R_i$ decreases as the number of intervening rewards increases. This satisfies the idea we want — to focus more on recent reward. This method is also called <strong>exponential recency-weighted average</strong>.</p>
+<h1 id="Optimisitic-Initial-Values"><a href="#Optimisitic-Initial-Values" class="headerlink" title="Optimisitic Initial Values"></a>Optimisitic Initial Values</h1><p>All the methods we have discussed so far are dependent to some extent on the initial action-value estimate, $Q_1(a)$, let’s say they are <strong>biased</strong> by their initial values. However, this bias usually is not a problem, but instead can be very helpful.</p>
+<p>One common usage is to encourage exploration by setting a higher initial values. For example, instead of setting the initial values to 0, we can set them to +5, which is higher than $q_*(a)$. Then whichever action is selected, the reward is less than the starting estimates, and the learner switches to other actions. The result is that all actions are tried several times before the value estimates converge. The system does a fair exploration even if greedy actions are selected all the time.</p>
+<p><img src="/images/OptimisticInitial.png" alt=""></p>
+<h1 id="Upper-Confidence-Bound"><a href="#Upper-Confidence-Bound" class="headerlink" title="Upper Confidence Bound"></a>Upper Confidence Bound</h1><p>Before in $\varepsilon$-greedy, we randomly select among all actions every once in a while. However, this method has no preference for those that are nearly greedy or particularly uncertain. It would be better to select among the non-greedy actions according to their potential for actually being optimal, taking into account both how close their estimates are to being maximal and the uncertainties in those estimates. One effective way for doing this is as following:</p>
+<p>$A_t = arg_a max[Q_t(a) + c \sqrt{\dfrac {\ln{t}} {N_t(a)} }]$</p>
+<p>Here the square-root term is the measure of the uncertainty or variance of an action. If an action has been selected for many times, this term will be small and represents the true action-value estimate. If an action is seldomly selected, this term will be large and represents the upper bound of that action, which encourage the agent to explore.</p>
+<p><img src="/images/UCB.png" alt=""></p>
+<p>As we can see, UCB performs better than $\varepsilon$-greedy, but has some disavantages.</p>
+<ol>
+<li>It cannot deal with nonstationary problem because the measure of uncertainty is not meaningful anymore.</li>
+<li>It cannot deal with problems with large state spaces.</li>
+</ol>
+<h1 id="Gradient-Bandits-Problem"><a href="#Gradient-Bandits-Problem" class="headerlink" title="Gradient Bandits Problem"></a>Gradient Bandits Problem</h1><p>Instead of action value estimate, we can also learn a numerical preference for each action a, which we denote $H_t(a)$. The larger the preference, the more often that action is taken. The probability of selecting an action can be determined by a <strong>soft-max distribution</strong> as following:</p>
+<p>$Pr\{A_t = a\} = \dfrac{e^{H_t(a)}} {\Sigma_{b=1}^k e^{H_t(b)}} = \pi_t(a)$</p>
+<p>There is a natural learning algorithm for this setting based on the idea of stochastic gradient ascent. On each step, after selecting action $A_t$ and receiving the reward $R_t$, preferences are updated by:</p>
+<p>$H_{t+1}(A_t) = H_t(A_t) + \alpha(R_t - \bar{R}_t)(1 - \pi_t(A_t))$</p>
+<p>$H_{t+1}(A_t) = H_t(A_t) - \alpha(R_t - \bar{R}_t)\pi_t(A_t), \hspace{2cm} for~all~a\neq~A_t$</p>
+<p>The $\bar{R}_t$ term serves as a baseline with which the reward is compared.</p>
+<p><img src="/images/GradientBandit.png" alt=""></p>
+<h1 id="Associative-Search"><a href="#Associative-Search" class="headerlink" title="Associative Search"></a>Associative Search</h1><p>So far in this chapter we have considered only nonassociative tasks, that is, tasks in which there is no need to associate different actions with different situations. For example, in k-armed bandits problem, we only need to search for the optimal action without worrying the action we selected will affect the environment.</p>
+<p>However, in a general reinforcement learning task there is more than one situation, and the goal is to learn a policy: a mapping from situations to the actions that are best in those situations. For example, in nonstationary bandit problem, now you will received a hint about their action values each time you select an action. The hint here can be the machine changes the color of its display as it changes its action value. Although you still have no idea the true action values, you can try to estimate the action values according to these hints. That’s the main target we would like to learn in reinforcement learning — the <strong>Policy</strong>.</p>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p>In this chapter, we learn the simplest model of reinforcement learning — k-armed bandits problem, and also learn multiple useful methods to solve the problem. The $\varepsilon$-greedy methods choose randomly a small fraction of the time, whereas UCB methods choose deterministically but achieve exploration by subtly favoring at each step the actions that have so far received fewer samples. Gradient bandit algorithms estimate not action values, but action preferences, and favor the more preferred actions in a graded, probabilistic manner using a soft-max distribution. The simple expedient of initializing estimates optimistically causes even greedy methods to explore significantly.</p>
+<p>We use a graph to compare their performance with different parameter settings.</p>
+<p><img src="/images/BanditComparison.png" alt=""></p>
+<p>As we can see, all this methods are in inverted-U shapes, which means the parameter set for the method should be intermediate, not too large or too small. We can also observe that UCB performs the best among all these methods. To be true, we have some other sophisticated methods which is much more efficient in dealing with k-armed bandits problem, like <strong>Gittins</strong> or <strong>Bayesian</strong>, but their complexity and assumptions make them impractical for the full reinforcement learning problem that is our real focus.</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://zhuanlan.zhihu.com/p/21388070" target="_blank" rel="noopener">专治选择困难症——bandit算法</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/27323995" target="_blank" rel="noopener">强化学习经典入门书的读书笔记—第二篇（上）</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/27417146" target="_blank" rel="noopener">强化学习经典入门书的读书笔记—第二篇（下）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/20/Reinforcement-Learning-Introduction/" rel="next" title="Reinforcement Learning Introduction">
+                <i class="fa fa-chevron-left"></i> Reinforcement Learning Introduction
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chang Lin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/lc1995" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:lucianolin1995@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#A-K-armed-Bandit-Problem"><span class="nav-number">1.</span> <span class="nav-text">A K-armed Bandit Problem</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sample-Average"><span class="nav-number">2.</span> <span class="nav-text">Sample Average</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#varepsilon-greedy"><span class="nav-number">3.</span> <span class="nav-text">$\varepsilon$-greedy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nonstationary-Problem"><span class="nav-number">4.</span> <span class="nav-text">Nonstationary Problem</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Optimisitic-Initial-Values"><span class="nav-number">5.</span> <span class="nav-text">Optimisitic Initial Values</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Upper-Confidence-Bound"><span class="nav-number">6.</span> <span class="nav-text">Upper Confidence Bound</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradient-Bandits-Problem"><span class="nav-number">7.</span> <span class="nav-text">Gradient Bandits Problem</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Associative-Search"><span class="nav-number">8.</span> <span class="nav-text">Associative Search</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Summary"><span class="nav-number">9.</span> <span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">10.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chang Lin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'lc1995',
+            repo: 'lc1995.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'f8c2095d8dc16bb768802ae8cbd0e7917eb7cb4a',
+            
+                client_id: 'ce5223552f85fd516b62'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

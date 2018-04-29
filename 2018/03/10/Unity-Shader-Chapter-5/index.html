@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="《Unity Shader 入门精要》Chapter 5 – Reading Note">
+<meta name="description" content="《Unity Shader 入门精要》Chapter 5 — Reading Note">
 <meta name="keywords" content="Unity,Shader">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《Unity Shader 入门精要 Chapter 5》Reading Note">
 <meta property="og:url" content="http://lc1995.github.io/2018/03/10/Unity-Shader-Chapter-5/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="《Unity Shader 入门精要》Chapter 5 – Reading Note">
+<meta property="og:description" content="《Unity Shader 入门精要》Chapter 5 — Reading Note">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-10T19:35:35.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《Unity Shader 入门精要 Chapter 5》Reading Note">
-<meta name="twitter:description" content="《Unity Shader 入门精要》Chapter 5 – Reading Note">
+<meta name="twitter:description" content="《Unity Shader 入门精要》Chapter 5 — Reading Note">
 
 
 
@@ -352,7 +352,7 @@
       
 
       
-        <p>《Unity Shader 入门精要》Chapter 5 – Reading Note</p>
+        <p>《Unity Shader 入门精要》Chapter 5 — Reading Note</p>
 <a id="more"></a>
 <h2 id="Basic-Structure-of-Vertex-Fragment-Shader"><a href="#Basic-Structure-of-Vertex-Fragment-Shader" class="headerlink" title="Basic Structure of Vertex/Fragment Shader"></a>Basic Structure of Vertex/Fragment Shader</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">"MyShaderName"</span>&#123;</span><br><span class="line">    Properties&#123;</span><br><span class="line">        <span class="comment">// Properties</span></span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader&#123;</span><br><span class="line">        <span class="comment">// SubShader for video card A</span></span><br><span class="line">        Pass&#123;</span><br><span class="line">            <span class="comment">// States and Tags</span></span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Begin Cg code</span></span><br><span class="line">            CGPROGRAM</span><br><span class="line">            <span class="comment">// Compile code</span></span><br><span class="line">            <span class="comment">// It tells Unity which function corresponds to Vertex Shader, which function corresponds to Fragment Shader and so on.</span></span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> vertex vert</span></span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> fragment frag</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// Real Cg code</span></span><br><span class="line">            ...</span><br><span class="line"></span><br><span class="line">            <span class="comment">// End</span></span><br><span class="line">            ENGCG</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Other settings</span></span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader&#123;</span><br><span class="line">        <span class="comment">// SubShader for video card B</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Unity shader for fallback if all SubShader fail</span></span><br><span class="line">    Fallback <span class="string">"VertexLit"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Basic-Vertex-Shader-and-Fragment-Shader"><a href="#Basic-Vertex-Shader-and-Fragment-Shader" class="headerlink" title="Basic Vertex Shader and Fragment Shader"></a>Basic Vertex Shader and Fragment Shader</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">float4 <span class="title">vert</span>(<span class="params">float4 v : POSITION</span>) : SV_POSITION</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mul(UNITY_MATRIX_MVP, v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">fixed4 <span class="title">frag</span>(<span class="params"></span>) : SV_Target</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fixed4(<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -516,7 +516,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -831,6 +831,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

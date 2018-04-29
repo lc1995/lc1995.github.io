@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="讲道理，现在搭建个人博客不是一件很难的事情，网上教程一堆。不过实践起来还是发现有许多雷坑要踩。 这里我利用hexo搭配github搭建自己的个人博客，再使用Yelee作为博客的主题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-21T22:30:23.040Z">
+<meta property="og:updated_time" content="2018-04-28T15:07:20.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用hexo+github搭建个人博客">
 <meta name="twitter:description" content="讲道理，现在搭建个人博客不是一件很难的事情，网上教程一堆。不过实践起来还是发现有许多雷坑要踩。 这里我利用hexo搭配github搭建自己的个人博客，再使用Yelee作为博客的主题。">
@@ -356,16 +356,16 @@
 <p>这里我利用hexo搭配github搭建自己的个人博客，再使用Yelee作为博客的主题。</p>
 <a id="more"></a>
 <h2 id="安装Node-JS"><a href="#安装Node-JS" class="headerlink" title="安装Node.JS"></a><a href="#安装Node-JS" title="安装Node.JS"></a>安装Node.JS</h2><p><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.JS</a></p>
-<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a><a href="#安装hexo" title="安装hexo"></a>安装hexo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install hexo-cli -g</div><div class="line">npm install hexo –save</div></pre></td></tr></table></figure>
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a><a href="#安装hexo" title="安装hexo"></a>安装hexo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install hexo-cli -g</div><div class="line">npm install hexo --save</div></pre></td></tr></table></figure>
 
 <h2 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a><a href="#配置hexo" title="配置hexo"></a>配置hexo</h2><p>建立博客目录，并在目录内执行：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo init</div></pre></td></tr></table></figure>
 
 <p>安装相应插件：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> git部署</span></div><div class="line">npm install hexo-deployer-git –save</div><div class="line"><span class="meta">#</span><span class="bash"> markdown渲染</span></div><div class="line">npm install hexo-renderer-marked –save</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> git部署</span></div><div class="line">npm install hexo-deployer-git --save</div><div class="line"><span class="meta">#</span><span class="bash"> markdown渲染</span></div><div class="line">npm install hexo-renderer-marked --save</div></pre></td></tr></table></figure>
 
 <h2 id="配置github"><a href="#配置github" class="headerlink" title="配置github"></a><a href="#配置github" title="配置github"></a>配置github</h2><p>在博客根目录下找到_config.yml文件，打开并在文件最后找到deploy并修改（若没有则自行添加）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Deployment</div><div class="line">## Docs: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">https://hexo.io/docs/deployment.html</a></div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: <a href="https://github.com/lc1995/lc1995.github.io.git" target="_blank" rel="noopener">https://github.com/lc1995/lc1995.github.io.git</a>  # Here is your github page</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Deployment</div><div class="line">## Docs: https://hexo.io/docs/deployment.html</div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repo: https://github.com/lc1995/lc1995.github.io.git  # Here is your github page</div></pre></td></tr></table></figure>
 
 <h2 id="使用hexo"><a href="#使用hexo" class="headerlink" title="使用hexo"></a><a href="#使用hexo" title="使用hexo"></a>使用hexo</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span><span class="bash"> 新建文章</span></div><div class="line">hexo new article_name</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> 清空，重新生成，并且发布</span></div><div class="line">hexo clean &amp;&amp; hexo generate</div><div class="line">hexo deploy</div><div class="line"><span class="meta"></span></div><div class="line">#<span class="bash"> 启用本地服务器</span></div><div class="line"><span class="meta">#</span><span class="bash"> 默认端口：4000</span></div><div class="line">hexo server</div></pre></td></tr></table></figure>
 
@@ -380,7 +380,7 @@
 <p><a href="https://github.com/wuchong/jacman" target="_blank" rel="noopener">jacman</a></p>
 <p>   <strong>安装方法</strong></p>
 <p>   在根目录下</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone <a href="https://github.com/wuchong/jacman.git" target="_blank" rel="noopener">https://github.com/wuchong/jacman.git</a> themes/jacman</div></pre></td></tr></table></figure>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/wuchong/jacman.git themes/jacman</div></pre></td></tr></table></figure>
 
 <p>   然后修改根目录下的_config.yml文件，找到theme，修改为</p>
    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: jacman</div></pre></td></tr></table></figure>
@@ -400,19 +400,19 @@
 </ol>
 <p><a href="https://github.com/akfish/hexo-math" target="_blank" rel="noopener">hexo-math</a></p>
 <p>   <strong>安装方法</strong></p>
-   <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math –save</div></pre></td></tr></table></figure>
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math --save</div></pre></td></tr></table></figure>
 
-<h2 id="Typora下标显示问题："><a href="#Typora下标显示问题：" class="headerlink" title="Typora下标显示问题："></a><a href="#Typora下标显示问题：" title="Typora下标显示问题："></a>Typora下标显示问题：</h2><p>这里我使用typora作为markdown编辑器。其中存在一个问题在于typora的下标转义符~和markdown默认的下标转义符\<sub\>并不兼容。个人没有去修改markdown解析文件的能力=。=</sub\></p>
+<h2 id="Typora下标显示问题："><a href="#Typora下标显示问题：" class="headerlink" title="Typora下标显示问题："></a><a href="#Typora下标显示问题：" title="Typora下标显示问题："></a>Typora下标显示问题：</h2><p>这里我使用typora作为markdown编辑器。其中存在一个问题在于typora的下标转义符~和markdown默认的下标转义符\<sub\>并不兼容。个人没有去修改markdown解析文件的能力=。=&lt;/sub></sub\></p>
 <p>最后找到一个插件hexo-filter-sub，完美解决了这个问题。</p>
 <p><a href="https://github.com/bubkoo/hexo-filter-sub" target="_blank" rel="noopener">hexo-filter-sub</a></p>
 <p><strong>安装方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-filter-sub –save</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-filter-sub --save</div></pre></td></tr></table></figure>
 
 <h2 id="Yelee主题"><a href="#Yelee主题" class="headerlink" title="Yelee主题"></a><a href="#Yelee主题" title="Yelee主题"></a>Yelee主题</h2><blockquote>
 <p>Theme <strong>Yelee</strong> relies on <a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="noopener">Hexo-Theme-Yilia</a>, thanks for the author <a href="https://github.com/litten" target="_blank" rel="noopener">Litten</a>. Fix some bugs, change lots of styles, add several features. And then I made the theme. Yelee is mainly designed for fluent text reading. I change styles and add functions, meanwhile, try hard to keep this theme simple, stupid and clear. Theme DEMO: <a href="http://moxfive.xyz/" target="_blank" rel="noopener">MOxFIVE’s Blog</a></p>
 </blockquote>
 <p><strong>安装方法</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> <a href="https://github.com/MOxFIVE/hexo-theme-yelee.git" target="_blank" rel="noopener">https://github.com/MOxFIVE/hexo-theme-yelee.git</a> themes/yelee</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/MOxFIVE/hexo-theme-yelee.git themes/yelee</div></pre></td></tr></table></figure>
 
 <p>然后找到更目录下的_config.yml，找到theme，修改为：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: yelee</div></pre></td></tr></table></figure>
@@ -548,7 +548,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -863,6 +863,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

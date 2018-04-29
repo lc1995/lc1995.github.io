@@ -406,7 +406,7 @@
 <h3 id="Obstacle-Avoidance"><a href="#Obstacle-Avoidance" class="headerlink" title="Obstacle Avoidance"></a>Obstacle Avoidance</h3><blockquote>
 <p>Obstacle avoidance is a behavior that steers a vehicle to avoid obstacles lying in its path (An obstacle can be considered as a circle/sphere).</p>
 </blockquote>
-<p>We use a rectangular area – a detection box help to avoid obstacles. The box’s width is equal to the bounding radius of the vehicle, and it’s length is proportional to the vehicle’s current speed.</p>
+<p>We use a rectangular area — a detection box help to avoid obstacles. The box’s width is equal to the bounding radius of the vehicle, and it’s length is proportional to the vehicle’s current speed.</p>
 <p><img src="/images/AvoidObstacles.png" alt=""></p>
 <h4 id="Finding-the-Closest-Intersection-Point"><a href="#Finding-the-Closest-Intersection-Point" class="headerlink" title="Finding the Closest Intersection Point"></a>Finding the Closest Intersection Point</h4><ol>
 <li>Iterates through all the obstacles and tags those that are within a range for further consideration.</li>
@@ -455,7 +455,7 @@
 <h3 id="Group-Behaviors"><a href="#Group-Behaviors" class="headerlink" title="Group Behaviors"></a>Group Behaviors</h3><blockquote>
 <p>Group behaviors are steering behaviors that take into consideration some or all of the other vehicles in the game world.</p>
 </blockquote>
-<p>For example, the flocking behavior is a good example of a group behavior. In fact, flocking is a combination of three group behaviors – <strong>cohesion</strong>, <strong>separation</strong>, and <strong>alignment</strong> – all working together.</p>
+<p>For example, the flocking behavior is a good example of a group behavior. In fact, flocking is a combination of three group behaviors — <strong>cohesion</strong>, <strong>separation</strong>, and <strong>alignment</strong> — all working together.</p>
 <p>To determine the steering force for a group behavior, a vehicle will con- sider all other vehicles within a circular area of predefined size — known as the neighborhood radius — centered on the vehicle.</p>
 <p><img src="/images/GroupBehavior.png" alt=""></p>
 <p><img src="/images/Separation.png" alt=""></p>
@@ -634,7 +634,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -949,6 +949,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

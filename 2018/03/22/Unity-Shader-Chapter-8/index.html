@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="《Unity Shader 入门精要》Chapter 8 – Reading Note">
+<meta name="description" content="《Unity Shader 入门精要》Chapter 8 — Reading Note">
 <meta name="keywords" content="Unity,Shader">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity Shader Chapter 8">
 <meta property="og:url" content="http://lc1995.github.io/2018/03/22/Unity-Shader-Chapter-8/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="《Unity Shader 入门精要》Chapter 8 – Reading Note">
+<meta property="og:description" content="《Unity Shader 入门精要》Chapter 8 — Reading Note">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://lc1995.github.io/images/Rendering%20Order.png">
 <meta property="og:image" content="http://lc1995.github.io/images/Overlap.png">
@@ -96,7 +96,7 @@
 <meta property="og:updated_time" content="2018-03-22T17:29:21.167Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity Shader Chapter 8">
-<meta name="twitter:description" content="《Unity Shader 入门精要》Chapter 8 – Reading Note">
+<meta name="twitter:description" content="《Unity Shader 入门精要》Chapter 8 — Reading Note">
 <meta name="twitter:image" content="http://lc1995.github.io/images/Rendering%20Order.png">
 
 
@@ -359,7 +359,7 @@
       
 
       
-        <p>《Unity Shader 入门精要》Chapter 8 – Reading Note</p>
+        <p>《Unity Shader 入门精要》Chapter 8 — Reading Note</p>
 <a id="more"></a>
 <h1 id="Transparent-Effect"><a href="#Transparent-Effect" class="headerlink" title="Transparent Effect"></a>Transparent Effect</h1><p>Transparent is one of the common effects in games. Usually we use the <strong>alpha channel</strong> to control the transparency of an object. When it’s set to 1, the object is absolutely opaque. When it’s set to 0, the pixel won’t display anymore.</p>
 <p>There are two way to realize transparent effect:</p>
@@ -404,7 +404,7 @@
 <p>If any component of the given parameter is negative, then this pixel will be discard.</p>
 </blockquote>
 <h1 id="Transparency-Blend"><a href="#Transparency-Blend" class="headerlink" title="Transparency Blend"></a>Transparency Blend</h1><p>Blend means we use the transparency of the current fragment as the blend factor, and blend its color with the color already stored in color buffer using the blend factor, and finally obtain the new color.</p>
-<p>In order to blend, we need to use the blend instruction provided by Unity – <strong>Blend</strong>.</p>
+<p>In order to blend, we need to use the blend instruction provided by Unity — <strong>Blend</strong>.</p>
 <ul>
 <li>Blend Off: Turn off blend. (Default)</li>
 <li>Blend SrcFactor DstFactor: Turn on blend and set blend factors.</li>
@@ -418,7 +418,7 @@
 <p>In practice, it’s not easy to divede the grid. Instead, we can try to reuse Zwrite.</p>
 <h1 id="Transparency-Blend-with-Zwrite-On"><a href="#Transparency-Blend-with-Zwrite-On" class="headerlink" title="Transparency Blend with Zwrite On"></a>Transparency Blend with Zwrite On</h1><p>We use two <strong>Pass</strong> to render the model. The first Pass turns on Zwrite. Its only goal is to write the depth value into depth buffer, which means it doesn’t output the color. The second Pass processes the normal transparency blend. Because due to the first Pass, we have obtained the correct depth value per pixel, thus we can obtain the correct transparent effect. However, using one more Pass will consume more performance.</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">"Unity Shaders Book/Chapter 8/Alpha Blending ZWrite"</span>&#123;</span><br><span class="line">	Properties&#123;</span><br><span class="line">		_Color(<span class="string">"Color Tine"</span>, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">		_MainTex(<span class="string">"Main Tex"</span>, <span class="number">2</span>D) = <span class="string">"white"</span> &#123;&#125;</span><br><span class="line">		_AlphaScale(<span class="string">"Alpha Scale"</span>, Range(<span class="number">0</span>, <span class="number">1</span>)) = <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Subshader&#123;</span><br><span class="line">		Tags&#123;</span><br><span class="line">			<span class="string">"Queue"</span> = <span class="string">"Transparent"</span></span><br><span class="line">			<span class="string">"IgnoreProjector"</span> = <span class="string">"True"</span></span><br><span class="line">			<span class="string">"RenderType"</span> = <span class="string">"TransparentCutout"</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		Pass&#123;</span><br><span class="line">			ZWrite On</span><br><span class="line">			ColorMask <span class="number">0</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		Pass&#123;</span><br><span class="line">			Tags&#123;</span><br><span class="line">				<span class="string">"LightMode"</span> = <span class="string">"ForwardBase"</span></span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			ZWrite Off</span><br><span class="line">			Blend SrcAlpha OneMinusSrcAlpha	</span><br><span class="line"></span><br><span class="line">			CGPROGRAM</span><br><span class="line"></span><br><span class="line">			<span class="meta">#<span class="meta-keyword">pragma</span> vertex vert</span></span><br><span class="line">			<span class="meta">#<span class="meta-keyword">pragma</span> fragment frag</span></span><br><span class="line"></span><br><span class="line">			<span class="meta">#include "Lighting.cginc"</span></span><br><span class="line"></span><br><span class="line">			fixed4 _Color;</span><br><span class="line">			sampler2D _MainTex;</span><br><span class="line">			float4 _MainTex_ST;</span><br><span class="line">			<span class="keyword">fixed</span> _AlphaScale;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">struct</span> a2v&#123;</span><br><span class="line">				float4 vertex : POSITION;</span><br><span class="line">				float3 normal : NORMAL;</span><br><span class="line">				float4 texcoord : TEXCOORD0;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">struct</span> v2f&#123;</span><br><span class="line">				float4 pos : SV_POSITION;</span><br><span class="line">				float3 worldNormal : TEXCOORD0;</span><br><span class="line">				float3 worldPos : TEXCOORD1;</span><br><span class="line">				float2 uv : TEXCOORD2;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="function">v2f <span class="title">vert</span>(<span class="params">a2v v</span>)</span>&#123;</span><br><span class="line">				v2f o;</span><br><span class="line"></span><br><span class="line">				o.pos = UnityObjectToClipPos(v.vertex);</span><br><span class="line"></span><br><span class="line">				o.worldNormal = UnityObjectToWorldNormal(v.normal);</span><br><span class="line">				o.worldPos = mul(unity_ObjectToWorld, v.vertex);</span><br><span class="line"></span><br><span class="line">				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> o;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="function">fixed4 <span class="title">frag</span>(<span class="params">v2f i</span>) : SV_Target</span>&#123;</span><br><span class="line">				fixed3 worldNormal = normalize(i.worldNormal);</span><br><span class="line">				fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));</span><br><span class="line"></span><br><span class="line">				fixed4 texColor = tex2D(_MainTex, i.uv);</span><br><span class="line"></span><br><span class="line">				fixed3 albedo = texColor.rgb * _Color.rgb;</span><br><span class="line"></span><br><span class="line">				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb * albedo;</span><br><span class="line"></span><br><span class="line">				fixed3 diffuse = _LightColor0.rgb * albedo * saturate(dot(worldNormal, worldLightDir));</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> fixed4(ambient + diffuse, texColor.a * _AlphaScale);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			ENDCG</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Fallback <span class="string">"Transparent/Cutout/VertexLit"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>The first Pass only writes the fragment’s depth into depth buffer, then culls off those behind. We use a new render command – <strong>ColorMask</strong> here.</p>
+<p>The first Pass only writes the fragment’s depth into depth buffer, then culls off those behind. We use a new render command — <strong>ColorMask</strong> here.</p>
 <blockquote>
 <p>ColorMask RGB | A | 0 | Any comination of RGBA</p>
 </blockquote>
@@ -569,7 +569,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -884,6 +884,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

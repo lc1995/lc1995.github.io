@@ -355,11 +355,11 @@
         <p>最近看到不同的python代码中，有使用input函数读取用户输入的，也有使用raw_input函数读取用户输入的，便很好奇两者之间的区别。</p>
 <a id="more"></a>
 <p>我们先看看官方文档中的描述：</p>
-<p><strong>raw<em>input(</em>[prompt]_)</strong></p>
+<p><strong>raw_input(_[prompt]_)</strong></p>
 <blockquote>
-<p>If the <em>prompt</em> argument is present, it is written to standard output without a trailing newline. The function then reads a line from input, converts it to a string (stripping a trailing newline), and returns that. When EOF is read, <a href="https://docs.python.org/2.7/library/exceptions.html#exceptions.EOFError" target="_blank" rel="noopener"><code>EOFError</code></a> is raised. Example:</p>
+<p>If the _prompt_ argument is present, it is written to standard output without a trailing newline. The function then reads a line from input, converts it to a string (stripping a trailing newline), and returns that. When EOF is read, <a href="https://docs.python.org/2.7/library/exceptions.html#exceptions.EOFError" target="_blank" rel="noopener"><code>EOFError</code></a> is raised. Example:</p>
 </blockquote>
-<p><strong>input([<em>prompt</em>])</strong></p>
+<p><strong>input([_prompt_])</strong></p>
 <blockquote>
 <p>Equivalent to <code>eval(raw_input(prompt))</code>.</p>
 <p>This function does not catch user errors. If the input is not syntactically valid, a <a href="https://docs.python.org/2.7/library/exceptions.html#exceptions.SyntaxError" target="_blank" rel="noopener"><code>SyntaxError</code></a> will be raised. Other exceptions may be raised if there is an error during evaluation.</p>
@@ -367,7 +367,7 @@
 <p>我们可以看到，raw_input()返回一个字符串，而input()会先尝试将其作为一个Python表达式运行，再返回相应的结果。</p>
 <p>也就是说，input()等价于eval(raw_input())。</p>
 <p>代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># raw_input()</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>val = raw_input()</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> type(val)</div><div class="line">&lt;type <span class="string">‘str’</span>&gt;</div><div class="line"><span class="comment"># input()</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>val2 = input()</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> type(val2)</div><div class="line">&lt;type <span class="string">‘int’</span>&gt;</div><div class="line"><span class="comment"># eval(raw_input())</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>val3 = eval(raw_input())</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> type(val3)</div><div class="line">&lt;type <span class="string">‘int’</span>&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># raw_input()</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>val = raw_input()</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> type(val)</div><div class="line">&lt;type <span class="string">'str'</span>&gt;</div><div class="line"><span class="comment"># input()</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>val2 = input()</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> type(val2)</div><div class="line">&lt;type <span class="string">'int'</span>&gt;</div><div class="line"><span class="comment"># eval(raw_input())</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>val3 = eval(raw_input())</div><div class="line"><span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> type(val3)</div><div class="line">&lt;type <span class="string">'int'</span>&gt;</div></pre></td></tr></table></figure>
 
 <p>而由于通常来讲，大多数的输入通常是字符串。因此在Python3中，raw_input()被input()替代，input()本身便返回原始的输入字符串。</p>
 <p>同样，若需要将其作为Python表达式运行，用eval(input())即可。</p>
@@ -488,7 +488,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -787,6 +787,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

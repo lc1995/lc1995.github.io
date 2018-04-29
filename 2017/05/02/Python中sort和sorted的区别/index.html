@@ -356,21 +356,21 @@
 <a id="more"></a>
 <p>先说说sort()。</p>
 <blockquote>
-<p><strong>s.sort</strong>(<em>[cmp[, key[, reverse]]]</em>)</p>
-<p><em>cmp</em> specifies a custom comparison function of two arguments (list items) which should return a negative, zero or positive number depending on whether the first argument is considered smaller than, equal to, or larger than the second argument: <code>cmp=lambda x,y:cmp(x.lower(), y.lower())</code>. The default value is <code>None</code>.</p>
-<p><em>key</em> specifies a function of one argument that is used to extract a comparison key from each list element: <code>key=str.lower</code>. The default value is <code>None</code>.</p>
-<p><em>reverse</em> is a boolean value. If set to <code>True</code>, then the list elements are sorted as if each comparison were reversed.</p>
+<p><strong>s.sort</strong>(_[cmp[, key[, reverse]]]_)</p>
+<p>_cmp_ specifies a custom comparison function of two arguments (list items) which should return a negative, zero or positive number depending on whether the first argument is considered smaller than, equal to, or larger than the second argument: <code>cmp=lambda x,y:cmp(x.lower(), y.lower())</code>. The default value is <code>None</code>.</p>
+<p>_key_ specifies a function of one argument that is used to extract a comparison key from each list element: <code>key=str.lower</code>. The default value is <code>None</code>.</p>
+<p>_reverse_ is a boolean value. If set to <code>True</code>, then the list elements are sorted as if each comparison were reversed.</p>
 </blockquote>
 <p>sort()函数能够作用于Python的内置可变序列类型，即除了字符串和元组之外的其他序列，如列表和字典。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> l.sort(<span class="keyword">lambda</span> x,y: cmp(x, y))</div><div class="line"><span class="keyword">None</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l.sort(reverse=<span class="keyword">True</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>l</div><div class="line">[<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</div></pre></td></tr></table></figure>
 
 <p>再看看sorted()函数。</p>
 <blockquote>
-<p><strong>sorted</strong>(<em>iterable</em>[, <em>cmp</em>[, <em>key</em>[, <em>reverse</em>]]])</p>
-<p>Return a new sorted list from the items in <em>iterable</em>.</p>
+<p><strong>sorted</strong>(_iterable_[, _cmp_[, _key_[, _reverse_]]])</p>
+<p>Return a new sorted list from the items in _iterable_.</p>
 </blockquote>
 <p>sorted函数能够作用于任何可迭代的序列类型，包括字符串，元组，列表，字典等，或者是自定义的可迭代的类（需申明<strong>iter</strong>函数和next函数）。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = &#123;<span class="string">‘a’</span>:<span class="number">1</span>, <span class="string">‘b’</span>:<span class="number">4</span>, <span class="string">‘c’</span>:<span class="number">3</span>, <span class="string">‘d’</span>:<span class="number">7</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(l)</div><div class="line">[<span class="string">‘a’</span>, <span class="string">‘b’</span>, <span class="string">‘c’</span>, <span class="string">‘d’</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(l.items(), key=<span class="keyword">lambda</span> d:d[<span class="number">1</span>])</div><div class="line">[(<span class="string">‘a’</span>, <span class="number">1</span>), (<span class="string">‘c’</span>, <span class="number">3</span>), (<span class="string">‘b’</span>, <span class="number">4</span>), (<span class="string">‘d’</span>, <span class="number">7</span>)]</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>l = &#123;<span class="string">'a'</span>:<span class="number">1</span>, <span class="string">'b'</span>:<span class="number">4</span>, <span class="string">'c'</span>:<span class="number">3</span>, <span class="string">'d'</span>:<span class="number">7</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(l)</div><div class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>]</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>sorted(l.items(), key=<span class="keyword">lambda</span> d:d[<span class="number">1</span>])</div><div class="line">[(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'c'</span>, <span class="number">3</span>), (<span class="string">'b'</span>, <span class="number">4</span>), (<span class="string">'d'</span>, <span class="number">7</span>)]</div></pre></td></tr></table></figure>
 
 <p>对比可见。</p>
 <ol>
@@ -495,7 +495,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -794,6 +794,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
