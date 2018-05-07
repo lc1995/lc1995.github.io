@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Reinforcement Learning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="In this chapter we introduce Finite Markov Decision Process. Different from last chapter of k-armed bandits problem, we will move deeper — to choose different a">
+<meta name="keywords" content="Reinforcement Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reinforcement Learning Chapter 3">
+<meta property="og:url" content="http://lc1995.github.io/2018/05/05/Reinforcement-Learning-Chapter-3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="In this chapter we introduce Finite Markov Decision Process. Different from last chapter of k-armed bandits problem, we will move deeper — to choose different actions in different situations.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lc1995.github.io/images/Agent-EnvironmentInteraction.png">
+<meta property="og:image" content="http://lc1995.github.io/images/AbsorbingState.png">
+<meta property="og:updated_time" content="2018-05-07T14:00:02.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Reinforcement Learning Chapter 3">
+<meta name="twitter:description" content="In this chapter we introduce Finite Markov Decision Process. Different from last chapter of k-armed bandits problem, we will move deeper — to choose different actions in different situations.">
+<meta name="twitter:image" content="http://lc1995.github.io/images/Agent-EnvironmentInteraction.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lc1995.github.io/2018/05/05/Reinforcement-Learning-Chapter-3/"/>
+
+
+
+
+
+  <title>Reinforcement Learning Chapter 3 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/05/05/Reinforcement-Learning-Chapter-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chang Lin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Reinforcement Learning Chapter 3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T18:55:49+02:00">
+                2018-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Reinforcement-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Reinforcement Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/05/Reinforcement-Learning-Chapter-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/05/05/Reinforcement-Learning-Chapter-3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>In this chapter we introduce <strong>Finite Markov Decision Process</strong>. Different from last chapter of k-armed bandits problem, we will move deeper — to choose different actions in different situations.</p>
+<a id="more"></a>
+<h1 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h1><blockquote>
+<p>MDPs are a classical formalization of sequential decision making, where actions influence not just immediate rewards, but also subsequent situations, or states, and through those future rewards.</p>
+</blockquote>
+<ul>
+<li>Agent: The learner and decision maker.</li>
+<li>Environment: The thing the agent interacts with, comprising everything outside the agent.</li>
+</ul>
+<p>These interact continually, the agent selecting <strong>actions</strong> and the environment responding to these actions and presenting new situations to the agent. The environment also gives rise to <strong>rewards</strong>, special numerical values that the agent seeks to maximize over time through its choice of actions.</p>
+<p>More specifically, the agent and environment interact at each of a sequence of discrete time steps, $t=0,1,2,3,….$. At each time step t,the agent receives some representation of the environment’s state, $S_t ∈ \mathcal{S}$, and on that basis selects an action, $A_t ∈ \mathcal{A}(s)$. One time step later, in part as a consequence of its action, the agent receives a numerical reward, $R_{t+1} ∈ \mathcal{R} ⊂ \mathbb{R}$, and finds itself in a new state, $S_{t+1}$.<br>The MDP and agent together thereby give rise to a sequence or trajectory that begins like this:</p>
+<p>$S_0, A_0, R_1, S_1, A_1, R_2, S_2, …$</p>
+<p><img src="/images/Agent-EnvironmentInteraction.png" alt=""></p>
+<p>In <strong>finite MDP</strong>, the sets of states, actions, and rewards all have a finite number of elements.</p>
+<p>In this case, the random variables Rt and St have well defined discrete probability distributions dependent only on the preceding state and action, which is also named <strong>Environment Dynamics</strong>:</p>
+<p>$p(s^{‘}, r|s, a) = Pr\{S_t = s^{‘}, R_t = r | S_{t-1} = s, A_{t-1} = a\}$</p>
+<p>From the function p, we can also compute other things about the environment.</p>
+<ul>
+<li>State-transition probabilities : $p(s^{‘} | s, a) = Pr\{S_t = s^{‘} | S_{t-1} = s, A_{t-1} = a\}$</li>
+<li>Expected rewards for state-action pairs : $r(s, a) = \mathbb{E}[R_t | S_{t-1} = s, A_{t-1} = a]$</li>
+<li>Expected rewards for state-action-next-state triples: $r(s^{‘}, s, a) = \mathbb{E}[R_t | S_t = s^{‘}, S_{t-1} = s, A_{t-1} = a]$</li>
+</ul>
+<h1 id="An-Example-—-Recycling-Robot"><a href="#An-Example-—-Recycling-Robot" class="headerlink" title="An Example — Recycling Robot"></a>An Example — Recycling Robot</h1><blockquote>
+<p>A mobile robot has the job of collecting empty soda cans in an office environment. It has sensors for detecting cans, and an arm and gripper that can pick them up and place them in an onboard bin; it runs on a rechargeable battery. The robot’s control system has components for interpreting sensory information, for navigating, and for controlling the arm and gripper. High-level decisions about how to search for cans are made by a reinforcement learning agent based on the current charge level of the battery. This agent has to decide whether the robot should (1) actively search for a can for a certain period of time, (2) remain stationary and wait for someone to bring it a can, or (3) head back to its home base to recharge its battery. This decision has to be made either periodically or whenever certain events occur, such as finding an empty can. The agent therefore has three actions, and the state is primarily determined by the state of the battery. The rewards might be zero most of the time, but then become positive when the robot secures an empty can, or large and negative if the battery runs all the way down. In this example, the reinforcement learning agent is not the entire robot. The states it monitors describe conditions within the robot itself, not conditions of the robot’s external environment. The agent’s environment therefore includes the rest of the robot, which might contain other complex decision-making systems, as well as the robot’s external environment.</p>
+</blockquote>
+<h1 id="Goals-and-Rewards"><a href="#Goals-and-Rewards" class="headerlink" title="Goals and Rewards"></a>Goals and Rewards</h1><blockquote>
+<p>That all of what we mean by goals and purposes can be well thought of as the maximization of the expected value of the cumulative of a received scalar signal (called reward).</p>
+</blockquote>
+<p>As we can see, here we are going to maximize not immediate rewards, instead <strong>long-term</strong> ones.</p>
+<p>The agent always learns to maximize its reward. If we want it to do something for us, we must provide rewards to it in such a way that in maximizing them the agent will also achieve our goals.</p>
+<p>Here we can give a typical example. A chess-playing agent should be rewarded only for actually winning, not for achieving subgoals such as taking its opponent’s pieces or gaining control of the center of the board. If achieving these sorts of subgoals were rewarded, then the agent might find a way to achieve them without achieving the real goal. For example, it might find a way to take the opponent’s pieces even at the cost of losing the game.</p>
+<blockquote>
+<p>The reward signal is your way of communicating to the robot what you want it to achieve, not how you want it achieved.</p>
+</blockquote>
+<h1 id="Returns-and-Episodes"><a href="#Returns-and-Episodes" class="headerlink" title="Returns and Episodes"></a>Returns and Episodes</h1><p>If the sequence of rewards received after time step t is denoted $R_{t+1}, R_{t+2}, R_{t+3}, …$, then we seek to maximize the <strong>expected return</strong>, denoted $G_t$, defined as cumulative of rewards in long run:</p>
+<p>$G_t = R_{t+1} + R_{t+2} + R_{t+3} + … + R_T$</p>
+<p>where $T$ is a final time step.</p>
+<p>This approach makes sense in applications in which there is a natural notion of final time step, that is, when the agent–environment interaction breaks naturally into subsequences, which we call <strong>episodes</strong>. Each episode ends in a special state called the <strong>terminal state</strong>, followed by a reset to a standard starting state or to a sample from a standard distribution of starting states.</p>
+<p>Tasks with episodes of this kind are called <strong>episodic tasks</strong>. In episodic tasks we sometimes need to distinguish the set of all nonterminal states, denoted $\mathcal{S}$, from the set of all states plus the terminal state, denoted $\mathcal{S}^{+}$. The time of termination, $T$, is a random variable that normally varies from episode to episode.</p>
+<p>We will also have <strong>continuing tasks</strong>, which the agent-environment interation can not break naturally into identifiable episodes, but goes on continually without limit ($T = \infty$)</p>
+<p>Here we give some examples to show the difference between episodic tasks and continuing tasks. For a chess game, it will finally end and restart, which is a typical episodic tasks. For an on-going process-control task or an application to a robot with a long life span, we don’t know when it will terminate.</p>
+<p>Using sum of rewards in continuting tasks will easily be infinite (which does not converge). Instead of we use <strong>discounted return</strong>:</p>
+<p>$G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + … = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}$</p>
+<p>where $\gamma$ is a parameter, $0 \leq \gamma \leq 1$, called the <strong>discount rate</strong>. As $\gamma$ approaches 1, the return object takes future rewards into account more strongly, therefore the agent becomes more farsighted.</p>
+<p>Returns at successive time steps are related to each other in a way that is important for the theory<br>and algorithms of reinforcement learning:</p>
+<p>$G_t = R_{t+1} + \gamma G_{t+1}$</p>
+<p>By introducing a special absorbing state that transitions only to itself and that generates only rewards of zero, we can combine episodic tasks and continuing tasks together.</p>
+<p><img src="/images/AbsorbingState.png" alt=""></p>
+<p>$G_t = \sum_{k=t+1}^{T} \gamma^{k-t-1} R_k$</p>
+<p>including the possibility that $T = \infty$ or $\gamma = 1$ (but not both).</p>
+<h1 id="Policies-and-Value-Functions"><a href="#Policies-and-Value-Functions" class="headerlink" title="Policies and Value Functions"></a>Policies and Value Functions</h1><p>Almost all reinforcement learning algorithms involve estimating <strong>value functions</strong> — functions of states (or of state–action pairs) that estimate how good it is for the agent to be in a given state (or how good it is to perform a given action in a given state).</p>
+<p>Formally, a <strong>policy</strong> is a mapping from states to probabilities of selecting each possible action. If the agent is following policy $\pi$ at time t, then $\pi(a|s)$ is the probability that $A_t = a$ if $S_t = s$. <strong>Reinforcement learning methods specify how the agent’s policy is changed as a result of its experience.</strong></p>
+<p>The value of a state s under a policy π, denoted $v_{\pi}(s)$, is the expected return when starting in s and following π thereafter. For MDPs, we can define $v_{\pi}$ formally by:</p>
+<p>$v_{\pi}(s) = \mathbb{E}_{\pi}[G_t | S_t = s]$, for all $s \in \mathcal{S}$,</p>
+<p>where $\mathbb{E}[.]$ denotes the expected value of a random variable given that the agent follows policy $\pi$, and t is any time step. Note the the value of the terminal state, if any, is always zero. We called the function $v_{\pi}$ the <strong>state-value function for policy $\pi$</strong>.</p>
+<p>We also have the <strong>action-value function for policy $\pi$</strong> as following:</p>
+<p>$q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_t | S_t = s, A_t = a]$</p>
+<p>For any policy $\pi$ and any state s, the following consistency condition holds between the value of s and the value of its possible successor states:</p>
+<p>$v_{\pi}(s) = \sum_{a} \pi(a|s) \sum_{s^{‘}, r} p(s^{‘},r|s,a)[r + \gamma v_{\pi}(s^{‘})]$, for all $s \in \mathcal{S}$,</p>
+<p>which is the <strong>Bellman equation for $v_{\pi}$</strong>. It expresses a relationship between the value of a state and the values of its successor states.</p>
+<p>The value functions $v_{\pi}$ and $q_{\pi}$ can be estimated from experience using <strong>Monte Carlo methods</strong>, which we will discuss in Chapter 5.</p>
+<h1 id="Optimal-Policies-and-Optimal-Value-Functions"><a href="#Optimal-Policies-and-Optimal-Value-Functions" class="headerlink" title="Optimal Policies and Optimal Value Functions"></a>Optimal Policies and Optimal Value Functions</h1><p>Solving a reinforcement learning task means, roughly, finding a policy that achieves a lot of reward over the long run. That’s to find an <strong>optimal policy</strong>.</p>
+<p>A polity $\pi$ is defined to be better than or equal to a policy $\pi^{‘}$ if its expected return is greater than or equal to that of $pi^{‘}$ <strong>for all states</strong>.</p>
+<p>There is always at least one policy that is better than or equal to all other policies. They share the same state-value function, called the <strong>optimal state-value function</strong>, denoted $v_{\ast}$, and defined as:</p>
+<p>$v_{\ast}(s) = max_{\pi} v_{\pi}(s)$, for all $s \in \mathcal{S}$</p>
+<p>They also share the same <strong>optimal action-value function</strong>, denoted $q_{\ast}$, and defined as:</p>
+<p>$q_{\ast}(s,a) = max_{\pi} q_{\pi}(s,a)$ for all $s \in \mathcal{S}$ and $a \in \mathcal{A}(s)$.</p>
+<p>We can also write $q_{\ast}$ in terms of $v_{\ast}$ as follows:</p>
+<p>$q_{\ast}(s,a) = \mathbb{E}[R_{t+1} + \gamma v_{\ast}(S_{t+1}) | S_t = s, A_t = a]$</p>
+<p>Like Bellman equation, $v_{\ast}$’s consistency condition can be written in a special form without reference to any specific polity, which is called <strong>Bellman Optimality equation</strong>. Intuitively, the Bellman optimality equation expresses the fact that <strong>the value of a state under an optimal policy must equal the expected return for the best action from that state</strong>:</p>
+<p>$v_{\ast}(s) = max_{a \in \mathcal{A}(s)} q_{\pi_{\ast}}(s, a) = max_a \sum_{s^{‘}, r} p(s^{‘}, r | s, a)[r + \gamma v_{\ast}(s^{‘})]$</p>
+<p>Once we have $v_{\ast}$, we can give some other definition to <strong>optimal policy</strong>. Any policy that assigns nonzero probability <strong>only</strong> to these actions is an optimal policy. Or we can say, any policy that is greedy with respect to the optimal evaluation function $v_{\ast}$ is an optimal policy.</p>
+<p>By explicitly solving the Bellman optimality equation, we are sure to obtain an optimal policy. However, this solution is rarely directly useful. This solution relies on at least three assumptions that are rarely true in practice:</p>
+<ol>
+<li>We accurately know the dynamics of the environment.</li>
+<li>We have enough computational resources to complete the computation of the solution.</li>
+<li>The model should satisfy Markov property.</li>
+</ol>
+<p>Nowedays, the second condition is usually the bottleneck of reinforcement learning. Therefore, we should adopt some other decision-making methods to approximately solve the Bellman optimality equation, like <strong>heuristic search methods</strong> and <strong>dynamic programming</strong>, which we will discuss in next chapter.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/28/Reinforcement-Learning-Chapter-2/" rel="next" title="Reinforcement Learning Chapter 2">
+                <i class="fa fa-chevron-left"></i> Reinforcement Learning Chapter 2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chang Lin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/lc1995" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:lucianolin1995@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Definition"><span class="nav-number">1.</span> <span class="nav-text">Definition</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#An-Example-—-Recycling-Robot"><span class="nav-number">2.</span> <span class="nav-text">An Example — Recycling Robot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Goals-and-Rewards"><span class="nav-number">3.</span> <span class="nav-text">Goals and Rewards</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Returns-and-Episodes"><span class="nav-number">4.</span> <span class="nav-text">Returns and Episodes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Policies-and-Value-Functions"><span class="nav-number">5.</span> <span class="nav-text">Policies and Value Functions</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Optimal-Policies-and-Optimal-Value-Functions"><span class="nav-number">6.</span> <span class="nav-text">Optimal Policies and Optimal Value Functions</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chang Lin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'lc1995',
+            repo: 'lc1995.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'f8c2095d8dc16bb768802ae8cbd0e7917eb7cb4a',
+            
+                client_id: 'ce5223552f85fd516b62'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
