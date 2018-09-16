@@ -341,23 +341,14 @@
 
       
         
-          
-            <p>最近开发受难日的时候遇到一个小问题。</p>
-<p>我有3个按钮，它们的功能相似，在被点击时需要为一个字段赋不同的值，分别是0，1，2。我在一个脚本里通过委托的方式为这三个按钮的OnClick事件添加带有不同参数的委托，代码如下。</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.UI;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestScript</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> Button[] buttons;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// Use this for initialization</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt; <span class="number">3</span>; i++)&#123;</span><br><span class="line">            buttons[i].onClick.AddListener(<span class="keyword">delegate</span> &#123; OnSelect(i); &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnSelect</span>(<span class="params"><span class="keyword">int</span> index=<span class="number">0</span></span>)</span>&#123;</span><br><span class="line">        Debug.Log(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果发现三个按钮点击的输出都是3，这就很奇怪了。3应该是Start里循环结束后i的值，而i作为整型应该是按值传递而非按引用传递的，怎么会三个按钮的参数全部引用的同一个变量上了呢。</p>
-<p>后来在Unity论坛发帖问了之后（包括查阅了一下其他的Post），发现原来在C#中使用匿名委托时，会捕捉本地调用方法的完整上下文，也就意味着OnSelect的参数实际上保留着对Start方法里的i的饮用，这也是为什么三个按钮输出相同的原因。</p>
-<p>如果要避免这一点，就应该让不同的按钮事件捕捉不同的上下文，或者是引用不同的变量。</p>
-<p>前者可以通过下列方式实现：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt; <span class="number">3</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="keyword">new</span> <span class="keyword">int</span>();</span><br><span class="line">        index = i;</span><br><span class="line">        buttons[i].onClick.AddListener(<span class="keyword">delegate</span> &#123; OnSelect(i); &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>后者通过创建一个新的添加监听的函数并将i作为参数传递实现：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddListener</span>(<span class="params">Button button, <span class="keyword">int</span> parameter</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   button.onClick.AddListener(<span class="keyword">delegate</span> &#123; OnSelect(parameter);  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>相关链接：</p>
-<ol>
-<li><a href="https://forum.unity.com/threads/passing-int-parameters-to-delegate-function-becomes-reference-passing.556015/" target="_blank" rel="noopener"></a></li>
-<li><a href="http://www.runoob.com/csharp/csharp-anonymous-methods.html" target="_blank" rel="noopener"></a></li>
-<li><a href="https://answers.unity.com/questions/791573/46-ui-how-to-apply-onclick-handler-for-button-gene.html" target="_blank" rel="noopener"></a></li>
-</ol>
-
-          
+          <p>最近开发受难日的时候遇到一个小问题。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/16/Unity为多个按钮动态绑定带参委托遇到的问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
