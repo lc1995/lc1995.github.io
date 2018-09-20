@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Game,Artificial Intelligence," />
+  <meta name="keywords" content="Game,Unity," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the introduction chapter.">
-<meta name="keywords" content="Game,Artificial Intelligence">
+<meta name="description" content="最近做受难日的战斗系统这一块。游戏的战斗模块偏回合制（虽然也与传统的回合制有所不同），玩家回合玩家选择相应的攻击方式后完成攻击结算，进入敌人回合。敌人回合玩家需要选择相应的防御方式，然后进行攻击结算，重新进入玩家回合。这也构成了一个基本的战斗循环。 由于并不是即时制的战斗，所以如果在Update中更新游戏战斗循环显得并">
+<meta name="keywords" content="Game,Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Game Ai Introduction">
-<meta property="og:url" content="http://lc1995.github.io/2018/03/12/Game Ai Introduction/index.html">
+<meta property="og:title" content="Unity中利用协程控制回合制游戏的战斗逻辑">
+<meta property="og:url" content="http://lc1995.github.io/2018/09/20/Unity中利用协程控制回合制游戏的战斗逻辑/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the introduction chapter.">
+<meta property="og:description" content="最近做受难日的战斗系统这一块。游戏的战斗模块偏回合制（虽然也与传统的回合制有所不同），玩家回合玩家选择相应的攻击方式后完成攻击结算，进入敌人回合。敌人回合玩家需要选择相应的防御方式，然后进行攻击结算，重新进入玩家回合。这也构成了一个基本的战斗循环。 由于并不是即时制的战斗，所以如果在Update中更新游戏战斗循环显得并不怎么合适，这里我们可以用协程的方式来控制游戏循环。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-12T22:49:32.985Z">
+<meta property="og:updated_time" content="2018-09-20T20:55:32.474Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Game Ai Introduction">
-<meta name="twitter:description" content="This is the reading note after reading  by Mat Buckland. Here is the part of the introduction chapter.">
+<meta name="twitter:title" content="Unity中利用协程控制回合制游戏的战斗逻辑">
+<meta name="twitter:description" content="最近做受难日的战斗系统这一块。游戏的战斗模块偏回合制（虽然也与传统的回合制有所不同），玩家回合玩家选择相应的攻击方式后完成攻击结算，进入敌人回合。敌人回合玩家需要选择相应的防御方式，然后进行攻击结算，重新进入玩家回合。这也构成了一个基本的战斗循环。 由于并不是即时制的战斗，所以如果在Update中更新游戏战斗循环显得并不怎么合适，这里我们可以用协程的方式来控制游戏循环。">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://lc1995.github.io/2018/03/12/Game Ai Introduction/"/>
+  <link rel="canonical" href="http://lc1995.github.io/2018/09/20/Unity中利用协程控制回合制游戏的战斗逻辑/"/>
 
 
 
 
 
-  <title>Game Ai Introduction | Hexo</title>
+  <title>Unity中利用协程控制回合制游戏的战斗逻辑 | Hexo</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/03/12/Game Ai Introduction/">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/09/20/Unity中利用协程控制回合制游戏的战斗逻辑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chang Lin">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Game Ai Introduction</h1>
+          <h1 class="post-title" itemprop="name headline">Unity中利用协程控制回合制游戏的战斗逻辑</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T23:19:52+01:00">
-                2018-03-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T12:32:26+02:00">
+                2018-09-20
               </time>
             
 
@@ -305,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AI/" itemprop="url" rel="index">
-                    <span itemprop="name">AI</span>
+                  <a href="/categories/Unity/" itemprop="url" rel="index">
+                    <span itemprop="name">Unity</span>
                   </a>
                 </span>
 
@@ -323,8 +323,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/12/Game Ai Introduction/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/12/Game Ai Introduction/" itemprop="commentsCount"></span>
+                <a href="/2018/09/20/Unity中利用协程控制回合制游戏的战斗逻辑/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/09/20/Unity中利用协程控制回合制游戏的战斗逻辑/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -352,28 +352,17 @@
       
 
       
-        <p>This is the reading note after reading <programming game="" ai="" by="" example=""> by Mat Buckland.</programming></p>
-<p>Here is the part of the introduction chapter.</p>
+        <p>最近做受难日的战斗系统这一块。游戏的战斗模块偏回合制（虽然也与传统的回合制有所不同），玩家回合玩家选择相应的攻击方式后完成攻击结算，进入敌人回合。敌人回合玩家需要选择相应的防御方式，然后进行攻击结算，重新进入玩家回合。这也构成了一个基本的战斗循环。</p>
+<p>由于并不是即时制的战斗，所以如果在Update中更新游戏战斗循环显得并不怎么合适，这里我们可以用协程的方式来控制游戏循环。</p>
 <a id="more"></a>
-<h2 id="Academic-AI-amp-Game-AI"><a href="#Academic-AI-amp-Game-AI" class="headerlink" title="Academic AI &amp; Game AI"></a>Academic AI &amp; Game AI</h2><h3 id="Academic-AI"><a href="#Academic-AI" class="headerlink" title="Academic AI"></a>Academic AI</h3><ul>
-<li><strong>Strong AI</strong>: Create systems that mimic human thought processes.</li>
-<li><strong>Weak AI</strong>: Solve real-world problems.</li>
-</ul>
-<p>They both don’t care much about the hardware of spending time, instead care about the final result.</p>
-<h3 id="Game-AI"><a href="#Game-AI" class="headerlink" title="Game AI"></a>Game AI</h3><ol>
-<li>Game AI has to work with limited resources.</li>
-<li>Game AI should be entertaining, make player feel clever, sly, cunning and powerful.</li>
-</ol>
-<h2 id="Illusion-of-Interlligence"><a href="#Illusion-of-Interlligence" class="headerlink" title="Illusion of Interlligence"></a>Illusion of Interlligence</h2><blockquote>
-<p>If the player believes the agent he’s playing against is intelligent, then it is intelligent.</p>
-</blockquote>
-<p>Therefore our goal is to design agents that provide the <strong>illusion of intelligence</strong>.</p>
-<p>Several approaches:</p>
-<ol>
-<li>Carefully increase the difficulty.</li>
-<li>Provide the player with some visual/auditory clues.</li>
-<li>Not let the cloak of illusion slip. (e.g. AI running to walls)</li>
-</ol>
+<p>关于协程（Coroutine）的基本知识我在之前的文章中提到过，详见<a href="https://lc1995.github.io/2017/11/22/Understand%20Coroutine%20in%20Unity/">https://lc1995.github.io/2017/11/22/Understand%20Coroutine%20in%20Unity/</a>。</p>
+<p>对于回合制战斗，我们假设场景中只有玩家和敌人两个单位，分别行动一回合，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">StartBattle</span>(<span class="params">Character player, Character enemy</span>)</span>&#123;</span><br><span class="line">  StartCoroutine(Battle(player, enemy));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">Battle</span>(<span class="params">Character player, Character enemy</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">StartCoroutine</span>(<span class="params">Turn(player</span>))</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(CheckBattleOver(player, enemy))</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">StartCoroutine</span>(<span class="params">Turn(enemy</span>))</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(CheckBattleOver(player, enemy))</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上述代码中，当程序遇到yield return StartCoroutine(Turn(player))时，会返回并一直到对应的协程（这里是Turn）结束后才重新执行。通过这样的方式，我们便可以实现回合制战斗中回合的有序性。</p>
+<p>同样，如果在Turn中涉及到玩家输入，动画的控制或者位置上的移动（等待用户输入，玩家移动到敌人前面，进行攻击动画，玩家回到原来的位置），也可以通过协程的方式来控制它们的连续性，代码如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">Turn</span>(<span class="params">Character ch</span>)</span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">yield</span> return new <span class="title">WaitUntil</span>(<span class="params">(</span>) </span>=&gt; PlayerInput != <span class="literal">null</span>);</span><br><span class="line">  <span class="function"><span class="keyword">yield</span> return new <span class="title">StartCoroutine</span>(<span class="params">PlayerMove(enemy.position</span>))</span>;</span><br><span class="line">  <span class="function"><span class="keyword">yield</span> return new <span class="title">StartCoroutine</span>(<span class="params">PlayerAttack(enemy</span>))</span>;</span><br><span class="line">  <span class="function"><span class="keyword">yield</span> return new <span class="title">StartCoroutine</span>(<span class="params">PlayerMove(player.originalPosition</span>))</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再扩展一点，如果此时是多单位进行战斗，每个单位的速度不同，速度高的先攻击。我们可以利用的同样的方式，先对所有单位按速度排序，之后每次取出一个单位进行攻击并结算即可。本质上没有太大的区别。</p>
+<p>个人理解，如有问题欢迎指出。</p>
 
       
     </div>
@@ -393,7 +382,7 @@
           
             <a href="/tags/Game/" rel="tag"># Game</a>
           
-            <a href="/tags/Artificial-Intelligence/" rel="tag"># Artificial Intelligence</a>
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
           
         </div>
       
@@ -406,8 +395,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/10/Unity-Shader-Chapter-5/" rel="next" title="《Unity Shader 入门精要 Chapter 5》Reading Note">
-                <i class="fa fa-chevron-left"></i> 《Unity Shader 入门精要 Chapter 5》Reading Note
+              <a href="/2018/09/16/Unity为多个按钮动态绑定带参委托遇到的问题/" rel="next" title="Unity为多个按钮动态绑定带参委托遇到的问题">
+                <i class="fa fa-chevron-left"></i> Unity为多个按钮动态绑定带参委托遇到的问题
               </a>
             
           </div>
@@ -415,10 +404,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/12/Game Ai Chapter 3/" rel="prev" title="Game Ai Chapter 3">
-                Game Ai Chapter 3 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -477,17 +462,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -563,22 +539,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Academic-AI-amp-Game-AI"><span class="nav-number">1.</span> <span class="nav-text">Academic AI & Game AI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Academic-AI"><span class="nav-number">1.1.</span> <span class="nav-text">Academic AI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Game-AI"><span class="nav-number">1.2.</span> <span class="nav-text">Game AI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Illusion-of-Interlligence"><span class="nav-number">2.</span> <span class="nav-text">Illusion of Interlligence</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
