@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C#," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="委托与事件，作为C#中非常重要的一个特性，在实际的开发中也经常被使用到。举个简单的例子，Unity中给一个按钮绑定一个回调函数就是一个十分简单的应用。这里我想对其概念深入的理解一下。">
+<meta name="keywords" content="C#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#中的回调，委托与事件">
+<meta property="og:url" content="http://lc1995.github.io/2019/08/30/C#中的回调，委托与事件/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="委托与事件，作为C#中非常重要的一个特性，在实际的开发中也经常被使用到。举个简单的例子，Unity中给一个按钮绑定一个回调函数就是一个十分简单的应用。这里我想对其概念深入的理解一下。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://lc1995.github.io/2019/images/回调函数.jpg">
+<meta property="og:updated_time" content="2019-09-01T02:10:10.392Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C#中的回调，委托与事件">
+<meta name="twitter:description" content="委托与事件，作为C#中非常重要的一个特性，在实际的开发中也经常被使用到。举个简单的例子，Unity中给一个按钮绑定一个回调函数就是一个十分简单的应用。这里我想对其概念深入的理解一下。">
+<meta name="twitter:image" content="http://lc1995.github.io/2019/images/回调函数.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lc1995.github.io/2019/08/30/C#中的回调，委托与事件/"/>
+
+
+
+
+
+  <title>C#中的回调，委托与事件 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2019/08/30/C#中的回调，委托与事件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chang Lin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C#中的回调，委托与事件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-30T16:33:58+08:00">
+                2019-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C#</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/30/C#中的回调，委托与事件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/08/30/C#中的回调，委托与事件/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>委托与事件，作为C#中非常重要的一个特性，在实际的开发中也经常被使用到。举个简单的例子，Unity中给一个按钮绑定一个回调函数就是一个十分简单的应用。这里我想对其概念深入的理解一下。</p>
+<a id="more"></a>
+<h1 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h1><p>对于回调函数，最简单的解读，我们可以把它看作被作为参数传递的一类函数。</p>
+<p>在正常的开发过程中，通常都是应用程序调用API调用库里所预先准备好的函数，来实现自己的功能。但这带来一个问题，有些库函数出于封装的需要，其功能通常是针对某一常见情境的，因此并不一定满足其它情境的需要。例如，对于一个封装好的排序函数，通常是讲输入的数组按照从小到大或者字典递增序进行排列。如果我们需要的功能是将元素按照一个预先设定好的大小关系进行排序（例如每个元素分别映射到一个整形数值上），则常规的API调用并不能满足我们的需要。</p>
+<p>通过回调的机制，函数某种程度上提供了一个新的接口，即我们可以通过传入某个函数（即回调函数），来让API调用我们提供给它的函数，借此来实现特定的功能。例如上述的例子，我们将对应的映射函数作为参数传递到库函数中，告诉库函数调用回调函数来判断大小关系，而不是按照默认的排序机制。这里库函数回过头来调用了程序中的定义的函数，这也是回调这个名字的由来。</p>
+<p>这里可以参考一个蛮形象的解释。有一家旅馆提供叫醒服务，但是要求旅客自己决定叫醒的方法。可以是打客房电话，也可以是派服务员去敲门，睡得死怕耽误事的，还可以要求往自己头上浇盆水。这里，“叫醒”这个行为是旅馆提供的，相当于库函数，但是叫醒的方式是由旅客决定并告诉旅馆的，也就是回调函数。而旅客告诉旅馆怎么叫醒自己的动作，也就是把回调函数传入库函数的动作，称为登记回调函数（to register a callback function）。如下图所示（图片来源：维基百科）：</p>
+<p><img src="../../images/回调函数.jpg" alt=""></p>
+<p>参考：<a href="https://www.zhihu.com/question/19801131/answer/27459821" target="_blank" rel="noopener">回调函数（callback）是什么？ - no.body的回答 - 知乎</a></p>
+<h1 id="委托"><a href="#委托" class="headerlink" title="委托"></a>委托</h1><p>委托是一个类，它定义了方法的类型，使得可以将方法当作另一个方法的参数来进行传递，这种将方法动态地赋给参数的做法，可以避免在程序中大量使用If … Else(Switch)语句，同时使得程序具有更好的可扩展性。</p>
+<p>换句话说，委托即回调函数在C#中的实现，通过定义一个新的变量类型（新的类）来让函数得以作为参数传递。委托的定义实际上就定义了函数的类型（参数类型，参数个数及返回类型）。</p>
+<p>这里我们用一个简单的例子：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">C_</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">GreetingDelegate</span>(<span class="params"><span class="keyword">string</span> name</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">EnglishGreeting</span>(<span class="params"><span class="keyword">string</span> name</span>)    </span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            Console.WriteLine(<span class="string">"Good Morning, "</span> + name);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ChineseGreeting</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            Console.WriteLine(<span class="string">"早上好, "</span> + name);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">GreetPeople</span>(<span class="params"><span class="keyword">string</span> name, GreetingDelegate MakeGreeting</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            MakeGreeting(name);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            GreetingDelegate gDelegate;</span><br><span class="line">            gDelegate = EnglishGreeting;</span><br><span class="line">            gDelegate += ChineseGreeting;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// GreetPeople("Liker", gDelegate);</span></span><br><span class="line">            gDelegate(<span class="string">"Lin"</span>);</span><br><span class="line"></span><br><span class="line">            gDelegate -= EnglishGreeting;</span><br><span class="line">            gDelegate(<span class="string">"Lin"</span>);</span><br><span class="line"></span><br><span class="line">            Console.ReadLine();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>在上述程序中，我们将委托声明成一个公有变量，因此客户端可以对它进行随意的赋值等操作，这严重破坏了对象的封装性。</p>
+<p>而事件封装了委托类型的变量，使得：在类的内部，不管你声明它是public还是protected，它总是private的。在类的外部，注册“+=”和注销“-=”的访问限定符与你在声明事件时使用的访问符相同。</p>
+<p>同时，事件还能限制含有事件的类型的能力。一个公有委托变量能被客户端调用，而事件只能被服务端（即定义了该事件的类）调用，客户端调用会发生编译错误。</p>
+<p>事件的定义只需要在委托的基础上通过event关键字申明即可：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">GreetingDelegate</span>(<span class="params"><span class="keyword">string</span> name</span>)</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">event</span> GreetingDelegate OnGreeting;</span><br></pre></td></tr></table></figure>
+<h2 id="委托的编译代码"><a href="#委托的编译代码" class="headerlink" title="委托的编译代码"></a>委托的编译代码</h2><p>假设我们在类中定义了一个上述事件，OnGreeting虽然被声明为一个公有变量，但实际上它会被编译成一个私有字段，并生成两个方法add_OnGreeting()和remove_OnGreeting()分别用于注册委托类型的方法和取消注册，这两个方法同时也对应了“+=”和“-=”两个运算符。</p>
+<p>在add_OnGreeting()方法内部，实际上调用了System.Delegate 的Combine()静态方法，这个方法用于将当前的变量添加到委托链表中。</p>
+<h2 id="NET-框架中的委托和事件"><a href="#NET-框架中的委托和事件" class="headerlink" title=".NET 框架中的委托和事件"></a>.NET 框架中的委托和事件</h2><p>我们用一个热水壶的例子。</p>
+<p>假设我们有个高档的热水器，我们给它通上电，当水温超过95 度的时候：1、扬声器会开始发出语音，告诉你水的温度；2、液晶屏也会改变水温的显示，来提示水已经快烧开了。</p>
+<p>现在我们需要写个程序来模拟这个烧水的过程，我们将定义一个类来代表热水器，我们管它叫：Heater，它有代表水温的字段，叫做 temperature；当然，还有必不可少的给水加热方法 BoilWater()，一个发出语音警报的方法 MakeAlert()，一个显示水温的方法，ShowMsg()。</p>
+<h3 id="Observe模型"><a href="#Observe模型" class="headerlink" title="Observe模型"></a>Observe模型</h3><p>Observer 设计模式中主要包括如下两类对象：</p>
+<ul>
+<li>Subject：监视对象，它往往包含着其他对象所感兴趣的内容。在本范例中，热水器就是一个监视对象，它包含的其他对象所感兴趣的内容，就是 temprature 字段，当这个字段的值快到100 时，会不断把数据发给监视它的对象。</li>
+<li>Observer：监视者，它监视Subject，当 Subject 中的某件事发生的时候，会告知Observer，而Observer 则会采取相应的行动。在本范例中，Observer 有警报器和显示器，它们采取的行动分别是发出警报和显示水温。</li>
+</ul>
+<h3 id="NET框架的编码规范"><a href="#NET框架的编码规范" class="headerlink" title=".NET框架的编码规范"></a>.NET框架的编码规范</h3><ol>
+<li>委托类型的名称都应该以 EventHandler 结束。</li>
+<li>委托的原型定义：有一个void 返回值，并接受两个输入参数：一个Object 类型，一个EventArgs 类型(或继承自EventArgs)。</li>
+<li>事件的命名为委托去掉 EventHandler 之后剩余的部分。</li>
+<li>继承自 EventArgs 的类型应该以EventArgs 结尾。</li>
+</ol>
+<p>再做一下说明：</p>
+<ol>
+<li>委托声明原型中的Object 类型的参数代表了Subject，也就是监视对象，在本例中是Heater(热水器)。回调函数(比如Alarm 的MakeAlert)可以通过它访问触发事件的对象(Heater)。</li>
+<li>EventArgs 对象包含了Observer 所感兴趣的数据，在本例中是temperature。</li>
+</ol>
+<p>上面这些其实不仅仅是为了编码规范而已，这样也使得程序有更大的灵活性。比如说，如果我们不光想获得热水器的温度，还想在Observer 端(警报器或者显示器)方法中获得它的生产日期、型号、价格，那么委托和方法的声明都会变得很麻烦，而如果我们将热水器的引用传给警报器的方法，就可以在方法中直接访问热水器了。</p>
+<p>符合编码规范的代码：<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Delegate</span></span><br><span class="line">&#123;    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Heater</span>   </span><br><span class="line">    &#123;    </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> temperature;    </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> type = <span class="string">"RealFire 001"</span>; <span class="comment">// 添加型号作为演示    </span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> area = <span class="string">"China Xian"</span>; <span class="comment">// 添加产地作为演示</span></span><br><span class="line">    </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">BoiledEventHandler</span>(<span class="params">Object sender, BoiledEventArgs e</span>)</span>;   </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">event</span> BoiledEventHandler Boiled; <span class="comment">// 声明事件</span></span><br><span class="line">    </span><br><span class="line">        <span class="comment">// 定义 BoiledEventArgs 类，传递给 Observer 所感兴趣的信息    </span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BoiledEventArgs</span> : <span class="title">EventArgs</span>    </span><br><span class="line">        &#123;   </span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="keyword">int</span> temperature; </span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">BoiledEventArgs</span>(<span class="params"><span class="keyword">int</span> temperature</span>) </span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.temperature = temperature;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// 可以供继承自 Heater 的类重写，以便继承类拒绝其他对象对它的监视    </span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnBoiled</span>(<span class="params">BoiledEventArgs e</span>)   </span></span><br><span class="line"><span class="function">        </span>&#123;  </span><br><span class="line">            <span class="keyword">if</span> (Boiled != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Boiled(<span class="keyword">this</span>, e); <span class="comment">// 调用所有注册对象的方法</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">BoilWater</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">100</span>; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                temperature = i;</span><br><span class="line">                <span class="keyword">if</span> (temperature &gt; <span class="number">95</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// 建立BoiledEventArgs 对象。</span></span><br><span class="line">                    BoiledEventArgs e = <span class="keyword">new</span> BoiledEventArgs(temperature);</span><br><span class="line">    </span><br><span class="line">                    OnBoiled(e); <span class="comment">// 调用 OnBolied 方法</span></span><br><span class="line">                &#125;  </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Alarm</span>   </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">MakeAlert</span>(<span class="params">Object sender, Heater.BoiledEventArgs e</span>)  </span></span><br><span class="line"><span class="function">            </span>&#123;  </span><br><span class="line">                Heater heater = (Heater)sender; <span class="comment">// 这里是不是很熟悉呢？</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">// 访问 sender 中的公共字段</span></span><br><span class="line">                Console.WriteLine(<span class="string">"Alarm：&#123;0&#125; - &#123;1&#125;: "</span>, heater.area, heater.type);</span><br><span class="line">                Console.WriteLine(<span class="string">"Alarm: 嘀嘀嘀，水已经 &#123;0&#125; 度了："</span>, e.temperature);</span><br><span class="line">                Console.WriteLine();</span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;</span><br><span class="line">      </span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Display</span>   </span><br><span class="line">        &#123;  </span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ShowMsg</span>(<span class="params">Object sender, Heater.BoiledEventArgs e</span>) <span class="comment">// 静态方法 </span></span></span><br><span class="line"><span class="function">            </span>&#123;  </span><br><span class="line">                Heater heater = (Heater)sender;</span><br><span class="line">    </span><br><span class="line">                Console.WriteLine(<span class="string">"Display：&#123;0&#125; - &#123;1&#125;: "</span>, heater.area, heater.type);   </span><br><span class="line">                Console.WriteLine(<span class="string">"Display：水快烧开了，当前温度：&#123;0&#125;度。"</span>, e.temperature);   </span><br><span class="line">                Console.WriteLine();   </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;</span><br><span class="line">      </span><br><span class="line">        <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                Heater heater = <span class="keyword">new</span> Heater();  </span><br><span class="line">                Alarm alarm = <span class="keyword">new</span> Alarm();</span><br><span class="line">    </span><br><span class="line">                heater.Boiled += alarm.MakeAlert; <span class="comment">//注册方法  </span></span><br><span class="line">                heater.Boiled += (<span class="keyword">new</span> Alarm()).MakeAlert; <span class="comment">//给匿名对象注册方法  </span></span><br><span class="line">                heater.Boiled += <span class="keyword">new</span> Heater.BoiledEventHandler(alarm.MakeAlert); <span class="comment">//也可以这么注册  </span></span><br><span class="line">                heater.Boiled += Display.ShowMsg; <span class="comment">//注册静态方法</span></span><br><span class="line">    </span><br><span class="line">                heater.BoilWater(); <span class="comment">//烧水，会自动调用注册过对象的方法  </span></span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h3><h4 id="为什么委托定义的返回值通常都为-void-？"><a href="#为什么委托定义的返回值通常都为-void-？" class="headerlink" title="为什么委托定义的返回值通常都为 void ？"></a>为什么委托定义的返回值通常都为 void ？</h4><p>这是因为委托变量可以供多个订阅者注册，如果定义了返回值，那么多个订阅者的方法都会向发布者返回数值，结果就是后面一个返回的方法值将前面的返回值覆盖掉了，因此，实际上只能获得最后一个方法调用的返回值。除此以外，发布者和订阅者是松耦合的，发布者根本不关心谁订阅了它的事件、为什么要订阅，更别说订阅者的返回值了，所以返回订阅者的方法返回值大多数情况下根本没有必要。</p>
+<h4 id="1-5-2-如何让事件只允许一个客户订阅？"><a href="#1-5-2-如何让事件只允许一个客户订阅？" class="headerlink" title="1.5.2 如何让事件只允许一个客户订阅？"></a>1.5.2 如何让事件只允许一个客户订阅？</h4><p>少数情况下，比如像上面，为了避免发生“值覆盖”的情况（更多是在异步调用方法时，后面会讨论），我们可能想限制只允许一个客户端注册。此时怎么做呢？我们可以向下面这样，将事件声明为private 的，然后提供两个方法来进行注册和取消注册：</p>
+<h2 id="委托与方法的异步调用"><a href="#委托与方法的异步调用" class="headerlink" title="委托与方法的异步调用"></a>委托与方法的异步调用</h2><p>通常情况下，如果需要异步执行一个耗时的操作，我们会新起一个线程，然后让这个线程去执行代码。但是对于每一个异步调用都通过创建线程来进行操作显然会对性能产生一定的影响，同时操作也相对繁琐一些。.NET 中可以通过委托进行方法的异步调用，就是说客户端在异步调用方法时，本身并不会因为方法的调用而中断，而是从线程池中抓取一个线程去执行该方法，自身线程（主线程）在完成抓取线程这一过程之后，继续执行下面的代码，这样就实现了代码的并行执行。使用线程池的好处就是避免了频繁进行异步调用时创建、销毁线程的开销。当我们在委托对象上调用BeginInvoke()时，便进行了一个异步的方法调用。</p>
+<p>事件发布者和订阅者之间往往是松耦合的，发布者通常不需要获得订阅者方法执行的情况；而当使用异步调用时，更多情况下是为了提升系统的性能，而并非专用于事件的发布和订阅这一编程模型。而在这种情况下使用异步编程时，就需要进行更多的控制，比如当异步执行方法的方法结束时调用EndInvoke()通知客户端、返回异步执行方法的返回值等。</p>
+<p>BeginInvoke 方法启动异步调用。 该方法具有与你要异步执行的方法相同的参数，另加两个可选参数。 第一个参数是一个 AsyncCallback 委托，此委托引用在异步调用完成时要调用的方法。 第二个参数是一个用户定义的对象，该对象将信息传递到回调方法。 BeginInvoke 将立即返回，而不会等待异步调用完成。 BeginInvoke 返回可用于监视异步调用的进度的 IAsyncResult。</p>
+<p>EndInvoke 方法用于检索异步调用的结果。 它可以在调用 BeginInvoke之后的任意时间调用。 如果异步调用尚未完成，那么 EndInvoke 将阻止调用线程，直到完成异步调用。 EndInvoke 的参数包括要异步执行的方法的 out 和 ref 参数（Visual Basic 中的 <out> ByRef 和 ByRef）以及 BeginInvoke 返回的 IAsyncResult。</out></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Runtime.Remoting.Messaging;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">int</span> <span class="title">AddDelegate</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span>; </span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title">Program9</span> </span><br><span class="line">&#123; </span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)  </span></span><br><span class="line"><span class="function">    </span>&#123; </span><br><span class="line">        Console.WriteLine(<span class="string">"Client application started!\n"</span>); </span><br><span class="line">        Thread.CurrentThread.Name = <span class="string">"Main Thread"</span>; </span><br><span class="line"></span><br><span class="line">        Calculator cal = <span class="keyword">new</span> Calculator(); </span><br><span class="line">        AddDelegate del = <span class="keyword">new</span> AddDelegate(cal.Add); </span><br><span class="line"></span><br><span class="line">        <span class="keyword">string</span> data = <span class="string">"Any data you want to pass."</span>;     </span><br><span class="line">        AsyncCallback callBack = <span class="keyword">new</span> AsyncCallback(OnAddComplete);</span><br><span class="line">    </span><br><span class="line">        del.BeginInvoke(<span class="number">2</span>, <span class="number">5</span>, callBack, data); <span class="comment">// 异步调用方法</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 做某些其它的事情，模拟需要执行3 秒钟   </span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">3</span>; i++)  </span><br><span class="line">        &#123;  </span><br><span class="line">            Thread.Sleep(TimeSpan.FromSeconds(i));  </span><br><span class="line">            Console.WriteLine(<span class="string">"&#123;0&#125;: Client executed &#123;1&#125; second(s)."</span>, Thread.CurrentThread.Name, i);  </span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        Console.WriteLine(<span class="string">"\nPress any key to exit..."</span>);</span><br><span class="line">        Console.ReadLine();</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OnAddComplete</span>(<span class="params">IAsyncResult asyncResult</span>)   </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        AsyncResult result = (AsyncResult)asyncResult;</span><br><span class="line">        AddDelegate del = (AddDelegate)result.AsyncDelegate;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">string</span> data = (<span class="keyword">string</span>)asyncResult.AsyncState;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">int</span> rtn = del.EndInvoke(asyncResult);</span><br><span class="line">    </span><br><span class="line">        Console.WriteLine(<span class="string">"&#123;0&#125;: Result, &#123;1&#125;; Data: &#123;2&#125;\n"</span>, Thread.CurrentThread.Name, rtn, data);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Calculator</span></span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Thread.CurrentThread.IsThreadPoolThread)</span><br><span class="line">        &#123;</span><br><span class="line">            Thread.CurrentThread.Name = <span class="string">"Pool Thread"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        Console.WriteLine(<span class="string">"Method invoked!"</span>); </span><br><span class="line">        <span class="comment">// 执行某些事情，模拟需要执行2 秒钟 </span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">2</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Thread.Sleep(TimeSpan.FromSeconds(i));</span><br><span class="line">            Console.WriteLine(<span class="string">"&#123;0&#125;: Add executed &#123;1&#125; second(s)."</span>, Thread.CurrentThread.Name, i);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Console.WriteLine(<span class="string">"Method complete!"</span>);</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> x + y;  </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.cnblogs.com/TJessica/p/6690120.html" target="_blank" rel="noopener">C# 中的委托和事件</a><br><a href="https://docs.microsoft.com/zh-cn/dotnet/standard/asynchronous-programming-patterns/calling-synchronous-methods-asynchronously" target="_blank" rel="noopener">使用异步方式调用同步方法</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/22/如何判断点在多边形内/" rel="next" title="如何判断点在多边形内">
+                <i class="fa fa-chevron-left"></i> 如何判断点在多边形内
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/01/Python装饰器/" rel="prev" title="Python装饰器">
+                Python装饰器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Chang Lin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/lc1995" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:lucianolin1995@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#回调"><span class="nav-number">1.</span> <span class="nav-text">回调</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#委托"><span class="nav-number">2.</span> <span class="nav-text">委托</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件"><span class="nav-number">3.</span> <span class="nav-text">事件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#委托的编译代码"><span class="nav-number">3.1.</span> <span class="nav-text">委托的编译代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NET-框架中的委托和事件"><span class="nav-number">3.2.</span> <span class="nav-text">.NET 框架中的委托和事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Observe模型"><span class="nav-number">3.2.1.</span> <span class="nav-text">Observe模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NET框架的编码规范"><span class="nav-number">3.2.2.</span> <span class="nav-text">.NET框架的编码规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进阶"><span class="nav-number">3.2.3.</span> <span class="nav-text">进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么委托定义的返回值通常都为-void-？"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">为什么委托定义的返回值通常都为 void ？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-2-如何让事件只允许一个客户订阅？"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">1.5.2 如何让事件只允许一个客户订阅？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#委托与方法的异步调用"><span class="nav-number">3.3.</span> <span class="nav-text">委托与方法的异步调用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chang Lin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname, 
+            owner: 'lc1995',
+            repo: 'lc1995.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'f8c2095d8dc16bb768802ae8cbd0e7917eb7cb4a',
+            
+                client_id: 'ce5223552f85fd516b62'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
