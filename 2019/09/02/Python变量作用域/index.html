@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Game,Algorithm," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="Maze generation algorithms are automated methods for the creation of mazes.">
-<meta name="keywords" content="Game,Algorithm">
+<meta name="description" content="同样是网易一面的时候被问到的问题，而且感觉还是很基础的问题=。= 题目12345678910def fs():    func_list = []        for i in range(5):        func_list.append(lambda : i)        return func_listf">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Maze Generating Algorithm">
-<meta property="og:url" content="http://lc1995.github.io/2018/04/07/Maze-Generating-Algorithm/index.html">
+<meta property="og:title" content="Python变量作用域">
+<meta property="og:url" content="http://lc1995.github.io/2019/09/02/Python变量作用域/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Maze generation algorithms are automated methods for the creation of mazes.">
+<meta property="og:description" content="同样是网易一面的时候被问到的问题，而且感觉还是很基础的问题=。= 题目12345678910def fs():    func_list = []        for i in range(5):        func_list.append(lambda : i)        return func_listfor f in fs():    print(f()) 输出：123454444">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://lc1995.github.io/images/RecursiveDivision.png">
-<meta property="og:updated_time" content="2018-04-08T13:40:17.715Z">
+<meta property="og:updated_time" content="2019-09-02T16:08:23.673Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Maze Generating Algorithm">
-<meta name="twitter:description" content="Maze generation algorithms are automated methods for the creation of mazes.">
-<meta name="twitter:image" content="http://lc1995.github.io/images/RecursiveDivision.png">
+<meta name="twitter:title" content="Python变量作用域">
+<meta name="twitter:description" content="同样是网易一面的时候被问到的问题，而且感觉还是很基础的问题=。= 题目12345678910def fs():    func_list = []        for i in range(5):        func_list.append(lambda : i)        return func_listfor f in fs():    print(f()) 输出：123454444">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://lc1995.github.io/2018/04/07/Maze-Generating-Algorithm/"/>
+  <link rel="canonical" href="http://lc1995.github.io/2019/09/02/Python变量作用域/"/>
 
 
 
 
 
-  <title>Maze Generating Algorithm | Hexo</title>
+  <title>Python变量作用域 | Hexo</title>
   
 
 
@@ -255,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/04/07/Maze-Generating-Algorithm/">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2019/09/02/Python变量作用域/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chang Lin">
@@ -272,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Maze Generating Algorithm</h1>
+          <h1 class="post-title" itemprop="name headline">Python变量作用域</h1>
         
 
         <div class="post-meta">
@@ -284,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T14:25:09+08:00">
-                2018-04-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-02T23:15:50+08:00">
+                2019-09-02
               </time>
             
 
@@ -307,8 +305,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Game/" itemprop="url" rel="index">
-                    <span itemprop="name">Game</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -325,8 +323,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/04/07/Maze-Generating-Algorithm/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/07/Maze-Generating-Algorithm/" itemprop="commentsCount"></span>
+                <a href="/2019/09/02/Python变量作用域/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/09/02/Python变量作用域/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -354,57 +352,29 @@
       
 
       
-        <p>Maze generation algorithms are automated methods for the creation of mazes.</p>
-<a id="more"></a>
-<h1 id="Graph-Theory-Based-Methods"><a href="#Graph-Theory-Based-Methods" class="headerlink" title="Graph Theory Based Methods"></a>Graph Theory Based Methods</h1><p>A maze can be generated by starting with a predeterminied arrangement of cells with wall sites between them. Then we apply specific algorithm to find a route between two particular nodes (making a subgraph).</p>
-<p>If the subgraph is not connected, it means some regions are wasted.</p>
-<p>If the subgraph contains loops, there can be multiple paths between the chosen space.</p>
-<p>Because of the above two reasons, we usually generate mazes by generating a random spanning tree.</p>
-<h1 id="Depth-First-Search"><a href="#Depth-First-Search" class="headerlink" title="Depth First Search"></a>Depth First Search</h1><p>This algorithm is a randomized version of the <a href="https://en.wikipedia.org/wiki/Depth-first_search" target="_blank" rel="noopener">depth first search</a> algorithm.</p>
+        <p>同样是网易一面的时候被问到的问题，而且感觉还是很基础的问题=。=</p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fs</span><span class="params">()</span>:</span></span><br><span class="line">    func_list = []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        func_list.append(<span class="keyword">lambda</span> : i)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> func_list</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> fs():</span><br><span class="line">    print(f())</span><br></pre></td></tr></table></figure>
+<p>输出：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">4</span><br><span class="line">4</span><br><span class="line">4</span><br><span class="line">4</span><br></pre></td></tr></table></figure></p>
+<p>当时猜倒是猜对了，不过摆明了是猜的=。=</p>
+<p>所以还是得好好学一下Python中变量作用域的只是。</p>
+<h1 id="作用域的产生"><a href="#作用域的产生" class="headerlink" title="作用域的产生"></a>作用域的产生</h1><p>Python中变量的作用域与C有着很大的区别。在Python中，只有在模块（Module），函数（def）及类（class）中才有作用域的概念，而在if-else，for循环，while循环，try-except中则没有作用域的概念。</p>
+<p>我们可以通过下面两个例子来理解这个概念。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    print(i)</span><br><span class="line">print(i)    <span class="comment"># 上面函数中的i超出作用域而被回收</span></span><br></pre></td></tr></table></figure>
+<p>输出：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NameError: name 'i' is not defined</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">    print(i)</span><br><span class="line">print(i)    <span class="comment"># for循环没有作用域概念，因此这里的i指向同一个局部变量</span></span><br></pre></td></tr></table></figure>
+<p>输出：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">4</span><br></pre></td></tr></table></figure></p>
+<h1 id="作用域的类型"><a href="#作用域的类型" class="headerlink" title="作用域的类型"></a>作用域的类型</h1><p>python的作用域分为四种：</p>
 <ol>
-<li>Start with a large grid of cells, each with four walls.</li>
-<li>Select a random neighbouring cell that has not yet been visited.</li>
-<li>Remove the wall between the two cells and marks the new cell as visited, and adds it to the stack to facilitate backtracking.</li>
-<li>If a cell has no unvisited beighbors, it’s considered as a dead-end.</li>
-<li>When at a dead-end it backtracks through the path until it reaches a cell with an unvisited neighbor, continuing the path generation by visiting new unvisited cell.</li>
+<li>L(local)局部作用域</li>
+<li>E(enclosing)嵌套作用域：定义在此函数的上一层父级函数的局部作用域。</li>
+<li>G(global)全局作用域</li>
+<li>B(built-in)内置作用域：系统内固定模块里定义的变量，如预定义在builtin 模块内的变量。</li>
 </ol>
-<p>As given above this algorithm involves deep recursion which may cause stack overflow issues on some computer architectures. The algorithm can be rearranged into a loop by storing backtracking information in the maze itself. </p>
-<p>Mazes generated with a depth-first search have a low branching factor and contain many long corridors, because the algorithm explores as far as possible along each branch before backtracking.</p>
-<h1 id="Randomized-Kruskal’s-Algorithm"><a href="#Randomized-Kruskal’s-Algorithm" class="headerlink" title="Randomized Kruskal’s Algorithm"></a>Randomized Kruskal’s Algorithm</h1><p>This algorithm is a randomized version of <a href="https://en.wikipedia.org/wiki/Kruskal%27s_algorithm" target="_blank" rel="noopener">Kruskal’s algorithm</a>.</p>
-<ol>
-<li>Create a list of all walls, and create a set for each cell, each containing just that one cell.</li>
-<li>For each wall, in some random order. If the cells divided by this wall belong to distinct sets:<ol>
-<li>Remove the current wall.</li>
-<li>Join the sets of the formerly divided cells.</li>
-</ol>
-</li>
-</ol>
-<p>Because the effect of this algorithm is to produce a minimal spanning tree from a graph with equally weighted edges, it tends to produce regular patterns which are fairly easy to solve.</p>
-<h1 id="Randomized-Prim’s-Algorithm"><a href="#Randomized-Prim’s-Algorithm" class="headerlink" title="Randomized Prim’s Algorithm"></a>Randomized Prim’s Algorithm</h1><p>This algorithm is a randomized version of <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm" target="_blank" rel="noopener">Prim’s algorithm</a>.</p>
-<ol>
-<li>Start with a grid full of walls.</li>
-<li>Pick a cell, mark it as part of the maze. Add the walls of the cell to the wall list.</li>
-<li>While there are walls in the list:<ol>
-<li>Pick a random wall from the list. If only one of the two cells that the wall divides is visited, then:<ol>
-<li>Make the wall a passage and mark the unvisited cell as part of the maze.</li>
-<li>Add the neighboring walls of the cell to the wall list.</li>
-</ol>
-</li>
-<li>Remove the wall from the list.</li>
-</ol>
-</li>
-</ol>
-<p>Note that simply running classical Prim’s on a graph with random edge weights would create mazes stylistically identical to Kruskal’s, because they are both minimal spanning tree algorithms. Instead, this algorithm introduces stylistic variation because the edges closer to the starting point have a lower effective weight.</p>
-<h1 id="Recursive-Division-Method"><a href="#Recursive-Division-Method" class="headerlink" title="Recursive Division Method"></a>Recursive Division Method</h1><p>Mazes can be created with recursive division, an algorithm which works as follows: Begin with the maze’s space with no walls. Call this a chamber. Divide the chamber with a randomly positioned wall (or multiple walls) where each wall contains a randomly positioned passage opening within it. Then recursively repeat the process on the subchambers until all chambers are minimum sized. This method results in mazes with long straight walls crossing their space, making it easier to see which areas to avoid.</p>
-<p><img src="/images/RecursiveDivision.png" alt=""></p>
-<h1 id="Other-Algorithms"><a href="#Other-Algorithms" class="headerlink" title="Other Algorithms"></a>Other Algorithms</h1><p>Other algorithms exist that require only enough memory to store one line of a 2D maze or one plane of a 3D maze. They prevent loops by storing which cells in the current line are connected through cells in the previous lines, and never remove walls between any two cells already connected.</p>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Realization in Unity can be found in my <a href="https://github.com/lc1995/GraphSearch" target="_blank" rel="noopener">github</a>, including DFS and Prim’s Algorithm.</p>
-<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><ul>
-<li>DFS: Long corridors.</li>
-<li>Kruskal: Regular patterns.</li>
-<li>Prim: Stylistically like Kruskal.</li>
-<li>Recursion Division: Less corners to turn.</li>
-</ul>
+<h1 id="变量名的解析"><a href="#变量名的解析" class="headerlink" title="变量名的解析"></a>变量名的解析</h1><p>搜索变量名的优先级：局部作用域 &gt; 嵌套作用域 &gt; 全局作用域 &gt; 内置作用域</p>
+<p>LEGB法则： 当在函数中使用未确定的变量名时，Python会按照优先级依次搜索4个作用域，以此来确定该变量名的意义。首先搜索局部作用域(L)，之后是上一层嵌套结构中def或lambda函数的嵌套作用域(E)，之后是全局作用域(G)，最后是内置作用域(B)。按这个查找原则，在第一处找到的地方停止。如果没有找到，则会出发NameError错误。</p>
+<h1 id="静态作用域"><a href="#静态作用域" class="headerlink" title="静态作用域"></a>静态作用域</h1><p>静态作用域是指声明的作用域是根据程序正文在编译时就确定的，有时也称为词法作用域。而在采用动态作用域的语言中，程序中某个变量所引用的对象是在程序运行时刻根据程序的控制流信息来确定的。</p>
+<p>Python虽然属于解释性语言，但其变量作用域是在预编译阶段根据LEGB法则查找的。因此Python的作用域属于静态作用域。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.cnblogs.com/fireporsche/p/7813961.html" target="_blank" rel="noopener">Python学习之变量的作用域</a><br><a href="https://www.cnblogs.com/lienhua34/archive/2012/03/10/2388872.html" target="_blank" rel="noopener">浅谈静态作用域和动态作用域</a></p>
 
       
     </div>
@@ -422,9 +392,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Game/" rel="tag"># Game</a>
-          
-            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+            <a href="/tags/Python/" rel="tag"># Python</a>
           
         </div>
       
@@ -437,8 +405,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/05/Game-Ai-Chapter-5/" rel="next" title="Game Ai Chapter 5">
-                <i class="fa fa-chevron-left"></i> Game Ai Chapter 5
+              <a href="/2019/09/02/简单学一下Unity的GC/" rel="next" title="简单学一下Unity的GC">
+                <i class="fa fa-chevron-left"></i> 简单学一下Unity的GC
               </a>
             
           </div>
@@ -446,10 +414,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/10/Game-Ai-Chapter-8/" rel="prev" title="Game Ai Chapter 8">
-                Game Ai Chapter 8 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -604,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Graph-Theory-Based-Methods"><span class="nav-number">1.</span> <span class="nav-text">Graph Theory Based Methods</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Depth-First-Search"><span class="nav-number">2.</span> <span class="nav-text">Depth First Search</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Kruskal’s-Algorithm"><span class="nav-number">3.</span> <span class="nav-text">Randomized Kruskal’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Randomized-Prim’s-Algorithm"><span class="nav-number">4.</span> <span class="nav-text">Randomized Prim’s Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Recursive-Division-Method"><span class="nav-number">5.</span> <span class="nav-text">Recursive Division Method</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Other-Algorithms"><span class="nav-number">6.</span> <span class="nav-text">Other Algorithms</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Code"><span class="nav-number">7.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#作用域的产生"><span class="nav-number">2.</span> <span class="nav-text">作用域的产生</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#作用域的类型"><span class="nav-number">3.</span> <span class="nav-text">作用域的类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量名的解析"><span class="nav-number">4.</span> <span class="nav-text">变量名的解析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态作用域"><span class="nav-number">5.</span> <span class="nav-text">静态作用域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
