@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Note on rotation in Unity.">
+<meta name="description" content="GC（Garbage Collection，垃圾回收）作为Unity内存管理的一部分，是游戏性能上非常重要的一环。游戏运行时使用内存来存储数据，当这些数据不需要再被使用到时，我们需要释放这部分内存来实现内存的复用，这便是GC的意义所在。 目前来讲我自己平时的业余开发还没有很涉及到严峻的性能问题，所以GC说实话平时用的不">
 <meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity Rotation Note">
-<meta property="og:url" content="http://lc1995.github.io/2018/03/20/Unity-Rotation-Note/index.html">
+<meta property="og:title" content="简单学一下Unity的GC">
+<meta property="og:url" content="http://lc1995.github.io/2019/09/02/简单学一下Unity的GC/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Note on rotation in Unity.">
+<meta property="og:description" content="GC（Garbage Collection，垃圾回收）作为Unity内存管理的一部分，是游戏性能上非常重要的一环。游戏运行时使用内存来存储数据，当这些数据不需要再被使用到时，我们需要释放这部分内存来实现内存的复用，这便是GC的意义所在。 目前来讲我自己平时的业余开发还没有很涉及到严峻的性能问题，所以GC说实话平时用的不多。所以这里简单地学一下GC的一些概念及常见的减少GC开销的方法，后续如果游戏涉">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-20T23:12:20.390Z">
+<meta property="og:updated_time" content="2019-09-02T10:55:50.235Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unity Rotation Note">
-<meta name="twitter:description" content="Note on rotation in Unity.">
+<meta name="twitter:title" content="简单学一下Unity的GC">
+<meta name="twitter:description" content="GC（Garbage Collection，垃圾回收）作为Unity内存管理的一部分，是游戏性能上非常重要的一环。游戏运行时使用内存来存储数据，当这些数据不需要再被使用到时，我们需要释放这部分内存来实现内存的复用，这便是GC的意义所在。 目前来讲我自己平时的业余开发还没有很涉及到严峻的性能问题，所以GC说实话平时用的不多。所以这里简单地学一下GC的一些概念及常见的减少GC开销的方法，后续如果游戏涉">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://lc1995.github.io/2018/03/20/Unity-Rotation-Note/"/>
+  <link rel="canonical" href="http://lc1995.github.io/2019/09/02/简单学一下Unity的GC/"/>
 
 
 
 
 
-  <title>Unity Rotation Note | Hexo</title>
+  <title>简单学一下Unity的GC | Hexo</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2018/03/20/Unity-Rotation-Note/">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2019/09/02/简单学一下Unity的GC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chang Lin">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Unity Rotation Note</h1>
+          <h1 class="post-title" itemprop="name headline">简单学一下Unity的GC</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T22:49:58+08:00">
-                2018-03-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-02T12:25:06+08:00">
+                2019-09-02
               </time>
             
 
@@ -323,8 +323,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/20/Unity-Rotation-Note/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/20/Unity-Rotation-Note/" itemprop="commentsCount"></span>
+                <a href="/2019/09/02/简单学一下Unity的GC/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/09/02/简单学一下Unity的GC/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -352,39 +352,46 @@
       
 
       
-        <p>Note on rotation in Unity.</p>
+        <p>GC（Garbage Collection，垃圾回收）作为Unity内存管理的一部分，是游戏性能上非常重要的一环。游戏运行时使用内存来存储数据，当这些数据不需要再被使用到时，我们需要释放这部分内存来实现内存的复用，这便是GC的意义所在。</p>
+<p>目前来讲我自己平时的业余开发还没有很涉及到严峻的性能问题，所以GC说实话平时用的不多。所以这里简单地学一下GC的一些概念及常见的减少GC开销的方法，后续如果游戏涉及到严峻的性能开销问题，再回过头来好好学一下。</p>
 <a id="more"></a>
-<p>Quaternion is used to represent rotations in Unity. It’s described by four properties x, y, z and w. However 99% of the time you are not suggested to directly change those values instead of using some useful functions provided by Quaternion.</p>
-<h1 id="Rotation-VS-LocalRotation"><a href="#Rotation-VS-LocalRotation" class="headerlink" title="Rotation VS LocalRotation"></a>Rotation VS LocalRotation</h1><blockquote>
-<p>The rotation of the transform in <strong>world space</strong> stored as a Quaternion.</p>
-<p>The rotation of the transform relative to the <strong>parent transform’s rotation</strong>.</p>
-</blockquote>
-<p>It means that if the object has no parent(or let’s say parent is the world root), rotation and localRotation is same. However, if the object has a real parent, then the rotation is the combination of its localRotation and the parent’s rotation(not linear addition).</p>
-<h1 id="Transform-RotateAround"><a href="#Transform-RotateAround" class="headerlink" title="Transform.RotateAround"></a>Transform.RotateAround</h1><blockquote>
-<p>public void RotateAround(Vector3 point, Vector3 axis, float angle);</p>
-<p>Rotates the transform about <em>axis</em> passing through <em>point</em> in world coordinates by <em>angle</em> degrees.<br>This modifies both the position and the rotation of the transform.</p>
-</blockquote>
-<p>This is useful when we know the rotation point, axis and angle in world space.<br>And it’s more powerful than <strong>Transform.Rotate</strong>.<br>If we want to rotate around the parent, just put the parent’s position in <em>point</em>. (We don’t need to use localRotation)</p>
-<h2 id="Example-Rotate-around-a-point-in-a-constant-rotation-rate"><a href="#Example-Rotate-around-a-point-in-a-constant-rotation-rate" class="headerlink" title="Example: Rotate around a point in a constant rotation rate"></a>Example: Rotate around a point in a constant rotation rate</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    transform.RotateAround(Vector3.zero, Vector3.up, <span class="number">20</span>f * Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Transform-Rotate"><a href="#Transform-Rotate" class="headerlink" title="Transform.Rotate"></a>Transform.Rotate</h1><blockquote>
-<p>public void Rotate(Vector3 eulerAngles, Space relativeTo = Space.Self);</p>
-<p>Applies a rotation of eulerAngles.z degrees around the z axis, eulerAngles.x degrees around the x axis, and eulerAngles.y degrees around the y axis (in that order).</p>
-<p>If relativeTo is not specified or set to Space.Self the rotation is applied around the transform’s local axes. If relativeTo is set to Space.World the rotation is applied around the world x, y, z axes.</p>
-</blockquote>
-<p>This is useful when we know the eulerAngles to rotate.</p>
-<h2 id="Example-Self-Rotation"><a href="#Example-Self-Rotation" class="headerlink" title="Example: Self Rotation"></a>Example: Self Rotation</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    transform.Rotate(Vector3.up * Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Transform-LookAt"><a href="#Transform-LookAt" class="headerlink" title="Transform.LookAt"></a>Transform.LookAt</h1><blockquote>
-<p>public void LookAt(Transform target, Vector3 worldUp = Vector3.up);</p>
-<p>Rotates the transform so the forward vector points at /target/‘s current position.</p>
-<p>Then it rotates the transform to point its up direction vector in the direction hinted at by the worldUp vector. If you leave out the worldUp parameter, the function will use the world y axis. worldUp is only a hint vector. The up vector of the rotation will only match the worldUp vector if the forward direction is perpendicular to worldUp.</p>
-</blockquote>
-<p>This is useful to face the object towards a given direction.</p>
-<h1 id="Use-Quaternion"><a href="#Use-Quaternion" class="headerlink" title="Use Quaternion"></a>Use Quaternion</h1><p>Another way to rotate an object is directly setting the rotation/localRotation to a quaternion.</p>
-<p>We don’t initianlize a quaternion by its constructor, instead we use the public static function of Quaternion.</p>
-<h2 id="Example-Rotate-towards-a-quaternion-Linear"><a href="#Example-Rotate-towards-a-quaternion-Linear" class="headerlink" title="Example: Rotate towards a quaternion (Linear)"></a>Example: Rotate towards a quaternion (Linear)</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">float</span> step = speed * Time.deltaTime;</span><br><span class="line">    transform.rotation = Quaternion.RotateTowards(transform.rotation, target.rotation, step);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>We need to know the target’s rotation.</p>
-<h2 id="Example-Rotate-towards-a-quaternion-Non-linear"><a href="#Example-Rotate-towards-a-quaternion-Non-linear" class="headerlink" title="Example: Rotate towards a quaternion (Non-linear)"></a>Example: Rotate towards a quaternion (Non-linear)</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3 relativePos = (target.position + <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1.5</span>f, <span class="number">0</span>)) - transform.position;</span><br><span class="line">    Quaternion rotation = Quaternion.LookRotation(relativePos);</span><br><span class="line">    </span><br><span class="line">    Quaternion current = transform.localRotation;</span><br><span class="line">    </span><br><span class="line">    transform.localRotation = Quaternion.Slerp(current, rotation, Time.deltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Example-Rotate-towards-a-quaternion-Linear-using-interpolation"><a href="#Example-Rotate-towards-a-quaternion-Linear-using-interpolation" class="headerlink" title="Example: Rotate towards a quaternion (Linear using interpolation)"></a>Example: Rotate towards a quaternion (Linear using interpolation)</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3 relativePos = (target.position + <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1.5</span>f, <span class="number">0</span>)) - transform.position;</span><br><span class="line">    Quaternion to = Quaternion.LookRotation(relativePos);</span><br><span class="line">    </span><br><span class="line">    Quaternion <span class="keyword">from</span> = transform.localRotation;</span><br><span class="line">    </span><br><span class="line">    StartCoroutine(Rotate(<span class="keyword">from</span>, to));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">IEnumerator <span class="title">Rotate</span>(<span class="params">Quaternion <span class="keyword">from</span>, Quaternion to</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">float</span> t = Time.deltaTime;</span><br><span class="line">    Quaternion move = Quaternion.Slerp(<span class="keyword">from</span>, to, t);</span><br><span class="line">    <span class="keyword">while</span>(move != to)&#123;</span><br><span class="line">        transform.localRotation = move;</span><br><span class="line"></span><br><span class="line">        t += Time.deltaTime;</span><br><span class="line">        move = Quaternion.Slerp(<span class="keyword">from</span>, to, t);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="为什么需要GC"><a href="#为什么需要GC" class="headerlink" title="为什么需要GC"></a>为什么需要GC</h1><p>我们知道，Unity中值类型的局部变量会分配在栈上，除此之外都分配在堆上。栈变量超出作用域后，分配给该变量的内存会在函数调用结束后被立刻回收。而当堆变量超出作用域后，这部分内存并不会被立刻回收，从而产生垃圾，而这些垃圾会在下次GC时被回收。</p>
+<h1 id="GC干了什么"><a href="#GC干了什么" class="headerlink" title="GC干了什么"></a>GC干了什么</h1><p>每次执行GC时，将执行一下步骤：</p>
+<ol>
+<li>垃圾收集器检索堆上的每个对象。</li>
+<li>垃圾收集器搜索所有当前对象引用以确定堆上的对象是否仍在作用域内。</li>
+<li>不在作用域内的对象被标记为删除。</li>
+<li>删除被标记的对象并将内存返回给堆。</li>
+</ol>
+<p>GC是个费时的操作，堆上的对象越多，代码中的引用数越多，GC就越费时。</p>
+<h1 id="何时会触发GC"><a href="#何时会触发GC" class="headerlink" title="何时会触发GC"></a>何时会触发GC</h1><ol>
+<li>堆内存不足时。</li>
+<li>GC会不时地自动运行（频率因平台而异）。</li>
+<li>主动调用GC时。</li>
+</ol>
+<h1 id="GC所带来的开销问题"><a href="#GC所带来的开销问题" class="headerlink" title="GC所带来的开销问题"></a>GC所带来的开销问题</h1><ol>
+<li>如果有很多的堆对象及大量的堆对象引用，GC会花费很长的时间。</li>
+<li>在不合时宜的时间（如游戏的性能关键部分）GC被触发，也可能导致帧速率下降和性能问题。</li>
+<li>堆碎片也很导致GC被更频繁地触发，同时游戏消耗的内存会高于实际所需要的内存大小。</li>
+</ol>
+<h1 id="减小GC的影响"><a href="#减小GC的影响" class="headerlink" title="减小GC的影响"></a>减小GC的影响</h1><ol>
+<li>减少GC的时间，即更少的堆内存分配和更少的堆对象引用。</li>
+<li>减少GC的频率，即减少堆内存分配和释放的频率。</li>
+<li>主动调用GC，即尝试主动触发GC及堆内存扩展，避开性能关键点。</li>
+</ol>
+<h1 id="具体减少GC的方式"><a href="#具体减少GC的方式" class="headerlink" title="具体减少GC的方式"></a>具体减少GC的方式</h1><p>这里我们简单说几种新手GCer比较常见的方式，具体可以参考文末的参考链接。</p>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>如果我们的代码重复调用产生堆分配的函数，然后丢弃结果，这将产生不必要的垃圾。 对此，我们应该存储对这些对象的引用并复用它们。</p>
+<p>缓存前：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnTriggerEnter</span>(<span class="params">Collider other</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Renderer[] allRenderers = FindObjectsOfType&lt;Renderer&gt;();</span><br><span class="line">    ExampleFunction(allRenderers);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>缓存后：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Renderer[] allRenderers;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    allRenderers = FindObjectsOfType&lt;Renderer&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnTriggerEnter</span>(<span class="params">Collider other</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ExampleFunction(allRenderers);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="不要在频繁调用的函数中分配"><a href="#不要在频繁调用的函数中分配" class="headerlink" title="不要在频繁调用的函数中分配"></a>不要在频繁调用的函数中分配</h2><p>如果我们需要在MonoBehaviour中分配堆内存，在频繁调用的函数里分配是最糟糕的。比如每帧调用的函数Update()和LateUpdate()，在这些地方分配，垃圾将非常快的累积。我们应该尽可能在Start()或Awake()里缓存这些对象的引用，或者确保分配内存的代码只在需要的时候被运行。</p>
+<h2 id="对象池"><a href="#对象池" class="headerlink" title="对象池"></a>对象池</h2><p>即使减少了脚本中的堆分配,在运行时大量对象的创建和销毁依然会引起GC问题。对象池是一种通过重用对象而不是重复创建和销毁对象来减少分配和释放的技术。对象池在游戏中广泛使用，最适合于频繁产生和销毁类似对象的情况。例如，当枪射击子弹时。</p>
+<h2 id="手动强制GC"><a href="#手动强制GC" class="headerlink" title="手动强制GC"></a>手动强制GC</h2><p>最后，我们可能希望自己触发GC。 如果我们知道堆内存已被分配但不再使用（例如，如果我们的代码在加载资源时生成垃圾），并且我们知道垃圾收集冻结不会影响播放器（例如，当加载界面还显示时），我们可以使用以下代码请求GC：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.GC.Collect();</span><br></pre></td></tr></table></figure>
+<p>这将强制运行GC，在我们方便的时候释放未使用的内存。</p>
+<h2 id="使用Profiler工具来查找堆分配"><a href="#使用Profiler工具来查找堆分配" class="headerlink" title="使用Profiler工具来查找堆分配"></a>使用Profiler工具来查找堆分配</h2><p>我们可以使用Profiler工具来查看哪部分代码产生了堆分配。</p>
+<p>选中CPU Usage，然后选中任意帧就可以在Profiler窗口的下部查看到该帧的CPU使用数据。其中一列叫GC alloc，这一列显示了这帧中的堆分配信息。点击列头对该列进行排序，这样可以更直观的看出当前帧哪些函数产生了最多的堆分配。这样就可以检查这些产生堆分配的函数。</p>
+<p>一旦我们知道函数内的什么代码导致生成垃圾，我们可以决定如何解决这个问题，并最大限度地减少垃圾的生成量。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://blog.csdn.net/znybn1/article/details/76464896" target="_blank" rel="noopener">Unity游戏的GC(garbage collection)优化</a><br><a href="https://docs.unity3d.com/Manual/BestPracticeUnderstandingPerformanceInUnity4-1.html" target="_blank" rel="noopener">官方文档：Understanding the managed heap</a></p>
 
       
     </div>
@@ -415,8 +422,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/16/Unity-Shader-Chapter-7/" rel="next" title="Unity Shader Chapter 7">
-                <i class="fa fa-chevron-left"></i> Unity Shader Chapter 7
+              <a href="/2019/09/01/Python装饰器/" rel="next" title="Python装饰器">
+                <i class="fa fa-chevron-left"></i> Python装饰器
               </a>
             
           </div>
@@ -424,10 +431,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/22/Unity-Shader-Chapter-8/" rel="prev" title="Unity Shader Chapter 8">
-                Unity Shader Chapter 8 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -582,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rotation-VS-LocalRotation"><span class="nav-number">1.</span> <span class="nav-text">Rotation VS LocalRotation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform-RotateAround"><span class="nav-number">2.</span> <span class="nav-text">Transform.RotateAround</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Rotate-around-a-point-in-a-constant-rotation-rate"><span class="nav-number">2.1.</span> <span class="nav-text">Example: Rotate around a point in a constant rotation rate</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform-Rotate"><span class="nav-number">3.</span> <span class="nav-text">Transform.Rotate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Self-Rotation"><span class="nav-number">3.1.</span> <span class="nav-text">Example: Self Rotation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Transform-LookAt"><span class="nav-number">4.</span> <span class="nav-text">Transform.LookAt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Use-Quaternion"><span class="nav-number">5.</span> <span class="nav-text">Use Quaternion</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Rotate-towards-a-quaternion-Linear"><span class="nav-number">5.1.</span> <span class="nav-text">Example: Rotate towards a quaternion (Linear)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Rotate-towards-a-quaternion-Non-linear"><span class="nav-number">5.2.</span> <span class="nav-text">Example: Rotate towards a quaternion (Non-linear)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Example-Rotate-towards-a-quaternion-Linear-using-interpolation"><span class="nav-number">5.3.</span> <span class="nav-text">Example: Rotate towards a quaternion (Linear using interpolation)</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么需要GC"><span class="nav-number">1.</span> <span class="nav-text">为什么需要GC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC干了什么"><span class="nav-number">2.</span> <span class="nav-text">GC干了什么</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#何时会触发GC"><span class="nav-number">3.</span> <span class="nav-text">何时会触发GC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC所带来的开销问题"><span class="nav-number">4.</span> <span class="nav-text">GC所带来的开销问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#减小GC的影响"><span class="nav-number">5.</span> <span class="nav-text">减小GC的影响</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#具体减少GC的方式"><span class="nav-number">6.</span> <span class="nav-text">具体减少GC的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存"><span class="nav-number">6.1.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不要在频繁调用的函数中分配"><span class="nav-number">6.2.</span> <span class="nav-text">不要在频繁调用的函数中分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象池"><span class="nav-number">6.3.</span> <span class="nav-text">对象池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动强制GC"><span class="nav-number">6.4.</span> <span class="nav-text">手动强制GC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Profiler工具来查找堆分配"><span class="nav-number">6.5.</span> <span class="nav-text">使用Profiler工具来查找堆分配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
