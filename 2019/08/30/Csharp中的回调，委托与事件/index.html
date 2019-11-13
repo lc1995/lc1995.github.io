@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="C#," />
+  <meta name="keywords" content="Csharp," />
 
 
 
@@ -80,19 +80,19 @@
 
 
 <meta name="description" content="委托与事件，作为C#中非常重要的一个特性，在实际的开发中也经常被使用到。举个简单的例子，Unity中给一个按钮绑定一个回调函数就是一个十分简单的应用。这里我想对其概念深入的理解一下。">
-<meta name="keywords" content="C#">
+<meta name="keywords" content="Csharp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C#中的回调，委托与事件">
-<meta property="og:url" content="http://lc1995.github.io/2019/08/30/C#中的回调，委托与事件/index.html">
+<meta property="og:title" content="Csharp中的回调，委托与事件">
+<meta property="og:url" content="http://lc1995.github.io/2019/08/30/Csharp中的回调，委托与事件/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="委托与事件，作为C#中非常重要的一个特性，在实际的开发中也经常被使用到。举个简单的例子，Unity中给一个按钮绑定一个回调函数就是一个十分简单的应用。这里我想对其概念深入的理解一下。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://lc1995.github.io/2019/images/回调函数.jpg">
-<meta property="og:updated_time" content="2019-09-01T09:25:01.983Z">
+<meta property="og:image" content="http://lc1995.github.io/images/回调函数.jpg">
+<meta property="og:updated_time" content="2019-11-13T02:43:04.633Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C#中的回调，委托与事件">
+<meta name="twitter:title" content="Csharp中的回调，委托与事件">
 <meta name="twitter:description" content="委托与事件，作为C#中非常重要的一个特性，在实际的开发中也经常被使用到。举个简单的例子，Unity中给一个按钮绑定一个回调函数就是一个十分简单的应用。这里我想对其概念深入的理解一下。">
-<meta name="twitter:image" content="http://lc1995.github.io/2019/images/回调函数.jpg">
+<meta name="twitter:image" content="http://lc1995.github.io/images/回调函数.jpg">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://lc1995.github.io/2019/08/30/C#中的回调，委托与事件/"/>
+  <link rel="canonical" href="http://lc1995.github.io/2019/08/30/Csharp中的回调，委托与事件/"/>
 
 
 
 
 
-  <title>C#中的回调，委托与事件 | Hexo</title>
+  <title>Csharp中的回调，委托与事件 | Hexo</title>
   
 
 
@@ -255,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2019/08/30/C#中的回调，委托与事件/">
+    <link itemprop="mainEntityOfPage" href="http://lc1995.github.io/2019/08/30/Csharp中的回调，委托与事件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Chang Lin">
@@ -272,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C#中的回调，委托与事件</h1>
+          <h1 class="post-title" itemprop="name headline">Csharp中的回调，委托与事件</h1>
         
 
         <div class="post-meta">
@@ -307,8 +307,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C#</span>
+                  <a href="/categories/Csharp/" itemprop="url" rel="index">
+                    <span itemprop="name">Csharp</span>
                   </a>
                 </span>
 
@@ -325,8 +325,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/30/C#中的回调，委托与事件/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/08/30/C#中的回调，委托与事件/" itemprop="commentsCount"></span>
+                <a href="/2019/08/30/Csharp中的回调，委托与事件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2019/08/30/Csharp中的回调，委托与事件/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -360,7 +360,7 @@
 <p>在正常的开发过程中，通常都是应用程序调用API调用库里所预先准备好的函数，来实现自己的功能。但这带来一个问题，有些库函数出于封装的需要，其功能通常是针对某一常见情境的，因此并不一定满足其它情境的需要。例如，对于一个封装好的排序函数，通常是讲输入的数组按照从小到大或者字典递增序进行排列。如果我们需要的功能是将元素按照一个预先设定好的大小关系进行排序（例如每个元素分别映射到一个整形数值上），则常规的API调用并不能满足我们的需要。</p>
 <p>通过回调的机制，函数某种程度上提供了一个新的接口，即我们可以通过传入某个函数（即回调函数），来让API调用我们提供给它的函数，借此来实现特定的功能。例如上述的例子，我们将对应的映射函数作为参数传递到库函数中，告诉库函数调用回调函数来判断大小关系，而不是按照默认的排序机制。这里库函数回过头来调用了程序中的定义的函数，这也是回调这个名字的由来。</p>
 <p>这里可以参考一个蛮形象的解释。有一家旅馆提供叫醒服务，但是要求旅客自己决定叫醒的方法。可以是打客房电话，也可以是派服务员去敲门，睡得死怕耽误事的，还可以要求往自己头上浇盆水。这里，“叫醒”这个行为是旅馆提供的，相当于库函数，但是叫醒的方式是由旅客决定并告诉旅馆的，也就是回调函数。而旅客告诉旅馆怎么叫醒自己的动作，也就是把回调函数传入库函数的动作，称为登记回调函数（to register a callback function）。如下图所示（图片来源：维基百科）：</p>
-<p><img src="../../images/回调函数.jpg" alt=""></p>
+<p><img src="/images/回调函数.jpg" alt=""></p>
 <p>参考：<a href="https://www.zhihu.com/question/19801131/answer/27459821" target="_blank" rel="noopener">回调函数（callback）是什么？ - no.body的回答 - 知乎</a></p>
 <h1 id="委托"><a href="#委托" class="headerlink" title="委托"></a>委托</h1><p>委托是一个类，它定义了方法的类型，使得可以将方法当作另一个方法的参数来进行传递，这种将方法动态地赋给参数的做法，可以避免在程序中大量使用If … Else(Switch)语句，同时使得程序具有更好的可扩展性。</p>
 <p>换句话说，委托即回调函数在C#中的实现，通过定义一个新的变量类型（新的类）来让函数得以作为参数传递。委托的定义实际上就定义了函数的类型（参数类型，参数个数及返回类型）。</p>
@@ -428,7 +428,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/C/" rel="tag"># C#</a>
+            <a href="/tags/Csharp/" rel="tag"># Csharp</a>
           
         </div>
       
@@ -537,7 +537,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -548,7 +548,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
